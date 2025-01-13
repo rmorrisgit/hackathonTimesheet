@@ -5,6 +5,8 @@
     width: 100%;
     white-space: nowrap;
     /* position: fixed; */
+    position: fixed;
+
     bottom: 0;
     /* align-items: center;
     justify-content: center;
@@ -12,7 +14,6 @@
     justify-items: center; */
     justify-items: center; 
     height: 50px;
-    background-color: #18181828;
-    position: fixed;
-    z-index: 4;
+    background-color: #1d1d1d28;
+    z-index: -22;
   }

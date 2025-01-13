@@ -1,14 +1,18 @@
 :root {
     --jumbotron-padding-y: 2rem;
     /* overflow-x: hidden; */
-    background-color: #dfdfdf !important;
 
   }
 
-
-.sectClass {
-}
-
+  .album {
+    z-index: 55 !important;
+    }
+    .gridCon {
+  min-height: 120%;   
+   z-index: 22;
+  
+  
+    }
 .editcon {
   margin-top: 150px !important;
 }

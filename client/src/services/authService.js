@@ -40,7 +40,12 @@ class AuthService {
       // Store session data
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
-  
+      //set employee type. build out is employee. 
+      if( loginDataEmail == 'researchNSCC@nscc.ca') {
+        sessionStorage.setItem('type', 'supervisor')
+      } else {
+        sessionStorage.setItem('type', 'employee')
+      }
       return true; // Login was successful
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
@@ -62,6 +67,13 @@ class AuthService {
       return { success: false, error: err.response ? err.response.data : err.message };
     }
   }
+// isEmployee method 
+
+  isEmployee() {
+    return sessionStorage.getItem('type') == 'employee';
+  }
+
+
 
   isSignedIn() {
     return !!sessionStorage.getItem('isLoggedIn');

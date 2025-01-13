@@ -37,7 +37,7 @@ const Main = ({ filteredData, setFilteredData, isAuthenticated }) => {
   return (
     <div>
       <div
-        className="album pt-4"
+        className="album gridCon pt-4"
         style={{
           padding: 0,
           backgroundColor: "hsla(215, 15%, 97%, 0.5)",
