@@ -40,12 +40,22 @@ class AuthService {
       // Store session data
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
+      
+      
       //set employee type. build out is employee. 
-      if( loginDataEmail == 'researchNSCC@nscc.ca') {
-        sessionStorage.setItem('type', 'supervisor')
-      } else {
-        sessionStorage.setItem('type', 'employee')
-      }
+      
+  const supervisorEmails = [
+  'research1@nscc.ca',
+  'research2@nscc.ca',
+  'research3@nscc.ca',
+  'research4@nscc.ca',
+];
+
+if (supervisorEmails.includes(loginData.email)) {
+  sessionStorage.setItem('type', 'supervisor');
+} else {
+  sessionStorage.setItem('type', 'employee');
+}
       return true; // Login was successful
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
