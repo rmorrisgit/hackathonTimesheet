@@ -1,0 +1,18 @@
+  
+  footer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    width: 100%;
+    white-space: nowrap;
+    /* position: fixed; */
+    bottom: 0;
+    /* align-items: center;
+    justify-content: center;
+    align-content: center;
+    justify-items: center; */
+    justify-items: center; 
+    height: 50px;
+    background-color: #18181828;
+    position: fixed;
+    z-index: 4;
+  }

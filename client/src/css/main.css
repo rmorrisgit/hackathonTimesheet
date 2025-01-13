@@ -1,0 +1,127 @@
+:root {
+    --jumbotron-padding-y: 2rem;
+    /* overflow-x: hidden; */
+    background-color: #dfdfdf !important;
+
+  }
+
+
+.sectClass {
+}
+
+.editcon {
+  margin-top: 150px !important;
+}
+
+
+
+  .delete-button {
+    padding: 10px 20px;
+    background-color: red;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: darkred;
+    transform: scale(1.05);
+  }
+  
+  .cancel-button {
+    padding: 10px 20px;
+    background-color: #2D2D2C;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .cancel-button:hover {
+    background-color: #444;
+    transform: scale(1.05);
+  }
+  
+.backBtn:hover {
+background-color: white !important;
+color: black !important;
+}
+
+  .createForm {
+    max-width: 400px;
+    margin: auto;
+  }
+  .navLogout a{
+    color: black;
+  }
+  .navLogout a:hover {
+   color: white !important;
+    background-color: rgb(0, 0, 0); /* Hover background color */
+  }
+  
+  .jumbotron {
+    padding-top: var(--jumbotron-padding-y);
+    padding-bottom: var(--jumbotron-padding-y);
+    margin-bottom: 0;
+  }
+  
+  
+  .jumbotron p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .jumbotron-heading {
+    font-weight: 300;
+  }
+  
+  .jumbotron .container {
+    max-width: 40rem;
+    
+  }
+  .p-5 {
+    padding: 0!important;
+}
+
+  .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+  @media (min-width: 1500px) {
+    .col-xxl-2 {
+      flex: 0 0 33.333333%;
+      max-width: 33.3333333%;
+    }
+  } 
+  @media (min-width:  1920px) {
+    .col-xxxl-2 {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+  }
+  @media (min-width: 2560px) {
+    .col-xxxxl-2 {
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
+  }
+
+  /* @media (min-width: 768px) and (max-width: 1111px) {
+    .smalcol {
+      width: 200px !important;
+
+      }
+  
+  } */
+  @media (min-width: 768px) {
+    .jumbotron {
+      padding-top: calc(var(--jumbotron-padding-y) * 2);
+      padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+    }
+ 
+    .search-padding-xs {
+    
+      margin-left: 70px;
+      margin-right: 70px;
+    }
+  }

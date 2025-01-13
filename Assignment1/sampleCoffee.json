@@ -1,0 +1,114 @@
+[
+  {
+    "coffeeName": "Solace",
+    "origin": "Cerrado, Brazil",
+    "processingMethod": "Natural",
+    "roastLevel": "Medium",
+    "flavorNotes": ["Toasted Hazelnut", "Dark Chocolate", "Dates"],
+    "brewMethods": ["French Press", "Drip Coffee"],
+    "image": "/images/cofv1.svg",
+    "harvestInfo": {
+      "season": "June - August",
+      "harvestMethod": "Hand Picked",
+      "altitude": "1200m"
+    }
+  },
+  {
+    "coffeeName": "Vortex",
+    "origin": "Yirgacheffe, Ethiopia",
+    "processingMethod": "Washed",
+    "roastLevel": "Light",
+    "flavorNotes": ["Citrus", "Floral", "Bergamot"],
+    "brewMethods": ["Pour Over", "Aeropress"],
+    "image": "/images/cofv2.svg",
+    "harvestInfo": {
+      "season": "October - December",
+      "harvestMethod": "Machine Assisted",
+      "altitude": "1800m"
+    }
+  },
+  {
+    "coffeeName": "Ember",
+    "origin": "Huila, Colombia",
+    "processingMethod": "Washed",
+    "roastLevel": "Medium",
+    "flavorNotes": ["Caramel", "Red Apple", "Sweet Orange"],
+    "brewMethods": ["Espresso", "Chemex"],
+    "image": "/images/cofv3.svg",
+    "harvestInfo": {
+      "season": "April - June",
+      "harvestMethod": "Hand Picked",
+      "altitude": "1500m"
+    }
+  },
+  {
+    "coffeeName": "Obsidian",
+    "origin": "Antigua, Guatemala",
+    "processingMethod": "Wet Hulled",
+    "roastLevel": "Dark",
+    "flavorNotes": ["Smoky", "Dark Chocolate", "Spice"],
+    "brewMethods": ["Espresso", "French Press"],
+    "image": "/images/cofv4.svg",
+    "harvestInfo": {
+      "season": "November - January",
+      "harvestMethod": "Hand Picked",
+      "altitude": "1600m"
+    }
+  },
+  {
+    "coffeeName": "Zephyr",
+    "origin": "Sidama, Ethiopia",
+    "processingMethod": "Natural",
+    "roastLevel": "Light",
+    "flavorNotes": ["Blueberry", "Lavender", "Honey"],
+    "brewMethods": ["Pour Over", "Cold Brew"],
+    "image": "/images/cofv5.svg",
+    "harvestInfo": {
+      "season": "July - September",
+      "harvestMethod": "Hand Picked",
+      "altitude": "1900m"
+    }
+  },
+  {
+    "coffeeName": "Nimbus",
+    "origin": "Tarrazú, Costa Rica",
+    "processingMethod": "Honey",
+    "roastLevel": "Medium",
+    "flavorNotes": ["Citrus", "Almond", "Brown Sugar"],
+    "brewMethods": ["Drip Coffee", "Espresso"],
+    "image": "/images/cofv6.svg",
+    "harvestInfo": {
+      "season": "December - February",
+      "harvestMethod": "Hand Picked",
+      "altitude": "1600m"
+    }
+  },
+  {
+    "coffeeName": "Aurora",
+    "origin": "Kona, Hawaii",
+    "processingMethod": "Washed",
+    "roastLevel": "Medium",
+    "flavorNotes": ["Macadamia", "Coconut", "Vanilla"],
+    "brewMethods": ["French Press", "Espresso"],
+    "image": "/images/cofv7.svg",
+    "harvestInfo": {
+      "season": "August - October",
+      "harvestMethod": "Hand Picked",
+      "altitude": "800m"
+    }
+  },
+  {
+    "coffeeName": "Cascade",
+    "origin": "Sumatra, Indonesia",
+    "processingMethod": "Wet Hulled",
+    "roastLevel": "Dark",
+    "flavorNotes": ["Earthy", "Herbaceous", "Tobacco"],
+    "brewMethods": ["Espresso", "Moka Pot"],
+    "image": "/images/cofv9.svg",
+    "harvestInfo": {
+      "season": "March - May",
+      "harvestMethod": "Hand Picked",
+      "altitude": "1400m"
+    }
+  }
+]
