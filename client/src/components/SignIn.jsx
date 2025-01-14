@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import '../css/signin.css';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext'; // Import useAuth for auth state management
+import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
 
 const SignIn = () => {
   const { login } = useAuth(); // Destructure login from AuthContext
@@ -20,7 +20,6 @@ const SignIn = () => {
       setLoginMessage('Incorrect Login');
     }
   }
-  
 
   const emailValidationRules = {
     required: "Email is required",
@@ -36,66 +35,113 @@ const SignIn = () => {
   };
 
   return (
-    <>
-      <div
-        className="album"
-        style={{
-          padding: '0',
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           backgroundColor: '#2D2D2C',
           paddingTop: '50px',
           paddingBottom: '50px',
+          borderRadius: 2,
+          boxShadow: 3,
+          padding: 3,
+          marginTop: '200px'
         }}
       >
-        <div
-          className="container bg-dark"
-          style={{
-            height: '600px',
-            alignContent: 'center',
-          }}
-        >
-          <form
-            className="form-signin bg-light p-3"
-            style={{
-              height: '350px',
-              alignContent: 'center',
-              border: '2px solid black',
+        <Typography variant="h4" gutterBottom align="center" color="white">
+          Sign in
+        </Typography>
+        <form onSubmit={handleSubmit(receiveFormData)} style={{ width: '100%' }}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Email address"
+            {...register('email', emailValidationRules)}
+            error={Boolean(errors.email)}
+            helperText={errors.email?.message}
+            onChange={() => setLoginMessage('')}
+            variant="outlined"
+            InputLabelProps={{
+              style: { color: 'white' }
             }}
-            onSubmit={handleSubmit(receiveFormData)}
+            InputProps={{
+              style: { color: 'white' }
+            }}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.12)',
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 0.5)', // Light border color
+                },
+                '&:hover fieldset': {
+                  borderColor: '#1a73e8', // Highlight border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#1a73e8', // Border color when focused
+                },
+              },
+            }}
+          />
+          
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Password"
+            {...register('password', passwordValidationRules)}
+            type="password"
+            error={Boolean(errors.password)}
+            helperText={errors.password?.message}
+            onChange={() => setLoginMessage('')}
+            variant="outlined"
+            InputLabelProps={{
+              style: { color: 'white' }
+            }}
+            InputProps={{
+              style: { color: 'white' }
+            }}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.12)',
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'rgba(255, 255, 255, 0.5)', // Light border color
+                },
+                '&:hover fieldset': {
+                  borderColor: '#1a73e8', // Highlight border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#1a73e8', // Border color when focused
+                },
+              },
+            }}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              mt: 3,
+              mb: 2,
+              backgroundColor: '#1a73e8',
+              '&:hover': {
+                backgroundColor: '#0f59b5',
+              },
+            }}
           >
-            <h1 className="h3 mb-3 font-weight-normal text-center pb-4">Sign in</h1>
-            <label htmlFor="inputEmail" className="sr-only">
-              Email address
-            </label>
-            <input
-              onChange={() => setLoginMessage('')}
-              {...register('email', emailValidationRules)}
-              id="inputEmail"
-              className="form-control"
-              placeholder="Email address"
-            />
-            {errors.email && <span className="text-danger">{errors.email.message}</span>}
-            <label htmlFor="inputPassword" className="sr-only">
-              Password
-            </label>
-            <input
-              onChange={() => setLoginMessage('')}
-              {...register('password', passwordValidationRules)}
-              type="password"
-              id="inputPassword"
-              className="form-control mt-2"
-              placeholder="Password"
-            />
-            {errors.password && <span className="text-danger">{errors.password.message}</span>}
+            Sign in
+          </Button>
 
-            <button className="btn btn-lg btn-dark btn-block" type="submit">
-              Sign in
-            </button>
-
-            <div>{loginMessage}</div>
-          </form>
-        </div>
-      </div>
-    </>
+          {loginMessage && (
+            <Alert severity="error" sx={{ marginTop: 2 }}>
+              {loginMessage}
+            </Alert>
+          )}
+        </form>
+      </Box>
+    </Container>
   );
 };
 

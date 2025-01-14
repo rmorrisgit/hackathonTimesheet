@@ -1,6 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
-
+.register-button-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #1a73e8;
+  border-radius: 5px;
+  padding: 10px;
+}
 * {
     margin: 0;
     padding: 0;

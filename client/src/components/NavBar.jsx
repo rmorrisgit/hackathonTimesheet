@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/authContext.jsx";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext.jsx"; // Assuming AuthContext is used
 import apiService from "../services/apiService";
 import { Autocomplete, TextField } from "@mui/material";
 import "../css/navbar.css";
@@ -8,11 +8,11 @@ import "../css/main.css";
 
 const NavBar = ({ setFilteredData }) => {
   const { isAuthenticated, logout } = useAuth();
+  const userRole = sessionStorage.getItem("type"); // Get the user role (supervisor/employee) from sessionStorage
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const fetchCoffees = async () => {
@@ -52,6 +52,7 @@ const NavBar = ({ setFilteredData }) => {
 
   const handleLogout = async () => {
     await logout();
+    sessionStorage.removeItem("showRegisterButton");
     navigate("/signin");
   };
 
@@ -63,90 +64,19 @@ const NavBar = ({ setFilteredData }) => {
     background.classList.toggle("active");
   };
 
-  useEffect(() => {
-    const navMenu = document.querySelector(".nav-links-container");
-    const mediaSize = 992;
-
-    const collapseDropdownMenu = () => {
-      const activeDropdown = navMenu.querySelector(
-        ".dropdown-menu-branch.active"
-      );
-      if (activeDropdown) {
-        const dropdownMenu = activeDropdown.querySelector(".dropdown-menu");
-        dropdownMenu.removeAttribute("style");
-        activeDropdown.classList.remove("active");
-      }
-    };
-
-    const handleDropdownClick = (event) => {
-      if (
-        event.target.hasAttribute("data-toggle") &&
-        window.innerWidth <= mediaSize
-      ) {
-        event.preventDefault();
-        const dropdownMenuBranch = event.target.parentElement;
-
-        if (dropdownMenuBranch.classList.contains("active")) {
-          collapseDropdownMenu();
-        } else {
-          collapseDropdownMenu();
-          dropdownMenuBranch.classList.add("active");
-          const dropdownMenu =
-            dropdownMenuBranch.querySelector(".dropdown-menu");
-          dropdownMenu.style.maxHeight = dropdownMenu.scrollHeight + "px";
-        }
-      }
-    };
-
-    navMenu.addEventListener("click", handleDropdownClick);
-    return () => {
-      navMenu.removeEventListener("click", handleDropdownClick);
-    };
-  }, []);
-
   return (
     <div className="nav-container">
       <div className="nav-logo">
-        <img
-          src="/images/cofv10.svg"
-          alt="Logo"
-          onClick={() => navigate("/")}
-        />
+        <img src="/images/cofv10.svg" alt="Logo" onClick={() => navigate("/")} />
       </div>
 
-      <div className={`background ${isMenuOpen ? "active" : ""}`} onClick={toggleMenu}></div>
+      <div
+        className={`background ${isMenuOpen ? "active" : ""}`}
+        onClick={toggleMenu}
+      ></div>
 
       <div className="nav-links-container">
         <ul className="nav-links">
-          <li className="nav-link-item dropdown-menu-branch">
-            <a href="#" data-toggle="dropdown-menu">
-              Coffee <i className="fa-solid fa-chevron-down"></i>
-            </a>
-            <ul className="dropdown-menu">
-              <li className="column">
-                <h4>Blends</h4>
-                <ul>
-                  <li>
-                    <a href="#">Coffee 1</a>
-                  </li>
-                  <li>
-                    <a href="#">Coffee 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li className="column">
-                <h4>Single Origin</h4>
-                <ul>
-                  <li>
-                    <a href="#">Coffee A</a>
-                  </li>
-                  <li>
-                    <a href="#">Coffee B</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
           <li className="nav-link-item">
             <Link to="/about">About</Link>
           </li>
@@ -162,7 +92,6 @@ const NavBar = ({ setFilteredData }) => {
       </div>
 
       <div className="nav-icons">
-        {/* Search Bar */}
         <div className="search-bar-container">
           <Autocomplete
             freeSolo
@@ -185,18 +114,23 @@ const NavBar = ({ setFilteredData }) => {
 
         {!isAuthenticated ? (
           <>
-            <Link to="/register" className="nav-link-item">
-              Register
-            </Link>
             <Link to="/signin" className="nav-link-item">
               Sign In
             </Link>
           </>
         ) : (
-          <button className="btn btn-link nav-link-item" onClick={handleLogout}>
-            Logout
-          </button>
+          <>
+            {userRole === "supervisor" && (
+              <Link to="/register" className="nav-link-item">
+                Register
+              </Link>
+            )}
+            <button className="btn btn-link nav-link-item" onClick={handleLogout}>
+              Logout
+            </button>
+          </>
         )}
+
         {!isMenuOpen ? (
           <i className="fa-solid fa-bars open-menu" onClick={toggleMenu}></i>
         ) : (

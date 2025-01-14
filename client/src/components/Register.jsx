@@ -4,14 +4,28 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import '../css/register.css';
 
-const Register = () => {
+const supervisorEmails = [
+  'research1@nscc.ca',
+  'research2@nscc.ca',
+  'research3@nscc.ca',
+  'research4@nscc.ca',
+];
+
+const Register = ({ devMode = false }) => {
   const { register: registerUser } = useAuth(); // Renamed to avoid conflict with useForm's register
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [registerMessage, setRegisterMessage] = useState('');
 
   const onSubmit = async (data) => {
-    const success = await registerUser(data); // Use register from AuthContext
+    // Determine the role
+    const isSupervisor = supervisorEmails.includes(data.email);
+    const payload = {
+      ...data,
+      role: devMode ? data.role || 'employee' : isSupervisor ? 'supervisor' : 'employee',
+    };
+
+    const success = await registerUser(payload); // Use register from AuthContext
     if (success) {
       navigate('/'); // Redirect to homepage on success
     } else {
@@ -79,6 +93,21 @@ const Register = () => {
         />
         {errors.password && <p className="register-error">{errors.password.message}</p>}
       </div>
+
+      {devMode && (
+        <div className="register-form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            {...register('role')}
+            id="role"
+            className={`register-form-control ${errors.role ? 'register-is-invalid' : ''}`}
+          >
+            <option value="employee">Employee</option>
+            <option value="supervisor">Supervisor</option>
+          </select>
+          {errors.role && <p className="register-error">{errors.role.message}</p>}
+        </div>
+      )}
 
       <button className="register-btn-submit" type="submit">
         Register

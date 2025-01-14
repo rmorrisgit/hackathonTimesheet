@@ -40,22 +40,20 @@ class AuthService {
       // Store session data
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
-      
-      
       //set employee type. build out is employee. 
       
-  const supervisorEmails = [
-  'research1@nscc.ca',
-  'research2@nscc.ca',
-  'research3@nscc.ca',
-  'research4@nscc.ca',
-];
-
-if (supervisorEmails.includes(loginData.email)) {
-  sessionStorage.setItem('type', 'supervisor');
-} else {
-  sessionStorage.setItem('type', 'employee');
-}
+      const supervisorEmails = [
+        'research1@nscc.ca',
+        'research2@nscc.ca',
+        'research3@nscc.ca',
+        'research4@nscc.ca',
+      ];
+      
+      if (supervisorEmails.includes(loginData.email)) {
+        sessionStorage.setItem('type', 'supervisor');
+      } else {
+        sessionStorage.setItem('type', 'employee');
+      }
       return true; // Login was successful
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
@@ -69,14 +67,16 @@ if (supervisorEmails.includes(loginData.email)) {
   async signOut() {
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/users/logout`, {}, { withCredentials: true });
-      sessionStorage.removeItem('isLoggedIn');
-      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('isLoggedIn'); // Remove login status
+      sessionStorage.removeItem('user'); // Remove user info
+      sessionStorage.removeItem('type'); // Remove user type (supervisor or employee)
       return { success: true };
     } catch (err) {
       console.error('Logout failed:', err.response ? err.response.data : err.message);
       return { success: false, error: err.response ? err.response.data : err.message };
     }
   }
+  
 // isEmployee method 
 
   isEmployee() {

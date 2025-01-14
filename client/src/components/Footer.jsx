@@ -8,7 +8,7 @@ const Footer = props => {
   
       }} 
       >
-      <p>&copy; 2024 Ryan Morris Coffee Portfolio</p>
+      <p>&copy; </p>
             
       </footer>
     );
