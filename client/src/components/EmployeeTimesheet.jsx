@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,6 +12,7 @@ import TablePagination from "@mui/material/TablePagination";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import apiService from "../services/userService"; // Adjust the path to your apiService
 
 const weeks = [
   {
@@ -45,23 +46,21 @@ function EmployeeTimesheet() {
   const [hoursWorked, setHoursWorked] = useState(
     weeks.flatMap((week) => week.dates).reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {})
   );
+  const [userData, setUserData] = useState(null); // Initialize as null to handle loading state
 
-  // Simulated logged-in user data
-  const userData = {
-    employeeName: "John Doe",
-    wNum: "W123456",
-    fund: "12345",
-    dept: "IT",
-    program: "CS101",
-    acct: "98765",
-    project: "Test Project",
-    hourlyRate: 25,
-    payPeriodStartDate: "2024-11-17",
-    payPeriodEndDate: "2024-11-30",
-    assignmentType: "Casual",
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await apiService.getUserData(); // Fetch user data dynamically
+        setUserData(user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
-  // Handle changes to "Hours Worked" input
+    fetchUserData();
+  }, []);
+
   const handleHoursChange = (date, value) => {
     setHoursWorked((prev) => ({
       ...prev,
@@ -69,93 +68,84 @@ function EmployeeTimesheet() {
     }));
   };
 
-  // Total hours for the current week (page)
   const totalHoursForCurrentPage = weeks[page].dates.reduce(
     (total, row) => total + parseFloat(hoursWorked[row.date] || 0),
     0
   );
 
-  // Grand total hours across all weeks
   const grandTotalHours = Object.values(hoursWorked).reduce(
     (total, value) => total + parseFloat(value || 0),
     0
   );
 
-  // Handle page changes
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  if (!userData) {
+    return <Typography>Loading...</Typography>; // Show loading state
+  }
+
   return (
     <Box sx={{ padding: "20px", marginTop: "250px" }}>
-    {/* User Data Section */}
-    <Box
-      sx={{
-        marginBottom: 4,
-        padding: 2,
-        border: "1px solid #d9d9d9",
-        borderRadius: "8px",
-        display: "grid",
-        gridTemplateColumns: "repeat(12, 1fr)", // 12-column grid system
-        gap: 2,
-      }}
-    >
-      {/* Employee Name and W# */}
-      <Box sx={{ gridColumn: "span 6" }}>
-        <Typography variant="h6">Employee Name:</Typography>
-        <Typography>{userData.employeeName}</Typography>
+      {/* User Data Section */}
+      <Box
+        sx={{
+          marginBottom: 4,
+          padding: 2,
+          border: "1px solid #d9d9d9",
+          borderRadius: "8px",
+          display: "grid",
+          gridTemplateColumns: "repeat(12, 1fr)",
+          gap: 2,
+        }}
+      >
+        <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6">Employee Name:</Typography>
+          <Typography>{userData.firstName} {userData.lastName}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6">W#:</Typography>
+          <Typography>{userData.wNum}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6">Fund:</Typography>
+          <Typography>{userData.fund}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6">Dept:</Typography>
+          <Typography>{userData.dept}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6">Program:</Typography>
+          <Typography>{userData.program}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6">Acct:</Typography>
+          <Typography>{userData.acct}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 2" }}>
+          <Typography variant="h6">Project:</Typography>
+          <Typography>{userData.project}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 2" }}>
+          <Typography variant="h6">Pay Period Start Date:</Typography>
+          <Typography>{userData.payPeriodStartDate}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 4" }}>
+          <Typography variant="h6">Pay Period End Date:</Typography>
+          <Typography>{userData.payPeriodEndDate}</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6">Hourly Rate:</Typography>
+          <Typography>${userData.hourlyRate}/hr</Typography>
+        </Box>
+        <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6">Assignment Type:</Typography>
+          <Typography>{userData.assignmentType}</Typography>
+        </Box>
       </Box>
-      <Box sx={{ gridColumn: "span 6" }}>
-        <Typography variant="h6">W#:</Typography>
-        <Typography>{userData.wNum}</Typography>
-      </Box>
-  
-      {/* Fund, Dept, Program, and Acct */}
-      <Box sx={{ gridColumn: "span 1" }}>
-        <Typography variant="h6">Fund:</Typography>
-        <Typography>{userData.fund}</Typography>
-      </Box>
-      <Box sx={{ gridColumn: "span 1" }}>
-        <Typography variant="h6">Dept:</Typography>
-        <Typography>{userData.dept}</Typography>
-      </Box>
-      <Box sx={{ gridColumn: "span 1" }}>
-        <Typography variant="h6">Program:</Typography>
-        <Typography>{userData.program}</Typography>
-      </Box>
-      <Box sx={{ gridColumn: "span 1" }}>
-        <Typography variant="h6">Acct:</Typography>
-        <Typography>{userData.acct}</Typography>
-      </Box>
-  
-      {/* Project */}
-      <Box sx={{ gridColumn: "span 2" }}>
-        <Typography variant="h6">Project:</Typography>
-        <Typography>{userData.project}</Typography>
-      </Box>
-  
-      {/* Pay Period Start Date and End Date */}
-      <Box sx={{ gridColumn: "span 2" }}>
-        <Typography variant="h6">Pay Period Start Date:</Typography>
-        <Typography>{userData.payPeriodStartDate}</Typography>
-      </Box>
- 
-      <Box sx={{ gridColumn: "span 4" }}>
-        <Typography variant="h6">Pay Period End Date:</Typography>
-        <Typography>{userData.payPeriodEndDate}</Typography>
-      </Box>
-  
-      {/* Hourly Rate and Assignment Type */}
-      <Box sx={{ gridColumn: "span 6" }}>
-        <Typography variant="h6">Hourly Rate:</Typography>
-        <Typography>${userData.hourlyRate}/hr</Typography>
-      </Box>
-      <Box sx={{ gridColumn: "span 6" }}>
-        <Typography variant="h6">Assignment Type:</Typography>
-        <Typography>{userData.assignmentType}</Typography>
-      </Box>
-    </Box>
-  
+
       {/* Week Header */}
       <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
         Week {weeks[page].weekNumber}
@@ -186,27 +176,12 @@ function EmployeeTimesheet() {
                     value={hoursWorked[row.date]}
                     onChange={(e) => handleHoursChange(row.date, e.target.value)}
                     InputProps={{
-                      endAdornment: (
-                        <InputAdornment
-                          position="end"
-                          sx={{
-                            opacity: 1,
-                            pointerEvents: "none",
-                          }}
-                        >
-                          hrs
-                        </InputAdornment>
-                      ),
+                      endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
                     }}
                   />
                 </TableCell>
                 <TableCell>
-                  <TextField
-                    id={`info-${row.date}`}
-                    variant="outlined"
-                    size="small"
-                    placeholder="Enter details"
-                  />
+                  <TextField id={`info-${row.date}`} variant="outlined" size="small" placeholder="Enter details" />
                 </TableCell>
               </TableRow>
             ))}
@@ -222,17 +197,7 @@ function EmployeeTimesheet() {
                   value={totalHoursForCurrentPage.toFixed(2)}
                   disabled
                   InputProps={{
-                    endAdornment: (
-                      <InputAdornment
-                        position="end"
-                        sx={{
-                          opacity: 1,
-                          pointerEvents: "none",
-                        }}
-                      >
-                        hrs
-                      </InputAdornment>
-                    ),
+                    endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
                   }}
                 />
               </TableCell>
@@ -244,7 +209,7 @@ function EmployeeTimesheet() {
 
       {/* Pagination */}
       <TablePagination
-        rowsPerPageOptions={[7]} // Fixed 7 rows per page
+        rowsPerPageOptions={[7]}
         component="div"
         count={weeks.length * 7}
         rowsPerPage={7}

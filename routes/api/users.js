@@ -3,8 +3,26 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import User from '../../models/user.js';
+import checkthetoken from '../../middleware/checkToken.js'
 
 const router = express.Router();
+
+// GET endpoint to fetch user data
+router.get('/me',checkthetoken, async (req, res) => {
+  try {
+    const userId = req.user._id; // User ID from the JWT payload
+    const user = await User.findById(userId).select('-password'); // Fetch user and exclude password field
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    console.error('Error fetching user data:', err);
+    res.status(500).json({ error: 'Failed to fetch user data' });
+  }
+});
+
+
 
 // Register endpoint
 // Register endpoint
