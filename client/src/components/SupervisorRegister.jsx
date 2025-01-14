@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 const SupervisorRegister = () => {
-  const { register: registerEmployee } = useAuth();
+  const { register: registerUser } = useAuth();
   const {
     register,
     handleSubmit,
@@ -23,51 +23,22 @@ const SupervisorRegister = () => {
 
   const onSubmit = async (data) => {
     const payload = {
-      employeeInfo: {
-        employeeName: `${data.firstName} ${data.lastName}`,
-        wNum: data.wNum || `W${Math.floor(100000 + Math.random() * 900000)}`,
-        email: data.email,
-        password: data.password,
-        isAdmin: data.isAdmin || false,
-      },
-      block1: {
-        fund: data.fund,
-        dept: data.dept,
-        program: data.program,
-        acct: data.acct,
-        project: data.project,
-      },
-      block2: {
-        payPeriodStartDate: data.payPeriodStartDate,
-        payPeriodEndDate: data.payPeriodEndDate,
-      },
-      block3: {
-        hourlyRate: parseFloat(data.hourlyRate),
-        isCasual: data.isCasual || false,
-      },
-      week1: {
-        sun: { hours: 0, info: "" },
-        mon: { hours: 0, info: "" },
-        tue: { hours: 0, info: "" },
-        wed: { hours: 0, info: "" },
-        thu: { hours: 0, info: "" },
-        fri: { hours: 0, info: "" },
-        sat: { hours: 0, info: "" },
-      },
-      week2: {
-        sun: { hours: 0, info: "" },
-        mon: { hours: 0, info: "" },
-        tue: { hours: 0, info: "" },
-        wed: { hours: 0, info: "" },
-        thu: { hours: 0, info: "" },
-        fri: { hours: 0, info: "" },
-        sat: { hours: 0, info: "" },
-      },
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      wNum: data.wNum || `W${Math.floor(100000 + Math.random() * 900000)}`,
+      fund: data.fund,
+      dept: data.dept,
+      program: data.program,
+      acct: data.acct,
+      project: data.project,
+      hourlyRate: parseFloat(data.hourlyRate),
     };
 
-    const success = await registerEmployee(payload);
+    const success = await registerUser(payload);
     if (success) {
-      navigate("/employees");
+      setRegisterMessage("Registration successful. You can now log in.");
     } else {
       setRegisterMessage("Failed to register employee. Please try again.");
     }
@@ -79,7 +50,7 @@ const SupervisorRegister = () => {
         Register Employee
       </Typography>
 
-      {registerMessage && <Alert severity="error">{registerMessage}</Alert>}
+      {registerMessage && <Alert severity={registerMessage.includes("successful") ? "success" : "error"}>{registerMessage}</Alert>}
 
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -112,6 +83,10 @@ const SupervisorRegister = () => {
             {...register("password", {
               required: "Password is required",
               minLength: { value: 8, message: "Password must be at least 8 characters long" },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/,
+                message: "Password must include uppercase, lowercase, number, and special character",
+              },
             })}
             label="Password"
             type="password"
@@ -173,6 +148,7 @@ const SupervisorRegister = () => {
             {...register("hourlyRate", {
               required: "Hourly rate is required",
               valueAsNumber: true,
+              validate: (value) => value > 0 || "Hourly rate must be a positive number",
             })}
             label="Hourly Rate"
             type="number"

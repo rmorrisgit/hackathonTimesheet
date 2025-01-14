@@ -11,7 +11,7 @@ const supervisorEmails = [
   'research4@nscc.ca',
 ];
 
-const Register = ({ devMode = false }) => {
+const Register = () => {
   const { register: registerUser } = useAuth(); // Renamed to avoid conflict with useForm's register
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Register = ({ devMode = false }) => {
     const isSupervisor = supervisorEmails.includes(data.email);
     const payload = {
       ...data,
-      role: devMode ? data.role || 'employee' : isSupervisor ? 'supervisor' : 'employee',
+      role: isSupervisor ? 'supervisor' : 'employee',
     };
 
     const success = await registerUser(payload); // Use register from AuthContext
@@ -93,21 +93,6 @@ const Register = ({ devMode = false }) => {
         />
         {errors.password && <p className="register-error">{errors.password.message}</p>}
       </div>
-
-      {devMode && (
-        <div className="register-form-group">
-          <label htmlFor="role">Role</label>
-          <select
-            {...register('role')}
-            id="role"
-            className={`register-form-control ${errors.role ? 'register-is-invalid' : ''}`}
-          >
-            <option value="employee">Employee</option>
-            <option value="supervisor">Supervisor</option>
-          </select>
-          {errors.role && <p className="register-error">{errors.role.message}</p>}
-        </div>
-      )}
 
       <button className="register-btn-submit" type="submit">
         Register
