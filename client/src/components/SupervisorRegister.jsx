@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
@@ -17,9 +17,26 @@ const SupervisorRegister = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
   const navigate = useNavigate();
   const [registerMessage, setRegisterMessage] = useState("");
+
+  // Autofill form fields for testing
+  useEffect(() => {
+    setValue("firstName", "TestFirstName");
+    setValue("lastName", "TestLastName");
+    setValue("email", "testuser@example.com");
+    setValue("password", "Password123!");
+    setValue("confirmPassword", "Password123!");
+    setValue("wNum", `W${Math.floor(100000 + Math.random() * 900000)}`);
+    setValue("fund", "12345");
+    setValue("dept", "IT");
+    setValue("program", "CS101");
+    setValue("acct", "98765");
+    setValue("project", "TestProject");
+    setValue("hourlyRate", 25);
+  }, [setValue]);
 
   const onSubmit = async (data) => {
     const payload = {
@@ -50,7 +67,11 @@ const SupervisorRegister = () => {
         Register Employee
       </Typography>
 
-      {registerMessage && <Alert severity={registerMessage.includes("successful") ? "success" : "error"}>{registerMessage}</Alert>}
+      {registerMessage && (
+        <Alert severity={registerMessage.includes("successful") ? "success" : "error"}>
+          {registerMessage}
+        </Alert>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>

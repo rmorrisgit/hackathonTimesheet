@@ -3,25 +3,23 @@ import axios from 'axios';
 class AuthService {
   async register(data) {
     try {
-      if (this.isSignedIn()) {
-        return { success: false, error: 'Cannot register a new account while logged in.' };
-      }
-
+      // Allow registration even if signed in
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, data);
       return { success: true, data: response.data };
     } catch (err) {
       console.error('Registration failed:', err.response ? err.response.data : err.message);
-
+  
       if (err.response?.status === 409) {
         return { success: false, error: 'This email is already registered.' };
       }
       if (err.response?.status === 400) {
         return { success: false, error: 'Validation error. Please check your input.' };
       }
-
+  
       return { success: false, error: err.response?.data?.error || 'Registration failed. Please try again.' };
     }
   }
+  
 
   async SignIn(loginData) {
     try {
