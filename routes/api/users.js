@@ -22,10 +22,14 @@ router.post('/register', async (req, res) => {
       acct,
       project,
       hourlyRate,
+      payPeriodStartDate, // New field
+      payPeriodEndDate,   // New field
+      assignmentType,     // New field
     } = req.body;
 
     console.log('Request Body:', req.body);
 
+    // Validate the request body using Mongoose schema validation
     await User.validate(req.body);
 
     const normalizedEmail = email.trim().toLowerCase();
@@ -48,6 +52,9 @@ router.post('/register', async (req, res) => {
       acct,
       project,
       hourlyRate,
+      payPeriodStartDate: payPeriodStartDate ? new Date(payPeriodStartDate) : null,
+      payPeriodEndDate: payPeriodEndDate ? new Date(payPeriodEndDate) : null,
+      assignmentType,
     });
 
     console.log('New User:', newUser);
@@ -69,6 +76,9 @@ router.post('/register', async (req, res) => {
         acct: savedUser.acct,
         project: savedUser.project,
         hourlyRate: savedUser.hourlyRate,
+        payPeriodStartDate: savedUser.payPeriodStartDate,
+        payPeriodEndDate: savedUser.payPeriodEndDate,
+        assignmentType: savedUser.assignmentType,
       },
     });
   } catch (err) {
@@ -81,7 +91,6 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ error: 'An unexpected error occurred. Please try again.' });
   }
 });
-
 
 // Login endpoint
 router.post('/login', async (req, res) => {
@@ -121,6 +130,9 @@ router.post('/login', async (req, res) => {
         acct: user.acct,
         project: user.project,
         hourlyRate: user.hourlyRate,
+        payPeriodStartDate: user.payPeriodStartDate,
+        payPeriodEndDate: user.payPeriodEndDate,
+        assignmentType: user.assignmentType,
       },
     });
   } catch (err) {

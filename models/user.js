@@ -73,6 +73,19 @@ const userSchema = new Schema(
         message: 'Hourly rate must be a non-negative number.',
       },
     },
+    payPeriodStartDate: {
+      type: Date,
+      required: false,
+    },
+    payPeriodEndDate: {
+      type: Date,
+      required: false,
+    },
+    assignmentType: {
+      type: String,
+      required: false,
+      enum: ['Casual', 'Auxiliary'], // Restrict values to these options
+    },
   },
   { collection: 'users' }
 );

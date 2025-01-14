@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import {
@@ -8,6 +8,9 @@ import {
   TextField,
   Typography,
   Alert,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 
 const SupervisorRegister = () => {
@@ -18,24 +21,34 @@ const SupervisorRegister = () => {
     formState: { errors },
     watch,
     setValue,
+    control,
   } = useForm();
   const navigate = useNavigate();
   const [registerMessage, setRegisterMessage] = useState("");
 
   // Autofill form fields for testing
   useEffect(() => {
-    setValue("firstName", "TestFirstName");
-    setValue("lastName", "TestLastName");
-    setValue("email", "testuser@example.com");
-    setValue("password", "Password123!");
-    setValue("confirmPassword", "Password123!");
-    setValue("wNum", `W${Math.floor(100000 + Math.random() * 900000)}`);
-    setValue("fund", "12345");
-    setValue("dept", "IT");
-    setValue("program", "CS101");
-    setValue("acct", "98765");
-    setValue("project", "TestProject");
-    setValue("hourlyRate", 25);
+    const autofillValues = {
+      firstName: "TestFirstName",
+      lastName: "TestLastName",
+      email: "testuser@example.com",
+      password: "Password123!",
+      confirmPassword: "Password123!",
+      wNum: `W${Math.floor(100000 + Math.random() * 900000)}`,
+      fund: "12345",
+      dept: "IT",
+      program: "CS101",
+      acct: "98765",
+      project: "TestProject",
+      hourlyRate: 25,
+      payPeriodStartDate: "2025-01-01",
+      payPeriodEndDate: "2025-01-14",
+      assignmentType: "Casual",
+    };
+
+    for (const key in autofillValues) {
+      setValue(key, autofillValues[key]);
+    }
   }, [setValue]);
 
   const onSubmit = async (data) => {
@@ -51,18 +64,21 @@ const SupervisorRegister = () => {
       acct: data.acct,
       project: data.project,
       hourlyRate: parseFloat(data.hourlyRate),
+      payPeriodStartDate: data.payPeriodStartDate || null,
+      payPeriodEndDate: data.payPeriodEndDate || null,
+      assignmentType: data.assignmentType || null,
     };
 
     const success = await registerUser(payload);
-    if (success) {
-      setRegisterMessage("Registration successful. You can now log in.");
-    } else {
-      setRegisterMessage("Failed to register employee. Please try again.");
-    }
+    setRegisterMessage(
+      success
+        ? "Registration successful. You can now log in."
+        : "Failed to register employee. Please try again."
+    );
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 4, marginTop: "180px" }}>
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 50 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Register Employee
       </Typography>
@@ -74,7 +90,7 @@ const SupervisorRegister = () => {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <TextField
             {...register("firstName", { required: "First Name is required" })}
             label="First Name"
@@ -119,8 +135,7 @@ const SupervisorRegister = () => {
           <TextField
             {...register("confirmPassword", {
               required: "Please confirm your password",
-              validate: (value) =>
-                value === watch("password") || "Passwords do not match",
+              validate: (value) => value === watch("password") || "Passwords do not match",
             })}
             label="Confirm Password"
             type="password"
@@ -130,59 +145,85 @@ const SupervisorRegister = () => {
             helperText={errors.confirmPassword?.message}
           />
           <TextField
-            {...register("wNum")}
-            label="W#"
+            {...register("wNum", { required: "W Number is required" })}
+            label="W Number"
             fullWidth
-            placeholder="Enter W# (optional)"
+            error={!!errors.wNum}
+            helperText={errors.wNum?.message}
           />
           <TextField
-            {...register("fund")}
+            {...register("fund", { required: "Fund is required" })}
             label="Fund"
             fullWidth
-            placeholder="Enter Fund Code"
+            error={!!errors.fund}
+            helperText={errors.fund?.message}
           />
           <TextField
-            {...register("dept")}
+            {...register("dept", { required: "Department is required" })}
             label="Department"
             fullWidth
-            placeholder="Enter Department Name"
+            error={!!errors.dept}
+            helperText={errors.dept?.message}
           />
           <TextField
-            {...register("program")}
+            {...register("program", { required: "Program is required" })}
             label="Program"
             fullWidth
-            placeholder="Enter Program Code"
+            error={!!errors.program}
+            helperText={errors.program?.message}
           />
           <TextField
-            {...register("acct")}
-            label="Account"
+            {...register("acct", { required: "Account Number is required" })}
+            label="Account Number"
             fullWidth
-            placeholder="Enter Account"
+            error={!!errors.acct}
+            helperText={errors.acct?.message}
           />
           <TextField
-            {...register("project")}
-            label="Project"
+            {...register("project", { required: "Project Name is required" })}
+            label="Project Name"
             fullWidth
-            placeholder="Enter Project Name"
+            error={!!errors.project}
+            helperText={errors.project?.message}
           />
           <TextField
-            {...register("hourlyRate", {
-              required: "Hourly rate is required",
-              valueAsNumber: true,
-              validate: (value) => value > 0 || "Hourly rate must be a positive number",
-            })}
+            {...register("hourlyRate", { required: "Hourly Rate is required" })}
             label="Hourly Rate"
             type="number"
             fullWidth
             error={!!errors.hourlyRate}
             helperText={errors.hourlyRate?.message}
           />
+          <TextField
+            {...register("payPeriodStartDate")}
+            label="Pay Period Start Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            {...register("payPeriodEndDate")}
+            label="Pay Period End Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+          />
+          <Controller
+            name="assignmentType"
+            control={control}
+            defaultValue="Casual"
+            render={({ field }) => (
+              <RadioGroup {...field} row>
+                <FormControlLabel value="Auxiliary" control={<Radio />} label="Auxiliary" />
+                <FormControlLabel value="Casual" control={<Radio />} label="Casual" />
+              </RadioGroup>
+            )}
+          />
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
-            sx={{ mt: 2 }}
           >
             Register Employee
           </Button>
