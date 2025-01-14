@@ -121,8 +121,8 @@ const NavBar = ({ setFilteredData }) => {
         ) : (
           <>
             {userRole === "supervisor" && (
-              <Link to="/register" className="nav-link-item">
-                Register
+              <Link to="/supervisor-register" className="nav-link-item">
+                Register Employee
               </Link>
             )}
             <button className="btn btn-link nav-link-item" onClick={handleLogout}>

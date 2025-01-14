@@ -1,89 +1,78 @@
 import axios from 'axios';
 
 class AuthService {
-  
   async register(data) {
     try {
-      // Check if the user is already logged in
       if (this.isSignedIn()) {
         return { success: false, error: 'Cannot register a new account while logged in.' };
       }
-  
-      // Proceed with registration
+
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, data);
       return { success: true, data: response.data };
     } catch (err) {
       console.error('Registration failed:', err.response ? err.response.data : err.message);
-  
-      // Handle specific error cases
+
       if (err.response?.status === 409) {
         return { success: false, error: 'This email is already registered.' };
       }
       if (err.response?.status === 400) {
         return { success: false, error: 'Validation error. Please check your input.' };
       }
-  
-      // Generic error handling
+
       return { success: false, error: err.response?.data?.error || 'Registration failed. Please try again.' };
     }
   }
-  
 
   async SignIn(loginData) {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/users/login`,
         loginData,
-        { withCredentials: true } // Include credentials to handle HTTP-only cookies
+        { withCredentials: true }
       );
-  
-      // Store session data
+
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
-      //set employee type. build out is employee. 
-      
+
       const supervisorEmails = [
         'research1@nscc.ca',
         'research2@nscc.ca',
         'research3@nscc.ca',
         'research4@nscc.ca',
       ];
-      
+
       if (supervisorEmails.includes(loginData.email)) {
         sessionStorage.setItem('type', 'supervisor');
       } else {
         sessionStorage.setItem('type', 'employee');
       }
-      return true; // Login was successful
+      return true;
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
-  
-      return false; // Login failed
+      return false;
     }
   }
-  
-  
 
   async signOut() {
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/users/logout`, {}, { withCredentials: true });
-      sessionStorage.removeItem('isLoggedIn'); // Remove login status
-      sessionStorage.removeItem('user'); // Remove user info
-      sessionStorage.removeItem('type'); // Remove user type (supervisor or employee)
+      sessionStorage.removeItem('isLoggedIn');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('type');
       return { success: true };
     } catch (err) {
       console.error('Logout failed:', err.response ? err.response.data : err.message);
       return { success: false, error: err.response ? err.response.data : err.message };
     }
   }
-  
-// isEmployee method 
 
   isEmployee() {
-    return sessionStorage.getItem('type') == 'employee';
+    return sessionStorage.getItem('type') === 'employee';
   }
 
-
+  isSupervisor() {
+    return sessionStorage.getItem('type') === 'supervisor';
+  }
 
   isSignedIn() {
     return !!sessionStorage.getItem('isLoggedIn');
