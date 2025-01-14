@@ -7,6 +7,7 @@ import User from '../../models/user.js';
 const router = express.Router();
 
 // Register endpoint
+// Register endpoint
 router.post('/register', async (req, res) => {
   try {
     const {
@@ -52,14 +53,6 @@ router.post('/register', async (req, res) => {
     console.log('New User:', newUser);
 
     const savedUser = await newUser.save();
-
-    const token = jwt.sign(
-      { _id: savedUser._id, email: savedUser.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    res.cookie('jwt', token, { httpOnly: true, path: '/' });
 
     // Include all fields in the response
     res.status(201).json({
