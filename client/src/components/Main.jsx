@@ -1,95 +1,56 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "../css/main.css";
-// import Card from "./Card";
-// import apiService from "../services/apiService"; 
+import React, { useEffect, useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import timesheetService from "../services/apiService";
 
-const Main = ({ filteredData, setFilteredData, isAuthenticated }) => {
-  const navigate = useNavigate();
-  const location = useLocation(); // Used to track route changes
+const Main = () => {
+  const [timesheets, setTimesheets] = useState([]); // State to hold timesheet data
 
-  // Fetch data whenever the route changes or the component is mounted
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await apiService.getCoffees(); 
-  //       setFilteredData(response); 
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
+  // Fetch timesheet data whenever the component is mounted
+  useEffect(() => {
+    const fetchTimesheets = async () => {
+      try {
+        const response = await timesheetService.getTimesheets(); 
+        setTimesheets(response.map((timesheet, index) => ({
+          id: timesheet._id || index, // Use _id from backend or fallback to index
+          employeeName: timesheet.employeeInfo.employeeName,
+          wNum: timesheet.employeeInfo.wNum,
+          week1Total: Object.values(timesheet.week1).reduce((sum, day) => sum + day.hours, 0),
+          week2Total: Object.values(timesheet.week2).reduce((sum, day) => sum + day.hours, 0),
+          payPeriodStart: timesheet.block2.payPeriodStartDate,
+          payPeriodEnd: timesheet.block2.payPeriodEndDate
+        })));
+      } catch (error) {
+        console.error("Error fetching timesheets:", error);
+      }
+    };
+  
+    fetchTimesheets();
+  }, []);
+  
 
-  //   fetchData();
-  // }, [location.pathname, setFilteredData]); 
-
-  const handleView = (id, index) => {
-    navigate(`/coffees/details/${id}?index=${index}`);
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/coffees/edit/${id}`);
-  };
-
-  const handleDelete = (id, index) => {
-    navigate(`/coffees/delete-confirmation/${id}?index=${index}`);
-  };
+  const columns = [
+    { field: "employeeName", headerName: "Employee Name", flex: 1 },
+    { field: "wNum", headerName: "W#", flex: 1 },
+    { field: "week1Total", headerName: "Week 1 Total Hours", type: "number", flex: 1 },
+    { field: "week2Total", headerName: "Week 2 Total Hours", type: "number", flex: 1 },
+    { field: "payPeriodStart", headerName: "Pay Period Start", flex: 1 },
+    { field: "payPeriodEnd", headerName: "Pay Period End", flex: 1 }
+  ];
 
   return (
-    <div>
-      <div
-        className="album gridCon pt-4"
-        style={{
-          padding: 0,
-          backgroundColor: "hsla(215, 15%, 97%, 0.5)",
-          paddingBottom: "250px",
+    <div style={{ height: 500, width: "100%", marginTop: "50px" }}>
+      <DataGrid
+        rows={timesheets}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
         }}
-      >
-        <div
-          className="col-12"
-          style={{
-            padding: 0,
-            display: "flex",
-            paddingTop: "200px",
-            justifyContent: "center",
-            flexDirection: "row",
-          }}
-        >
-          <div className="col-lg-1 col-xl-1 d-none d-lg-block"></div>
-          <div
-            className="row col-xl-9 col-xs-12 mt-4"
-            style={{ margin: "auto" }}
-          >
-            {/* {filteredData.map((item, idx) => (
-              <div
-                key={item._id}
-                className="col-xs-12 col-md-6 col-xxl-2 col-xxxl-2 col-xxxxl-2"
-              >
-                <Card
-                  index={idx}
-                  text={item.coffeeName}
-                  roastLevel={item.roastLevel}
-                  image={item.image}
-                  origin={item.origin}
-                  isAuthenticated={isAuthenticated}
-                  onView={() => handleView(item._id, idx)}
-                  onEdit={() => handleEdit(item._id)}
-                  onDelete={() => handleDelete(item._id, idx)}
-                />
-              </div>
-            ))} */}
-            {/* {filteredData.length === 0 && (
-              <div
-                className="text-center"
-                style={{ color: "white", marginTop: "20px" }}
-              >
-                <p>No results found.</p>
-              </div>
-            )} */}
-          </div>
-          <div className="col-lg-1 d-none d-lg-block"></div>
-        </div>
-      </div>
-      <div className="col-lg-12 p-5"></div>
+        pageSizeOptions={[5, 10, 20]}
+      />
     </div>
   );
 };

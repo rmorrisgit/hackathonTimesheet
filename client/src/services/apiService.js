@@ -28,82 +28,64 @@ const handleResponse = (response) => {
   return response.data;
 };
 
-const apiService = {
-  createCoffee: async (data) => {
-    console.log('Payload:', JSON.stringify(data, null, 2));
+const timesheetService = {
+  createTimesheet: async (data) => {
+    console.log('Creating Timesheet Payload:', JSON.stringify(data, null, 2));
     try {
-      const response = await apiClient.post('/coffees', data);
+      const response = await apiClient.post('/timesheets', data);
       return handleResponse(response);
     } catch (err) {
       handleError(err);
     }
   },
 
-  
-  getCoffeeByName: async (name) => {
-    console.log(`Fetching coffee with name: ${name}`);
+  getTimesheets: async () => {
+    console.log('Fetching all timesheets...');
     try {
-      const response = await apiClient.get(`/coffees`, {
-        params: { name },
+      const response = await apiClient.get('/timesheets');
+      return handleResponse(response);
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getTimesheetById: async (id) => {
+    console.log(`Fetching timesheet with ID: ${id}`);
+    try {
+      const response = await apiClient.get(`/timesheets/${id}`);
+      return handleResponse(response);
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  getTimesheetsByEmployee: async (wNum) => {
+    console.log(`Fetching timesheets for employee with W# ${wNum}`);
+    try {
+      const response = await apiClient.get(`/timesheets`, {
+        params: { wNum },
       });
-      // Check for an exact match
-      const exactMatch = response.data.find(
-        (coffee) => coffee.coffeeName.toLowerCase() === name.toLowerCase()
-      );
-      return exactMatch || null;
-    } catch (err) {
-      if (err.response?.status === 404) {
-        console.log(`No coffee found with name: ${name}`);
-        return null;
-      }
-      handleError(err);
-    }
-  },
-
-  getCoffees: async () => {
-    console.log('Fetching all coffees...');
-    try {
-      
-      const response = await apiClient.get('/coffees');
       return handleResponse(response);
     } catch (err) {
       handleError(err);
     }
   },
 
-  getCoffeeById: async (id) => {
-    console.log(`Fetching coffee with ID: ${id}`);
-    try {
-
-      const response = await apiClient.get(`/coffees/${id}`);
-      console.log('Fetched Coffee Data:', response); // Log response here
-
-      return handleResponse(response);
-    } catch (err) {
-      handleError(err);
-    }
-  },
-
-  updateCoffee: async (id, data) => {
-    console.log(`Updating coffee with ID: ${id}`);
+  updateTimesheet: async (id, data) => {
+    console.log(`Updating timesheet with ID: ${id}`);
     console.log('Payload:', JSON.stringify(data, null, 2));
     try {
-      const response = await apiClient.put(`/coffees/${id}`, data);
+      const response = await apiClient.put(`/timesheets/${id}`, data);
       return handleResponse(response);
     } catch (err) {
-      console.error('API Error:', err.response?.data || err.message);
-      throw {
-        status: err.response?.status || 500,
-        message: err.response?.data?.error || 'Failed to update coffee',
-      };
+      handleError(err);
     }
-  }
-  ,
+  },
 
-  deleteCoffee: async (id) => {
-    console.log(`Deleting coffee with ID: ${id}`);
+  deleteTimesheet: async (id) => {
+    console.log(`Deleting timesheet with ID: ${id}`);
     try {
-      const response = await apiClient.delete(`/coffees/${id}`);
+      const response = await apiClient.delete(`/timesheets/${id}`);
       return handleResponse(response);
     } catch (err) {
       handleError(err);
@@ -111,4 +93,4 @@ const apiService = {
   },
 };
 
-export default apiService;
+export default timesheetService;

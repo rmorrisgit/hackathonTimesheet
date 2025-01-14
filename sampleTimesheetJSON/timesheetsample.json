@@ -1,0 +1,129 @@
+[
+    {
+      "_id": "1",
+      "employeeInfo": {
+        "employeeName": "John Doe",
+        "wNum": "W123456",
+        "isAdmin": false
+      },
+      "block1": {
+        "fund": "Fund123",
+        "dept": "DeptA",
+        "program": "ProgramX",
+        "acct": "Acct789",
+        "project": "ProjectAlpha"
+      },
+      "block2": {
+        "payPeriodStartDate": "2025-01-01",
+        "payPeriodEndDate": "2025-01-15"
+      },
+      "block3": {
+        "hourlyRate": 25.0,
+        "isCasual": false
+      },
+      "week1": {
+        "sun": { "hours": 8, "info": "Task A" },
+        "mon": { "hours": 7, "info": "Task B" },
+        "tue": { "hours": 6, "info": "Meeting" },
+        "wed": { "hours": 8, "info": "Task C" },
+        "thu": { "hours": 5, "info": "Training" },
+        "fri": { "hours": 4, "info": "Review" },
+        "sat": { "hours": 0, "info": "" }
+      },
+      "week2": {
+        "sun": { "hours": 0, "info": "" },
+        "mon": { "hours": 8, "info": "Task D" },
+        "tue": { "hours": 7, "info": "Presentation" },
+        "wed": { "hours": 6, "info": "Client Meeting" },
+        "thu": { "hours": 5, "info": "Report" },
+        "fri": { "hours": 4, "info": "Feedback" },
+        "sat": { "hours": 0, "info": "" }
+      },
+      "notes": "Good performance overall."
+    },
+    {
+      "_id": "2",
+      "employeeInfo": {
+        "employeeName": "Jane Smith",
+        "wNum": "W654321",
+        "isAdmin": true
+      },
+      "block1": {
+        "fund": "Fund456",
+        "dept": "DeptB",
+        "program": "ProgramY",
+        "acct": "Acct123",
+        "project": "ProjectBeta"
+      },
+      "block2": {
+        "payPeriodStartDate": "2025-01-16",
+        "payPeriodEndDate": "2025-01-31"
+      },
+      "block3": {
+        "hourlyRate": 30.0,
+        "isCasual": true
+      },
+      "week1": {
+        "sun": { "hours": 0, "info": "" },
+        "mon": { "hours": 8, "info": "Review Progress" },
+        "tue": { "hours": 7, "info": "Budget Planning" },
+        "wed": { "hours": 6, "info": "Stakeholder Meeting" },
+        "thu": { "hours": 8, "info": "Strategy Session" },
+        "fri": { "hours": 7, "info": "Finalize Proposal" },
+        "sat": { "hours": 0, "info": "" }
+      },
+      "week2": {
+        "sun": { "hours": 0, "info": "" },
+        "mon": { "hours": 8, "info": "Supervise Team" },
+        "tue": { "hours": 6, "info": "Prepare Reports" },
+        "wed": { "hours": 8, "info": "Interviews" },
+        "thu": { "hours": 7, "info": "Team Training" },
+        "fri": { "hours": 5, "info": "Presentation Review" },
+        "sat": { "hours": 0, "info": "" }
+      },
+      "notes": "Great leadership."
+    },
+    {
+      "_id": "3",
+      "employeeInfo": {
+        "employeeName": "Michael Brown",
+        "wNum": "W789012",
+        "isAdmin": false
+      },
+      "block1": {
+        "fund": "Fund789",
+        "dept": "DeptC",
+        "program": "ProgramZ",
+        "acct": "Acct456",
+        "project": "ProjectGamma"
+      },
+      "block2": {
+        "payPeriodStartDate": "2025-02-01",
+        "payPeriodEndDate": "2025-02-15"
+      },
+      "block3": {
+        "hourlyRate": 22.5,
+        "isCasual": true
+      },
+      "week1": {
+        "sun": { "hours": 0, "info": "" },
+        "mon": { "hours": 7, "info": "System Setup" },
+        "tue": { "hours": 8, "info": "Documentation" },
+        "wed": { "hours": 6, "info": "Testing" },
+        "thu": { "hours": 7, "info": "Bug Fixes" },
+        "fri": { "hours": 5, "info": "Support Calls" },
+        "sat": { "hours": 0, "info": "" }
+      },
+      "week2": {
+        "sun": { "hours": 0, "info": "" },
+        "mon": { "hours": 8, "info": "Code Review" },
+        "tue": { "hours": 7, "info": "New Feature Dev" },
+        "wed": { "hours": 6, "info": "Testing Updates" },
+        "thu": { "hours": 8, "info": "Client Feedback" },
+        "fri": { "hours": 7, "info": "Final Deployment" },
+        "sat": { "hours": 0, "info": "" }
+      },
+      "notes": "Delivered ahead of schedule."
+    }
+  ]
+  

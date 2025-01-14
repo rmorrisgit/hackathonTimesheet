@@ -14,41 +14,41 @@ const NavBar = ({ setFilteredData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCoffees = async () => {
-      try {
-        const response = await apiService.getCoffees();
-        setData(response);
-        setFilteredData(response);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCoffees = async () => {
+  //     try {
+  //       const response = await apiService.getCoffees();
+  //       setData(response);
+  //       setFilteredData(response);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
-    fetchCoffees();
-  }, [setFilteredData]);
+  //   fetchCoffees();
+  // }, [setFilteredData]);
 
-  const handleSearch = (value) => {
-    setSearchTerm(value);
+  // const handleSearch = (value) => {
+  //   setSearchTerm(value);
 
-    const filteredData = data.filter((item) =>
-      [item.coffeeName, item.origin, item.roastLevel]
-        .map((field) => field?.toLowerCase() || "")
-        .some((field) => field.includes(value.toLowerCase()))
-    );
+  //   const filteredData = data.filter((item) =>
+  //     [item.coffeeName, item.origin, item.roastLevel]
+  //       .map((field) => field?.toLowerCase() || "")
+  //       .some((field) => field.includes(value.toLowerCase()))
+  //   );
 
-    setFilteredData(filteredData);
-  };
+  //   setFilteredData(filteredData);
+  // };
 
-  const handleSelectCoffee = (value) => {
-    const selectedCoffee = data.find(
-      (item) => item.coffeeName.toLowerCase() === value.toLowerCase()
-    );
+  // const handleSelectCoffee = (value) => {
+  //   const selectedCoffee = data.find(
+  //     (item) => item.coffeeName.toLowerCase() === value.toLowerCase()
+  //   );
 
-    if (selectedCoffee) {
-      navigate(`/coffees/details/${selectedCoffee._id}`);
-    }
-  };
+  //   if (selectedCoffee) {
+  //     navigate(`/coffees/details/${selectedCoffee._id}`);
+  //   }
+  // };
 
   const handleLogout = async () => {
     await logout();
@@ -92,7 +92,7 @@ const NavBar = ({ setFilteredData }) => {
       </div>
 
       <div className="nav-icons">
-        <div className="search-bar-container">
+        {/* <div className="search-bar-container">
           <Autocomplete
             freeSolo
             options={data.map((coffee) => coffee.coffeeName)}
@@ -110,7 +110,7 @@ const NavBar = ({ setFilteredData }) => {
             )}
             style={{ width: 300 }}
           />
-        </div>
+        </div> */}
 
         {!isAuthenticated ? (
           <>
