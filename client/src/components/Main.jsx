@@ -38,7 +38,7 @@ const Main = () => {
   ];
 
   return (
-    <div style={{ height: 500, width: "100%", marginTop: "50px" }}>
+    <div style={{ height: 500, width: "100%", marginTop: "180px" }}>
       <DataGrid
         rows={timesheets}
         columns={columns}
