@@ -85,7 +85,7 @@ const NavBar = ({ setFilteredData }) => {
           </li>
           {isAuthenticated && (
             <li className="nav-link-item">
-              <Link to="/coffees/create">Create Coffee</Link>
+              <Link to="/employeeList">Research groups</Link>
             </li>
           )}
         </ul>

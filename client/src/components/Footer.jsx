@@ -8,7 +8,7 @@ const Footer = props => {
   
       }} 
       >
-      <p>&copy; </p>
+      <p></p>
             
       </footer>
     );
