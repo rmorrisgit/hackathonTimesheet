@@ -11,6 +11,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TablePagination from "@mui/material/TablePagination";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 
 const weeks = [
   {
@@ -45,6 +46,21 @@ function EmployeeTimesheet() {
     weeks.flatMap((week) => week.dates).reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {})
   );
 
+  // Simulated logged-in user data
+  const userData = {
+    employeeName: "John Doe",
+    wNum: "W123456",
+    fund: "12345",
+    dept: "IT",
+    program: "CS101",
+    acct: "98765",
+    project: "Test Project",
+    hourlyRate: 25,
+    payPeriodStartDate: "2024-11-17",
+    payPeriodEndDate: "2024-11-30",
+    assignmentType: "Casual",
+  };
+
   // Handle changes to "Hours Worked" input
   const handleHoursChange = (date, value) => {
     setHoursWorked((prev) => ({
@@ -71,7 +87,75 @@ function EmployeeTimesheet() {
   };
 
   return (
-    <Box sx={{ padding: "20px", marginTop: "150px" }}>
+    <Box sx={{ padding: "20px", marginTop: "250px" }}>
+    {/* User Data Section */}
+    <Box
+      sx={{
+        marginBottom: 4,
+        padding: 2,
+        border: "1px solid #d9d9d9",
+        borderRadius: "8px",
+        display: "grid",
+        gridTemplateColumns: "repeat(12, 1fr)", // 12-column grid system
+        gap: 2,
+      }}
+    >
+      {/* Employee Name and W# */}
+      <Box sx={{ gridColumn: "span 6" }}>
+        <Typography variant="h6">Employee Name:</Typography>
+        <Typography>{userData.employeeName}</Typography>
+      </Box>
+      <Box sx={{ gridColumn: "span 6" }}>
+        <Typography variant="h6">W#:</Typography>
+        <Typography>{userData.wNum}</Typography>
+      </Box>
+  
+      {/* Fund, Dept, Program, and Acct */}
+      <Box sx={{ gridColumn: "span 1" }}>
+        <Typography variant="h6">Fund:</Typography>
+        <Typography>{userData.fund}</Typography>
+      </Box>
+      <Box sx={{ gridColumn: "span 1" }}>
+        <Typography variant="h6">Dept:</Typography>
+        <Typography>{userData.dept}</Typography>
+      </Box>
+      <Box sx={{ gridColumn: "span 1" }}>
+        <Typography variant="h6">Program:</Typography>
+        <Typography>{userData.program}</Typography>
+      </Box>
+      <Box sx={{ gridColumn: "span 1" }}>
+        <Typography variant="h6">Acct:</Typography>
+        <Typography>{userData.acct}</Typography>
+      </Box>
+  
+      {/* Project */}
+      <Box sx={{ gridColumn: "span 2" }}>
+        <Typography variant="h6">Project:</Typography>
+        <Typography>{userData.project}</Typography>
+      </Box>
+  
+      {/* Pay Period Start Date and End Date */}
+      <Box sx={{ gridColumn: "span 2" }}>
+        <Typography variant="h6">Pay Period Start Date:</Typography>
+        <Typography>{userData.payPeriodStartDate}</Typography>
+      </Box>
+ 
+      <Box sx={{ gridColumn: "span 4" }}>
+        <Typography variant="h6">Pay Period End Date:</Typography>
+        <Typography>{userData.payPeriodEndDate}</Typography>
+      </Box>
+  
+      {/* Hourly Rate and Assignment Type */}
+      <Box sx={{ gridColumn: "span 6" }}>
+        <Typography variant="h6">Hourly Rate:</Typography>
+        <Typography>${userData.hourlyRate}/hr</Typography>
+      </Box>
+      <Box sx={{ gridColumn: "span 6" }}>
+        <Typography variant="h6">Assignment Type:</Typography>
+        <Typography>{userData.assignmentType}</Typography>
+      </Box>
+    </Box>
+  
       {/* Week Header */}
       <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
         Week {weeks[page].weekNumber}
