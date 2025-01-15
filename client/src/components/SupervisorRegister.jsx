@@ -26,7 +26,7 @@ const SupervisorRegister = () => {
   const navigate = useNavigate();
   const [registerMessage, setRegisterMessage] = useState("");
 
-  // Autofill form fields for testing
+  // -Autofill form fields for testing
   useEffect(() => {
     const autofillValues = {
       firstName: "TestFirstName",
