@@ -55,11 +55,6 @@ const NavBar = () => {
     <div className="nav-container">
       {/* Logo and Greeting */}
       <div className="nav-logo">
-        <img
-        src="/img/nscclogo.png"
-        alt="Logo"
-        style={{ paddingLeft: "10px" }}
-      />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <i className="fa fa-2x fa-clock" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}></i>
 
