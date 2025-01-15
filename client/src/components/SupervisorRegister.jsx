@@ -70,11 +70,13 @@ const SupervisorRegister = () => {
     };
 
     const success = await registerUser(payload);
-    setRegisterMessage(
-      success
-        ? "Registration successful. You can now log in."
-        : "Failed to register employee. Please try again."
-    );
+
+      if (success) {
+        setRegisterMessage("Registration successful. You can now log in.");
+        navigate("/about"); // Redirect to /about 
+      } else {
+        setRegisterMessage("Failed to register employee. Please try again.");
+      }
   };
 
   return (
