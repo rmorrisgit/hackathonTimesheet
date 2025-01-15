@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext.jsx"; // Assuming AuthContext is used
+import { useAuth } from "../context/authContext.jsx";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 import "../css/navbar.css";
 import "../css/main.css";
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const [userRole, setUserRole] = useState(sessionStorage.getItem("type")); // Initialize from sessionStorage
+  const [userRole, setUserRole] = useState(sessionStorage.getItem("type"));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Effect to sync `userRole` with sessionStorage on login/logout
   useEffect(() => {
     const storedRole = sessionStorage.getItem("type");
     if (storedRole) {
       setUserRole(storedRole);
     }
-  }, [isAuthenticated]); // Update role whenever authentication state changes
+  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     await logout();
-    sessionStorage.removeItem("type"); // Clear user role from sessionStorage
-    setUserRole(null); // Reset role to null
+    sessionStorage.removeItem("type");
+    setUserRole(null);
     navigate("/signin");
   };
 
@@ -35,53 +36,104 @@ const NavBar = () => {
 
   return (
     <div className="nav-container">
+      {/* Logo */}
       <div className="nav-logo">
-        <img src="/images/cofv10.svg" alt="Logo" onClick={() => navigate("/")} />
+        <img
+          src="/images/cofv10.svg"
+          alt="Logo"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        />
       </div>
 
+      {/* Background Overlay for Menu */}
       <div
         className={`background ${isMenuOpen ? "active" : ""}`}
         onClick={toggleMenu}
       ></div>
 
+      {/* Navigation Links */}
       <div className="nav-links-container">
         <ul className="nav-links">
           <li className="nav-link-item">
-            <Link to="/about">About</Link>
+            <Typography variant="body1" component={Link} to="/about">
+              About
+            </Typography>
           </li>
           <li className="nav-link-item">
-            <Link to="/timesheet">Timesheet</Link>
+            <Typography variant="body1" component={Link} to="/timesheet">
+              Timesheet
+            </Typography>
           </li>
           {isAuthenticated && (
             <li className="nav-link-item">
-              <Link to="/employeeList">Research groups</Link>
+              <Typography variant="body1" component={Link} to="/employeeList">
+                Research Groups
+              </Typography>
             </li>
           )}
         </ul>
       </div>
 
+      {/* Action Buttons */}
       <div className="nav-icons">
         {!isAuthenticated ? (
-          <Link to="/signin" className="nav-link-item">
-            Sign In
-          </Link>
+          <Chip
+            label="Sign In"
+            color="primary"
+            onClick={() => navigate("/signin")}
+            className="nav-chip"
+          />
         ) : (
           <>
             {userRole === "supervisor" && (
-              <Link to="/supervisor-register" className="nav-link-item">
-                Register Employee
-              </Link>
+        <Typography
+        variant="body1"
+        onClick={() => navigate("/supervisor-register")}
+        className="nav-chip"
+        sx={{
+          cursor: "pointer",
+          color: "primary.main",
+          padding: "8px 16px",
+          borderRadius: "4px",
+          border: "1px solid",
+          borderColor: "primary.main",
+          display: "inline-block",
+          textAlign: "center",
+          transition: "all 0.3s ease",
+          marginRight: "25px",
+          "&:hover": {
+            backgroundColor: "primary.main",
+            color: "#fff",
+          },
+        }}
+      >
+        Register Employee
+      </Typography>
             )}
-            <button className="btn btn-link nav-link-item" onClick={handleLogout}>
-              Logout
-            </button>
+            <Chip
+              label="Logout"
+              color="primary"
+
+              onClick={handleLogout}
+              className="LogoutChip nav-chip"
+            />
           </>
         )}
 
+        {/* Mobile Menu Toggle Icons */}
         {!isMenuOpen ? (
-          <i className="fa-solid fa-bars open-menu" onClick={toggleMenu}></i>
+          <i
+            className="fa-solid fa-bars open-menu"
+            onClick={toggleMenu}
+            style={{ cursor: "pointer" }}
+          ></i>
         ) : (
-          <i className="fa-solid fa-xmark close-menu" onClick={toggleMenu}></i>
+          <i
+            className="fa-solid fa-xmark close-menu"
+            onClick={toggleMenu}
+            style={{ cursor: "pointer" }}
+          ></i>
         )}
       </div>
     </div>

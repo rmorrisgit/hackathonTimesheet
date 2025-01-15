@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
+
+
+
+
 .register-button-container {
   position: fixed;
   bottom: 20px;
@@ -63,9 +67,7 @@ body {
 }
 
 .nav-link-item a {
-  text-decoration: none;
-  color: #000000;
-  font-weight: 500;
+  
   transition: color 0.3s ease;
 }
 
@@ -133,15 +135,13 @@ body {
     text-decoration: none;
     display: flex;
     padding: 16px 0;
-    color: #972222;
     font-weight: 500;
     transition: .3 ease;
     align-items: center;
 
 }
 .nav-links > .nav-link-item:hover > a {
-    color: blue;
-    cursor: grab; /* Add this line */
+   
 
     
 } 
