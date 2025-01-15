@@ -11,18 +11,16 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [userRole, setUserRole] = useState(sessionStorage.getItem("type"));
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  
+  // Effect to update `userRole` when sessionStorage changes (e.g., on login)
   useEffect(() => {
     const storedRole = sessionStorage.getItem("type");
-    if (storedRole) {
-      setUserRole(storedRole);
-    }
-  }, [isAuthenticated]);
+    setUserRole(storedRole);
+  }, [isAuthenticated]); // Re-run when authentication state changes
 
   const handleLogout = async () => {
     await logout();
     sessionStorage.removeItem("type");
-    setUserRole(null);
     navigate("/signin");
   };
 
