@@ -195,15 +195,15 @@ const SupervisorRegister = () => {
             helperText={errors.hourlyRate?.message}
           />
           <TextField
-            {...register("payPeriodStartDate")}
-            label="Pay Period Start Date"
+            {...register("contractStartDate")}
+            label="Contract Start Date"
             type="date"
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
           <TextField
-            {...register("payPeriodEndDate")}
-            label="Pay Period End Date"
+            {...register("contractEndDate")}
+        label="Contract End Date"
             type="date"
             fullWidth
             InputLabelProps={{ shrink: true }}
