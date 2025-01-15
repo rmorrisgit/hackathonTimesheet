@@ -4,21 +4,24 @@ import { useAuth } from "../context/authContext.jsx"; // Assuming AuthContext is
 import "../css/navbar.css";
 import "../css/main.css";
 
-const NavBar = ({ setFilteredData }) => {
+const NavBar = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [userRole, setUserRole] = useState(sessionStorage.getItem("type")); // Initialize from sessionStorage
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Effect to update `userRole` when sessionStorage changes (e.g., on login)
+  // Effect to sync `userRole` with sessionStorage on login/logout
   useEffect(() => {
     const storedRole = sessionStorage.getItem("type");
-    setUserRole(storedRole);
-  }, [isAuthenticated]); // Re-run when authentication state changes
+    if (storedRole) {
+      setUserRole(storedRole);
+    }
+  }, [isAuthenticated]); // Update role whenever authentication state changes
 
   const handleLogout = async () => {
     await logout();
     sessionStorage.removeItem("type"); // Clear user role from sessionStorage
+    setUserRole(null); // Reset role to null
     navigate("/signin");
   };
 
