@@ -55,12 +55,9 @@ const NavBar = () => {
     <div className="nav-container">
       {/* Logo and Greeting */}
       <div className="nav-logo">
-        <img
-          src="/images/cofv10.svg"
-          alt="Logo"
-          onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
-        />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <i className="fa fa-2x fa-clock" onClick={() => navigate("/")} style={{ cursor: 'pointer' }}></i>
+
         {isAuthenticated && userName && (
           <Typography
             variant="h6"
