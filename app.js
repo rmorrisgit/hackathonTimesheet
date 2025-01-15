@@ -48,9 +48,10 @@ app.set('view engine', 'jade');
 // app.use(cors())
 // Use CORS middleware to allow requests from the frontend
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow only your frontend's origin
-  credentials: true               // Allow credentials (cookies or headers)
+  origin: true, // Allow all origins
+  credentials: true // Allow credentials (cookies or headers)
 }));
+
 app.use(logger('dev'));
 
 app.use(express.urlencoded({ extended: false }));
