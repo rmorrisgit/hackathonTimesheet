@@ -41,8 +41,8 @@ const SupervisorRegister = () => {
       acct: "98765",
       project: "TestProject",
       hourlyRate: 25,
-      payPeriodStartDate: "2025-01-01",
-      payPeriodEndDate: "2025-01-14",
+      contractStartDate: "2025-01-01",
+      contractEndDate: "2025-01-14",
       assignmentType: "Casual",
     };
 
@@ -64,8 +64,8 @@ const SupervisorRegister = () => {
       acct: data.acct,
       project: data.project,
       hourlyRate: parseFloat(data.hourlyRate),
-      payPeriodStartDate: data.payPeriodStartDate || null,
-      payPeriodEndDate: data.payPeriodEndDate || null,
+      contractStartDate: data.contractStartDate || null,
+      contractEndDate: data.contractEndDate || null,
       assignmentType: data.assignmentType || null,
     };
 
@@ -78,7 +78,7 @@ const SupervisorRegister = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 50 }}>
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 20 , mb: 5}}>
       <Typography variant="h4" align="center" gutterBottom>
         Register Employee
       </Typography>

@@ -39,8 +39,8 @@ const userSchema = new Schema(
       required: false,
       validate: { validator: (v) => v >= 0, message: 'Hourly rate must be a non-negative number.' },
     },
-    payPeriodStartDate: { type: Date, required: false },
-    payPeriodEndDate: { type: Date, required: false },
+    contractStartDate: { type: Date, required: false },
+    contractEndDate: { type: Date, required: false },
     assignmentType: { type: String, required: false, enum: ['Casual', 'Auxiliary'] },
     timesheets: [{ type: Schema.Types.ObjectId, ref: 'Timesheet' }], // Add reference to Timesheets
   },

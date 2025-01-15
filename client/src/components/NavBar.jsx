@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
+import UserService from "../services/userService"; // Import UserService
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import "../css/navbar.css";
@@ -10,13 +11,31 @@ const NavBar = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [userRole, setUserRole] = useState(sessionStorage.getItem("type"));
+  const [userName, setUserName] = useState(null); // State for the user's name
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  // Effect to update `userRole` when sessionStorage changes (e.g., on login)
+
+  // Fetch user data when authentication changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Fetch user details from UserService
+      UserService.getUserData()
+        .then((data) => {
+          setUserName(data.firstName); // Use `firstName` from API response
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user data:", err);
+          setUserName("User"); // Fallback to "User" on error
+        });
+    } else {
+      setUserName(null); // Clear name when not authenticated
+    }
+  }, [isAuthenticated]);
+
+  // Update role from sessionStorage on login/logout
   useEffect(() => {
     const storedRole = sessionStorage.getItem("type");
     setUserRole(storedRole);
-  }, [isAuthenticated]); // Re-run when authentication state changes
+  }, [isAuthenticated]);
 
   const handleLogout = async () => {
     await logout();
@@ -34,7 +53,7 @@ const NavBar = () => {
 
   return (
     <div className="nav-container">
-      {/* Logo */}
+      {/* Logo and Greeting */}
       <div className="nav-logo">
         <img
           src="/images/cofv10.svg"
@@ -42,6 +61,19 @@ const NavBar = () => {
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
         />
+        {isAuthenticated && userName && (
+          <Typography
+            variant="h6"
+            sx={{
+              marginLeft: "20px",
+              display: "inline-block",
+              color: "primary.main",
+              fontWeight: "bold",
+            }}
+          >
+            Welcome, {userName}
+          </Typography>
+        )}
       </div>
 
       {/* Background Overlay for Menu */}
@@ -85,34 +117,33 @@ const NavBar = () => {
         ) : (
           <>
             {userRole === "supervisor" && (
-        <Typography
-        variant="body1"
-        onClick={() => navigate("/supervisor-register")}
-        className="nav-chip"
-        sx={{
-          cursor: "pointer",
-          color: "primary.main",
-          padding: "8px 16px",
-          borderRadius: "4px",
-          border: "1px solid",
-          borderColor: "primary.main",
-          display: "inline-block",
-          textAlign: "center",
-          transition: "all 0.3s ease",
-          marginRight: "25px",
-          "&:hover": {
-            backgroundColor: "primary.main",
-            color: "#fff",
-          },
-        }}
-      >
-        Register Employee
-      </Typography>
+              <Typography
+                variant="body1"
+                onClick={() => navigate("/supervisor-register")}
+                className="nav-chip"
+                sx={{
+                  cursor: "pointer",
+                  color: "primary.main",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  border: "1px solid",
+                  borderColor: "primary.main",
+                  display: "inline-block",
+                  textAlign: "center",
+                  transition: "all 0.3s ease",
+                  marginRight: "25px",
+                  "&:hover": {
+                    backgroundColor: "primary.main",
+                    color: "#fff",
+                  },
+                }}
+              >
+                Register Employee
+              </Typography>
             )}
             <Chip
               label="Logout"
               color="primary"
-
               onClick={handleLogout}
               className="LogoutChip nav-chip"
             />

@@ -3,18 +3,28 @@ const { Schema, model } = mongoose;
 
 const timesheetSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User
-    employeeInfo: {
-      employeeName: { type: String, required: true },
-      wNum: { type: String, required: true },
-      isAdmin: { type: Boolean, required: true },
-    },
+    // user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User
+    // employeeInfo: {
+    //   employeeName: { type: String, required: true },
+    //   wNum: { type: String, required: true },
+    //   isAdmin: { type: Boolean, required: true },
+    // },
+    // block1: {
+    //   fund: { type: String, required: true },
+    //   dept: { type: String, required: true },
+    //   program: { type: String, required: true },
+    //   acct: { type: String, required: true },
+    //   project: { type: String, required: true },
+    // },
+    firstName: { type: String, required: true, maxlength: 100 },
+    lastName: { type: String, required: true, maxlength: 100 },
+    wNum: { type: String, required: false },
     block1: {
-      fund: { type: String, required: true },
-      dept: { type: String, required: true },
-      program: { type: String, required: true },
-      acct: { type: String, required: true },
-      project: { type: String, required: true },
+      fund: { type: String, required: false },
+      dept: { type: String, required: false },
+      program: { type: String, required: false },
+      acct: { type: String, required: false },
+      project: { type: String, required: false },
     },
     block2: {
       payPeriodStartDate: { type: String, required: true },

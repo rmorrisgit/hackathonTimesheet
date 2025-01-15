@@ -20,9 +20,8 @@ export const AuthProvider = ({ children }) => {
   const register = async (formData) => {
     const registerResponse = await authService.register(formData);
     if (registerResponse.success) {
-      // Automatically log in after successful registration
-      const loginSuccess = await login({ email: formData.email, password: formData.password });
-      return loginSuccess;
+      // Return success without logging in the registered user
+      return true;
     }
     return false; // Registration failed
   };

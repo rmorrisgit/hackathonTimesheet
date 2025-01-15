@@ -40,8 +40,8 @@ router.post('/register', async (req, res) => {
       acct,
       project,
       hourlyRate,
-      payPeriodStartDate, // New field
-      payPeriodEndDate,   // New field
+      contractStartDate, // New field
+      contractEndDate,   // New field
       assignmentType,     // New field
     } = req.body;
 
@@ -70,8 +70,8 @@ router.post('/register', async (req, res) => {
       acct,
       project,
       hourlyRate,
-      payPeriodStartDate: payPeriodStartDate ? new Date(payPeriodStartDate) : null,
-      payPeriodEndDate: payPeriodEndDate ? new Date(payPeriodEndDate) : null,
+      contractStartDate: contractStartDate ? new Date(contractStartDate) : null,
+      contractEndDate: contractEndDate ? new Date(contractEndDate) : null,
       assignmentType,
     });
 
@@ -94,8 +94,8 @@ router.post('/register', async (req, res) => {
         acct: savedUser.acct,
         project: savedUser.project,
         hourlyRate: savedUser.hourlyRate,
-        payPeriodStartDate: savedUser.payPeriodStartDate,
-        payPeriodEndDate: savedUser.payPeriodEndDate,
+        contractStartDate: savedUser.contractStartDate,
+        contractEndDate: savedUser.contractEndDate,
         assignmentType: savedUser.assignmentType,
       },
     });
@@ -148,8 +148,8 @@ router.post('/login', async (req, res) => {
         acct: user.acct,
         project: user.project,
         hourlyRate: user.hourlyRate,
-        payPeriodStartDate: user.payPeriodStartDate,
-        payPeriodEndDate: user.payPeriodEndDate,
+        contractStartDate: user.contractStartDate,
+        contractEndDate: user.contractEndDate,
         assignmentType: user.assignmentType,
       },
     });
