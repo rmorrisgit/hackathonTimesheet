@@ -14,13 +14,15 @@ const SignIn = () => {
   async function receiveFormData(formData) {
     const success = await login(formData); // Use the updated login function
     if (success) {
-      navigate("/about"); // Redirect to /about 
+      // navigate("/"); 
+
+      window.location.href = "/"; // Redirect to the main page with a hard refresh
     } else {
       console.log('Unsuccessful login');
       setLoginMessage('Incorrect Login');
     }
   }
-
+  
   const emailValidationRules = {
     required: "Email is required",
     pattern: {

@@ -46,23 +46,21 @@ const App = () => {
           <Route path="/coffees/details/:coffeeId" element={<CoffeeDetails />} />
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
             
-          <Route
-              path="/supervisor-register"
-              element={
-                authService.isSupervisor() ? (
-                  <SupervisorRegister />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            
-            
-            <Route path="/coffees/create" element={<CreateForm />} />
+            <Route
+                path="/supervisor-register"
+                element={
+                  authService.isSupervisor() ? (
+                    <SupervisorRegister />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+            {/* <Route path="/coffees/create" element={<CreateForm />} /> */}
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/coffees/edit/:coffeeId" element={<EditCoffeeForm />} />
-            <Route path="/coffees/delete-confirmation/:coffeeId" element={<DeleteConfirmation />} />
-            <Route path="/dummy" element={<Dummy />} />
+            {/* <Route path="/coffees/edit/:coffeeId" element={<EditCoffeeForm />} /> */}
+            {/* <Route path="/coffees/delete-confirmation/:coffeeId" element={<DeleteConfirmation />} /> */}
+            {/* <Route path="/dummy" element={<Dummy />} /> */}
           </Route>
           <Route path="*" element={<div>404 - Page Not Found</div>} />
         </Routes>
