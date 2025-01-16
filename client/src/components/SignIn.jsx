@@ -14,7 +14,7 @@ const SignIn = () => {
   async function receiveFormData(formData) {
     const success = await login(formData); // Use the updated login function
     if (success) {
-      navigate('/');
+      navigate("/about"); // Redirect to /about 
     } else {
       console.log('Unsuccessful login');
       setLoginMessage('Incorrect Login');
