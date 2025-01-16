@@ -11,48 +11,40 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TablePagination from "@mui/material/TablePagination";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import apiService from "../services/userService"; // Adjust the path to your apiService
-
-const weeks = [
-  {
-    weekNumber: 1,
-    dates: [
-      { day: "Sunday", date: "November 17" },
-      { day: "Monday", date: "November 18" },
-      { day: "Tuesday", date: "November 19" },
-      { day: "Wednesday", date: "November 20" },
-      { day: "Thursday", date: "November 21" },
-      { day: "Friday", date: "November 22" },
-      { day: "Saturday", date: "November 23" },
-    ],
-  },
-  {
-    weekNumber: 2,
-    dates: [
-      { day: "Sunday", date: "November 24" },
-      { day: "Monday", date: "November 25" },
-      { day: "Tuesday", date: "November 26" },
-      { day: "Wednesday", date: "November 27" },
-      { day: "Thursday", date: "November 28" },
-      { day: "Friday", date: "November 29" },
-      { day: "Saturday", date: "November 30" },
-    ],
-  },
-];
+import apiService from "../services/userService";
+import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
 
 function EmployeeTimesheet() {
   const [page, setPage] = useState(0);
-  const [hoursWorked, setHoursWorked] = useState(
-    weeks.flatMap((week) => week.dates).reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {})
-  );
-  const [userData, setUserData] = useState(null); // Initialize as null to handle loading state
+  const [weeks, setWeeks] = useState([]);
+  const [hoursWorked, setHoursWorked] = useState({});
+  const [userData, setUserData] = useState(null);
+
+  // Calculate the most recent Sunday as the pay period start
+  const getMostRecentSunday = () => {
+    const today = new Date(); // Current date
+    const offset = (today.getDay() + 6) % 7; // Days since last Sunday (Sunday = 0)
+    const mostRecentSunday = new Date(today);
+    mostRecentSunday.setDate(today.getDate() - offset); // Move back to the correct Sunday
+    return mostRecentSunday;
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const user = await apiService.getUserData(); // Fetch user data dynamically
+        const user = await apiService.getUserData();
         setUserData(user);
+
+        // Dynamically calculate start date
+        const startDate = getMostRecentSunday().toISOString().split("T")[0]; // YYYY-MM-DD format
+        const generatedWeeks = getPayPeriodDates(startDate);
+        setWeeks(generatedWeeks);
+
+        // Initialize hoursWorked state based on generated weeks
+        const initialHoursWorked = generatedWeeks
+          .flatMap((week) => week.dates)
+          .reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {});
+        setHoursWorked(initialHoursWorked);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -68,7 +60,7 @@ function EmployeeTimesheet() {
     }));
   };
 
-  const totalHoursForCurrentPage = weeks[page].dates.reduce(
+  const totalHoursForCurrentPage = weeks[page]?.dates.reduce(
     (total, row) => total + parseFloat(hoursWorked[row.date] || 0),
     0
   );
@@ -82,7 +74,10 @@ function EmployeeTimesheet() {
     setPage(newPage);
   };
 
-  if (!userData) {
+  const payPeriodStartDate = weeks[0]?.dates[0]?.date;
+  const payPeriodEndDate = weeks[1]?.dates[6]?.date;
+
+  if (!userData || weeks.length === 0) {
     return <Typography>Loading...</Typography>; // Show loading state
   }
 
@@ -130,11 +125,11 @@ function EmployeeTimesheet() {
         </Box>
         <Box sx={{ gridColumn: "span 2" }}>
           <Typography variant="h6">Pay Period Start Date:</Typography>
-          <Typography>{userData.payPeriodStartDate}</Typography>
+          <Typography>{payPeriodStartDate}</Typography>
         </Box>
         <Box sx={{ gridColumn: "span 4" }}>
           <Typography variant="h6">Pay Period End Date:</Typography>
-          <Typography>{userData.payPeriodEndDate}</Typography>
+          <Typography>{payPeriodEndDate}</Typography>
         </Box>
         <Box sx={{ gridColumn: "span 6" }}>
           <Typography variant="h6">Hourly Rate:</Typography>
@@ -148,12 +143,12 @@ function EmployeeTimesheet() {
 
       {/* Week Header */}
       <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-        Week {weeks[page].weekNumber}
+        Week {weeks[page]?.weekNumber}
       </Typography>
 
       {/* Paginated Table */}
       <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-        <Table aria-label={`Week ${weeks[page].weekNumber} Timesheet`} sx={{ minWidth: 700 }}>
+        <Table aria-label={`Week ${weeks[page]?.weekNumber} Timesheet`} sx={{ minWidth: 700 }}>
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: "bold", backgroundColor: "#d9e1f2" }}>Day</TableCell>
@@ -163,7 +158,7 @@ function EmployeeTimesheet() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {weeks[page].dates.map((row) => (
+            {weeks[page]?.dates.map((row) => (
               <TableRow key={row.date}>
                 <TableCell>{row.day}</TableCell>
                 <TableCell>{row.date}</TableCell>
@@ -187,14 +182,14 @@ function EmployeeTimesheet() {
             ))}
             <TableRow>
               <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
-                Week {weeks[page].weekNumber} Total
+                Week {weeks[page]?.weekNumber} Total
               </TableCell>
               <TableCell>
                 <TextField
                   variant="outlined"
                   size="small"
                   type="number"
-                  value={totalHoursForCurrentPage.toFixed(2)}
+                  value={totalHoursForCurrentPage?.toFixed(2)}
                   disabled
                   InputProps={{
                     endAdornment: <InputAdornment position="end">hrs</InputAdornment>,

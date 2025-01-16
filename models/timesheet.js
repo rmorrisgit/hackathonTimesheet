@@ -3,22 +3,8 @@ const { Schema, model } = mongoose;
 
 const timesheetSchema = new Schema(
   {
-    // user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User
-    // employeeInfo: {
-    //   employeeName: { type: String, required: true },
-    //   wNum: { type: String, required: true },
-    //   isAdmin: { type: Boolean, required: true },
-    // },
-    // block1: {
-    //   fund: { type: String, required: true },
-    //   dept: { type: String, required: true },
-    //   program: { type: String, required: true },
-    //   acct: { type: String, required: true },
-    //   project: { type: String, required: true },
-    // },
-    firstName: { type: String, required: true, maxlength: 100 },
-    lastName: { type: String, required: true, maxlength: 100 },
-    wNum: { type: String, required: false },
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the user who owns the timesheet
+    group: { type: Schema.Types.ObjectId, ref: 'Group', required: false }, // Optional reference to a group
     block1: {
       fund: { type: String, required: false },
       dept: { type: String, required: false },
