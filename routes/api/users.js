@@ -126,6 +126,7 @@ router.post('/register', async (req, res) => {
         fund: savedUser.fund,
         dept: savedUser.dept,
         program: savedUser.program,
+        
         acct: savedUser.acct,
         project: savedUser.project,
         hourlyRate: savedUser.hourlyRate,
@@ -187,6 +188,8 @@ router.post('/login', async (req, res) => {
         dept: user.dept,
         program: user.program,
         acct: user.acct,
+        role: user.role, 
+        group: user.group, 
         project: user.project,
         hourlyRate: user.hourlyRate,
         contractStartDate: user.contractStartDate,

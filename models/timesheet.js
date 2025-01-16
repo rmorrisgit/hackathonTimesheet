@@ -7,21 +7,15 @@ const timesheetSchema = new Schema(
     lastName: { type: String, required: true, maxlength: 100 },  // Store employee last name
     wNum: { type: String, required: false },
     group: { type: Schema.Types.ObjectId, ref: 'Group', required: false }, // Optional reference to a group
-    block1: {
-      fund: { type: String, required: false },
-      dept: { type: String, required: false },
-      program: { type: String, required: false },
-      acct: { type: String, required: false },
-      project: { type: String, required: false },
-    },
-    block2: {
- payPeriodStartDate: { type: Date, required: true },
+    fund: { type: String, required: false },
+    dept: { type: String, required: false },
+    program: { type: String, required: false },
+    acct: { type: String, required: false },
+    project: { type: String, required: false },
+    payPeriodStartDate: { type: Date, required: true },
     payPeriodEndDate: { type: Date, required: true },
-    },
-    block3: {
-      hourlyRate: { type: Number, required: true },
-      isCasual: { type: Boolean, required: true },
-    },
+    hourlyRate: { type: Number, required: true },
+    isCasual: { type: Boolean, required: true },
     week1: {
       sun: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
       mon: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
