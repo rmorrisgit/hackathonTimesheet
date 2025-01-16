@@ -42,16 +42,6 @@ const userService = {
       handleError(err);
     }
   },
-
-  getUserData: async () => {
-    console.log('Fetching logged-in user data...');
-    try {
-      const response = await apiClient.get('/users/me'); // Use the appropriate backend endpoint
-      return handleResponse(response);
-    } catch (err) {
-      handleError(err);
-    }
-  },
 };
 
 export default userService;
