@@ -1,14 +1,17 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import '../css/dashboard.css'
+import { IconButton } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', headerName: 'W Number', width: 90, hide: true },
     {
       field: 'firstName',
       headerName: 'First name',
       width: 150,
       editable: true,
+      
     },
     {
       field: 'lastName',
@@ -17,39 +20,56 @@ const columns = [
       editable: true,
     },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 110,
+      field: 'payPeriodStart',
+      headerName: 'Pay Period Start',
+      type: 'date',
+      width: 130,
       editable: true,
     },
     {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
+      field: 'payPeriodEnd',
+      headerName: 'Pay Period End',
+      type: 'date',
+      editable: true,
+      width: 130,
+    },
+    {
+      field: 'submissionDate',
+      headerName: 'Date Submitted',
+      width: 130,
+      type: 'date',
+      editable: true,
+    },
+    {
+      field: 'view',
+      headerName: 'View',
+      width: 50,
+      renderCell: (params) => (
+        <IconButton href={`/employee/${params.row.id}`}>
+          <VisibilityIcon sx={{color: 'black', fontSize: 24}} />
+        </IconButton>
+      )
     },
   ];
   
   const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    { id: "w1234561", lastName: 'Snow', firstName: 'Jon',},
+    { id: "w1234562", lastName: 'Lannister', firstName: 'Cersei', },
+    { id: "w1234563", lastName: 'Lannister', firstName: 'Jaime',},
+    { id: "w1234564", lastName: 'Stark', firstName: 'Arya',  },
+    { id: "w1234565", lastName: 'Targaryen', firstName: 'Daenerys',},
+    { id: "w1234566", lastName: 'Melisandre', firstName: 'Mike',},
+    { id: "w1234567", lastName: 'Clifford', firstName: 'Ferrara', },
+    { id: "w1234568", lastName: 'Frances', firstName: 'Rossini', },
+    { id: "w1234569", lastName: 'Roxie', firstName: 'Harvey',},
+    { id: "w1234560", lastName: 'John', firstName: 'Smith',},
   ];
   
   export default function Dashboard() {
     return (
         <div className='dashboard_grid'>
-            <h1>Dashboard</h1>
-      <Box sx={{ height: 400, width: '100%' }}>
+            <h1 className='title'>Employee Timesheets</h1>
+      <Box sx={{ height: 650, width: '100%' }}>
         <DataGrid
 
         rows={rows}
@@ -57,11 +77,11 @@ const columns = [
         initialState={{
             pagination: {
                 paginationModel: {
-                    pageSize: 5,
+                    pageSize: 10,
                 },
             },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[10]}
         checkboxSelection
         disableRowSelectionOnClick
         />
