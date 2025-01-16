@@ -21,7 +21,7 @@ router.get('/me',checkthetoken, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user data' });
   }
 });
-
+//cool 
 // Add a new route to fetch all employees
 // Add a new route to fetch all employees
 router.get('/employees', checkthetoken, async (req, res) => {
