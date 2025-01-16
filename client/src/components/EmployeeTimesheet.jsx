@@ -1,31 +1,36 @@
 import React, { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import TablePagination from "@mui/material/TablePagination";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  InputAdornment,
+  TablePagination,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import apiService from "../services/userService";
-import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
+import { getPayPeriodDates } from "../utils/dateUtils";
 
 function EmployeeTimesheet() {
   const [page, setPage] = useState(0);
   const [weeks, setWeeks] = useState([]);
   const [hoursWorked, setHoursWorked] = useState({});
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  // Calculate the most recent Sunday as the pay period start
+  // Calculate the most recent Sunday
   const getMostRecentSunday = () => {
-    const today = new Date(); // Current date
-    const offset = (today.getDay() + 6) % 7; // Days since last Sunday (Sunday = 0)
+    const today = new Date();
+    const offset = (today.getDay() + 6) % 7;
     const mostRecentSunday = new Date(today);
-    mostRecentSunday.setDate(today.getDate() - offset); // Move back to the correct Sunday
+    mostRecentSunday.setDate(today.getDate() - offset);
     return mostRecentSunday;
   };
 
@@ -35,18 +40,19 @@ function EmployeeTimesheet() {
         const user = await apiService.getUserData();
         setUserData(user);
 
-        // Dynamically calculate start date
-        const startDate = getMostRecentSunday().toISOString().split("T")[0]; // YYYY-MM-DD format
+        const startDate = getMostRecentSunday().toISOString().split("T")[0];
         const generatedWeeks = getPayPeriodDates(startDate);
         setWeeks(generatedWeeks);
 
-        // Initialize hoursWorked state based on generated weeks
         const initialHoursWorked = generatedWeeks
           .flatMap((week) => week.dates)
           .reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {});
         setHoursWorked(initialHoursWorked);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        setError("Failed to fetch user or timesheet data.");
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -74,11 +80,25 @@ function EmployeeTimesheet() {
     setPage(newPage);
   };
 
-  const payPeriodStartDate = weeks[0]?.dates[0]?.date;
-  const payPeriodEndDate = weeks[1]?.dates[6]?.date;
+  const payPeriodStartDate = weeks[0]?.dates[0]?.date || "N/A";
+  const payPeriodEndDate = weeks[1]?.dates[6]?.date || "N/A";
 
-  if (!userData || weeks.length === 0) {
-    return <Typography>Loading...</Typography>; // Show loading state
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ textAlign: "center", marginTop: 5 }}>
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
+      </Box>
+    );
   }
 
   return (
@@ -103,41 +123,13 @@ function EmployeeTimesheet() {
           <Typography variant="h6">W#:</Typography>
           <Typography>{userData.wNum}</Typography>
         </Box>
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6">Fund:</Typography>
-          <Typography>{userData.fund}</Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6">Dept:</Typography>
-          <Typography>{userData.dept}</Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6">Program:</Typography>
-          <Typography>{userData.program}</Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6">Acct:</Typography>
-          <Typography>{userData.acct}</Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 2" }}>
-          <Typography variant="h6">Project:</Typography>
-          <Typography>{userData.project}</Typography>
-        </Box>
         <Box sx={{ gridColumn: "span 2" }}>
           <Typography variant="h6">Pay Period Start Date:</Typography>
           <Typography>{payPeriodStartDate}</Typography>
         </Box>
-        <Box sx={{ gridColumn: "span 4" }}>
+        <Box sx={{ gridColumn: "span 2" }}>
           <Typography variant="h6">Pay Period End Date:</Typography>
           <Typography>{payPeriodEndDate}</Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6">Hourly Rate:</Typography>
-          <Typography>${userData.hourlyRate}/hr</Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6">Assignment Type:</Typography>
-          <Typography>{userData.assignmentType}</Typography>
         </Box>
       </Box>
 
@@ -181,9 +173,7 @@ function EmployeeTimesheet() {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
-                Week {weeks[page]?.weekNumber} Total
-              </TableCell>
+              <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>Week {weeks[page]?.weekNumber} Total</TableCell>
               <TableCell>
                 <TextField
                   variant="outlined"

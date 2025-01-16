@@ -22,7 +22,41 @@ router.get('/me',checkthetoken, async (req, res) => {
   }
 });
 
+// Add a new route to fetch all employees
+// Add a new route to fetch all employees
+router.get('/employees', checkthetoken, async (req, res) => {
+  try {
+    const { _id, role, group } = req.user; // Extract user ID, role, and group from JWT payload
+    let filter = {};
 
+    if (role === 'admin') {
+      filter = {};
+    } else 
+    if (role === 'supervisor') {
+      // Supervisors see all users in their group
+      if (!group) {
+        return res.status(400).json({ error: 'No group assigned to supervisor.' });
+      }
+      filter.group = group.trim(); // Ensure no trailing spaces
+    } else {
+      // Employees only see their own record
+      filter._id = _id;
+    }
+
+    const employees = await User.find(filter)
+      .select('-password')  // Exclude password field
+      .populate('group');   // If group is a reference, populate details
+
+    if (!employees.length) {
+      return res.status(404).json({ error: 'No employees found for this user/role.' });
+    }
+
+    res.status(200).json(employees);
+  } catch (err) {
+    console.error('Error fetching employees:', err);
+    res.status(500).json({ error: 'Failed to fetch employees' });
+  }
+});
 
 // Register endpoint
 // Register endpoint
@@ -40,12 +74,12 @@ router.post('/register', async (req, res) => {
       acct,
       project,
       hourlyRate,
-      contractStartDate, // New field
-      contractEndDate,   // New field
-      assignmentType,     // New field
+      contractStartDate,
+      contractEndDate,
+      assignmentType,
+      group,
+      role, // New field from request body
     } = req.body;
-
-    console.log('Request Body:', req.body);
 
     // Validate the request body using Mongoose schema validation
     await User.validate(req.body);
@@ -61,7 +95,7 @@ router.post('/register', async (req, res) => {
     const newUser = new User({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       wNum,
       fund,
@@ -73,13 +107,14 @@ router.post('/register', async (req, res) => {
       contractStartDate: contractStartDate ? new Date(contractStartDate) : null,
       contractEndDate: contractEndDate ? new Date(contractEndDate) : null,
       assignmentType,
+      group,
+      role: role || 'employee', // If none specified, default to 'employee'
     });
 
-    console.log('New User:', newUser);
+    console.log('New User:', newUser); // Debug log
 
     const savedUser = await newUser.save();
 
-    // Include all fields in the response
     res.status(201).json({
       message: 'User registered successfully!',
       user: {
@@ -97,6 +132,8 @@ router.post('/register', async (req, res) => {
         contractStartDate: savedUser.contractStartDate,
         contractEndDate: savedUser.contractEndDate,
         assignmentType: savedUser.assignmentType,
+        group: savedUser.group,
+        role: savedUser.role, // Include role in response
       },
     });
   } catch (err) {
@@ -127,12 +164,16 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
-    // Generate a JSON Web Token (JWT) on successful login
-    const token = jwt.sign(
-      { _id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+   // Generate a JSON Web Token (JWT) on successful login
+   const token = jwt.sign(
+    { _id: user._id,
+      email: user.email,
+      group: user.group,
+      role: user.role, // Include role in the token
+    },    process.env.JWT_SECRET,
+    { expiresIn: '1h' }
+  );
+  
 
     // Send the token in a httpOnly cookie for secure storage
     res.cookie('jwt', token, { httpOnly: true, path: '/' });

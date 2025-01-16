@@ -3,23 +3,21 @@ import axios from 'axios';
 class AuthService {
   async register(data) {
     try {
-      // Allow registration even if signed in
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, data);
       return { success: true, data: response.data };
     } catch (err) {
       console.error('Registration failed:', err.response ? err.response.data : err.message);
-  
+
       if (err.response?.status === 409) {
         return { success: false, error: 'This email is already registered.' };
       }
       if (err.response?.status === 400) {
         return { success: false, error: 'Validation error. Please check your input.' };
       }
-  
+
       return { success: false, error: err.response?.data?.error || 'Registration failed. Please try again.' };
     }
   }
-  
 
   async SignIn(loginData) {
     try {
@@ -39,11 +37,17 @@ class AuthService {
         'research4@nscc.ca',
       ];
 
+      let userGroup = response.data.user?.group; // Fetch group from backend
+
+      // If email matches supervisor emails and no group is set, assign HR group
       if (supervisorEmails.includes(loginData.email)) {
-        sessionStorage.setItem('type', 'supervisor');
-      } else {
-        sessionStorage.setItem('type', 'employee');
+        userGroup = 'HR'; // Assign HR group
       }
+
+      // Store group in session
+      sessionStorage.setItem('type', userGroup === 'HR' ? 'supervisor' : 'employee');
+      sessionStorage.setItem('group', userGroup);
+
       return true;
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
@@ -54,9 +58,7 @@ class AuthService {
   async signOut() {
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/users/logout`, {}, { withCredentials: true });
-      sessionStorage.removeItem('isLoggedIn');
-      sessionStorage.removeItem('user');
-      sessionStorage.removeItem('type');
+      sessionStorage.clear();
       return { success: true };
     } catch (err) {
       console.error('Logout failed:', err.response ? err.response.data : err.message);
@@ -78,6 +80,10 @@ class AuthService {
 
   signedInUser() {
     return sessionStorage.getItem('user');
+  }
+
+  userGroup() {
+    return sessionStorage.getItem('group') || 'unknown';
   }
 }
 

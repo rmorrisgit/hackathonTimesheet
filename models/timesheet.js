@@ -3,7 +3,9 @@ const { Schema, model } = mongoose;
 
 const timesheetSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to the user who owns the timesheet
+    firstName: { type: String, required: true, maxlength: 100 }, // Store employee first name
+    lastName: { type: String, required: true, maxlength: 100 },  // Store employee last name
+    wNum: { type: String, required: false },
     group: { type: Schema.Types.ObjectId, ref: 'Group', required: false }, // Optional reference to a group
     block1: {
       fund: { type: String, required: false },
@@ -13,8 +15,8 @@ const timesheetSchema = new Schema(
       project: { type: String, required: false },
     },
     block2: {
-      payPeriodStartDate: { type: String, required: true },
-      payPeriodEndDate: { type: String, required: true },
+ payPeriodStartDate: { type: Date, required: true },
+    payPeriodEndDate: { type: Date, required: true },
     },
     block3: {
       hourlyRate: { type: Number, required: true },
@@ -39,6 +41,7 @@ const timesheetSchema = new Schema(
       sat: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
     },
     notes: { type: String, default: '' },
+    submissionDate: { type: Date, required: false }, // Added submissionDate field
   },
   { collection: 'timesheets', timestamps: true }
 );

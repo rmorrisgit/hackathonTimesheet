@@ -33,20 +33,24 @@ const userService = {
    * Fetch logged-in user's data
    * @returns {Promise<Object>} User data
    */
-  getEmployees: async () => {
-    console.log('Fetching employees...');
+  getUserData: async () => {
+    console.log('Fetching logged-in user data...');
     try {
-      const response = await apiClient.get('/users/employees'); // Update to match your actual API endpoint
+      const response = await apiClient.get('/users/me'); // Use the appropriate backend endpoint
       return handleResponse(response);
     } catch (err) {
       handleError(err);
     }
   },
 
-  getUserData: async () => {
-    console.log('Fetching logged-in user data...');
+  /**
+   * Fetch all employees. Supervisors see only their group.
+   * @returns {Promise<Array>} List of employees
+   */
+  getEmployees: async () => {
+    console.log('Fetching employees...');
     try {
-      const response = await apiClient.get('/users/me'); // Use the appropriate backend endpoint
+      const response = await apiClient.get('/employees'); // Use the appropriate backend endpoint
       return handleResponse(response);
     } catch (err) {
       handleError(err);
