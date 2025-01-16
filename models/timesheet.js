@@ -16,6 +16,7 @@ const timesheetSchema = new Schema(
     payPeriodEndDate: { type: Date, required: true },
     hourlyRate: { type: Number, required: true },
     isCasual: { type: Boolean, required: true },
+    contractEndDate: { type: Date, required: false }, // <--- Added contractEndDate
     week1: {
       sun: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
       mon: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },

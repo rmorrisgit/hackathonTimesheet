@@ -17,14 +17,15 @@ const Main = () => {
             id: timesheet._id || index, // Use _id from backend or fallback to index
             employeeName: `${timesheet.firstName} ${timesheet.lastName}`, // Use firstName and lastName
             wNum: timesheet.wNum || "N/A", // Default to N/A if wNum is missing
+            contractEndDate: timesheet.contractEndDate,
             week1Total: timesheet.week1
               ? Object.values(timesheet.week1).reduce((sum, day) => sum + (day.hours || 0), 0)
               : 0,
             week2Total: timesheet.week2
               ? Object.values(timesheet.week2).reduce((sum, day) => sum + (day.hours || 0), 0)
               : 0,
-            payPeriodStart: timesheet.block2?.payPeriodStartDate || "N/A",
-            payPeriodEnd: timesheet.block2?.payPeriodEndDate || "N/A",
+            payPeriodStart: timesheet.payPeriodStartDate || "N/A",
+            payPeriodEnd: timesheet.payPeriodEndDate || "N/A",
           }))
         );
       } catch (error) {
@@ -42,6 +43,8 @@ const Main = () => {
     { field: "week2Total", headerName: "Week 2 Total Hours", type: "number", flex: 1 },
     { field: "payPeriodStart", headerName: "Pay Period Start", flex: 1 },
     { field: "payPeriodEnd", headerName: "Pay Period End", flex: 1 },
+    { field: "contractEndDate", headerName: "Contract End", flex: 1 },
+
   ];
 
   return (
