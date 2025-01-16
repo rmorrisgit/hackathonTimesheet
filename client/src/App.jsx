@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'; // Add Navigate here
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import Main from './components/Main';
 import SignIn from './components/SignIn';
 import Footer from './components/Footer';
 import Register from './components/Register';
-import SupervisorRegister from './components/SupervisorRegister'; // Import the new SupervisorRegister component
-import Dummy from './components/Dummy';
+import SupervisorRegister from './components/SupervisorRegister'; 
+// import Dummy from './components/Dummy';
 import ProtectedRoutes from './components/ProtectedRoutes';
-import CreateForm from './components/CreateForm';
+// import CreateForm from './components/CreateForm';
 import CoffeeDetails from './components/coffees/CoffeeDetails';
-import EditCoffeeForm from './components/coffees/EditCoffeeForm';
-import DeleteConfirmation from './components/DeleteConfirmation';
+// import EditCoffeeForm from './components/coffees/EditCoffeeForm';
+// import DeleteConfirmation from './components/DeleteConfirmation';
 import authService from './services/authService';
 import EmployeeTimesheet from './components/EmployeeTimesheet';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Directory';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
@@ -57,7 +57,7 @@ const App = () => {
                 }
               />
             {/* <Route path="/coffees/create" element={<CreateForm />} /> */}
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/directory" element={<Dashboard />} />
             {/* <Route path="/coffees/edit/:coffeeId" element={<EditCoffeeForm />} /> */}
             {/* <Route path="/coffees/delete-confirmation/:coffeeId" element={<DeleteConfirmation />} /> */}
             {/* <Route path="/dummy" element={<Dummy />} /> */}

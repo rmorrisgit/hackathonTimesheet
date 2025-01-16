@@ -82,17 +82,24 @@ const NavBar = () => {
       {/* Navigation Links */}
       <div className="nav-links-container">
         <ul className="nav-links">
-        {isAuthenticated && userRole != "employee" && (
+        {/* {isAuthenticated && userRole != "employee" && (
           <li className="nav-link-item">
             <Typography variant="body1" component={Link} to="/about">
               About
             </Typography>
           </li>
-        )}
+        )} */}
+          {isAuthenticated && (
+            <li className="nav-link-item">
+              <Typography variant="body1" component={Link} to="/">
+                Dashboard
+              </Typography>
+            </li>
+          )}
           {isAuthenticated && userRole != "employee" && (
           <li className="nav-link-item">
-            <Typography variant="body1" component={Link} to="/dashboard">
-              Dashboard
+            <Typography variant="body1" component={Link} to="/directory">
+              My Team
             </Typography>
           </li>
           )}
@@ -104,13 +111,13 @@ const NavBar = () => {
           </li>
           )}
           
-          {isAuthenticated && (
+          {/* {isAuthenticated && (
             <li className="nav-link-item">
               <Typography variant="body1" component={Link} to="/employeeList">
                 Research Groups
               </Typography>
             </li>
-          )}
+          )} */}
         </ul>
       </div>
 

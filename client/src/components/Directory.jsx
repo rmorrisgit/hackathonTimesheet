@@ -1,6 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
-import '../css/dashboard.css'
+import '../css/directory.css'
 import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
@@ -65,9 +65,9 @@ const columns = [
     { id: "w1234560", lastName: 'John', firstName: 'Smith',},
   ];
   
-  export default function Dashboard() {
+  export default function EmployeeList() {
     return (
-        <div className='dashboard_grid'>
+        <div className='employee_grid'>
             <h1 className='title'>Employee Timesheets</h1>
       <Box sx={{ height: 650, width: '100%' }}>
         <DataGrid
