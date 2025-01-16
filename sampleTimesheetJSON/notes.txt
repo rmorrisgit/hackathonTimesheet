@@ -1,0 +1,14 @@
+/*   // {
+  //   "_id": "64b1e0d6f5b2f61b2d123460",
+  //   "firstName": "Alex",
+  //   "lastName": "Brown",
+  //   "email": "admin@example.com",
+  //   "password": "hashedpassword123",
+  //   "group": null,
+  //   "role": "admin",
+  //   "wNum": "W123460",
+  //   "hourlyRate": null,
+  //   "assignmentType": null,
+  //   "contractStartDate": null,
+  //   "contractEndDate": null
+  // }*/
