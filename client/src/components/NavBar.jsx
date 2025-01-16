@@ -96,17 +96,10 @@ const NavBar = () => {
               </Typography>
             </li>
           )}
-          {isAuthenticated && (
-            <li className="nav-link-item">
-              <Typography variant="body1" component={Link} to="/dashboard">
-                Dashboard
-              </Typography>
-            </li>
-          )}
           {isAuthenticated && userRole != "employee" && (
           <li className="nav-link-item">
             <Typography variant="body1" component={Link} to="/directory">
-              My Team
+              Team Timesheets
             </Typography>
           </li>
           )}
