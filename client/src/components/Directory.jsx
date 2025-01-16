@@ -5,21 +5,22 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import '../css/directory.css';
 import userService from '../services/userService';
+import '../css/directory.css';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90, hide: true },
+  { field: 'wNum', headerName: 'W#', width: 140 },
   { field: 'employeeName', headerName: 'Employee Name', width: 200 },
   { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'role', headerName: 'Role', width: 150 },
-  { field: 'group', headerName: 'Group', width: 150 },
+  { field: 'role', headerName: 'Role', width: 200 },
+  { field: 'group', headerName: 'Group', width: 200 },
   {
     field: 'view',
     headerName: 'View',
     width: 100,
     renderCell: (params) => (
-      <IconButton href={`/employee/${params.row.id}`}>
+      // Use wNum in the route
+      <IconButton href={`/employee/${params.row.wNum}`}>
         <VisibilityIcon sx={{ color: 'black', fontSize: 24 }} />
       </IconButton>
     ),
@@ -34,18 +35,17 @@ export default function EmployeeList() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        // Fetch employees filtered by group
         const employees = await userService.getEmployees();
 
-        console.log('Fetched Employees:', employees);
-
         // Map the API data to match DataGrid's structure
+        // If wNum might be missing, provide a fallback so it's never undefined
         const mappedRows = employees.map((employee, index) => ({
-          id: employee._id || `row-${index}`,
+          wNum: employee.wNum || 'N/A',
           employeeName: `${employee.firstName} ${employee.lastName}`,
           email: employee.email || 'N/A',
           role: employee.role || 'N/A',
-          group: employee.group?.name || 'N/A', // Assuming group has a `name` field
+          // If employee.group is an object, ensure you display only the name
+          group: employee.group || 'N/A',
         }));
 
         setRows(mappedRows);
@@ -85,6 +85,8 @@ export default function EmployeeList() {
         <DataGrid
           rows={rows}
           columns={columns}
+          // Tell the grid to use wNum as the unique row ID
+          getRowId={(row) => row.wNum}
           initialState={{
             pagination: {
               paginationModel: {
