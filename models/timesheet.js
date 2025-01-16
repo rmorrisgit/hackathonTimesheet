@@ -6,7 +6,7 @@ const timesheetSchema = new Schema(
     firstName: { type: String, required: true, maxlength: 100 }, // Store employee first name
     lastName: { type: String, required: true, maxlength: 100 },  // Store employee last name
     wNum: { type: String, required: false },
-    group: { type: Schema.Types.ObjectId, ref: 'Group', required: false }, // Optional reference to a group
+    group: { type: String, required: false  }, // Optional reference to a group
     fund: { type: String, required: false },
     dept: { type: String, required: false },
     program: { type: String, required: false },
