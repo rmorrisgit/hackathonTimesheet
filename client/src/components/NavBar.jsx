@@ -89,9 +89,16 @@ const NavBar = () => {
             </Typography>
           </li>
         )} */}
+        {isAuthenticated && (
+            <li className="nav-link-item">
+              <Typography variant="body1" component={Link} to="/about">
+                About
+              </Typography>
+            </li>
+          )}
           {isAuthenticated && (
             <li className="nav-link-item">
-              <Typography variant="body1" component={Link} to="/">
+              <Typography variant="body1" component={Link} to="/dashboard">
                 Dashboard
               </Typography>
             </li>

@@ -15,6 +15,7 @@ import CoffeeDetails from './components/coffees/CoffeeDetails';
 import authService from './services/authService';
 import EmployeeTimesheet from './components/EmployeeTimesheet';
 import Dashboard from './components/Directory';
+import About from './components/About';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
@@ -58,6 +59,7 @@ const App = () => {
               />
             {/* <Route path="/coffees/create" element={<CreateForm />} /> */}
             <Route path="/directory" element={<Dashboard />} />
+            <Route path="/about" element={<About />} />
             {/* <Route path="/coffees/edit/:coffeeId" element={<EditCoffeeForm />} /> */}
             {/* <Route path="/coffees/delete-confirmation/:coffeeId" element={<DeleteConfirmation />} /> */}
             {/* <Route path="/dummy" element={<Dummy />} /> */}
