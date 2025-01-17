@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# generated files
+/client/public/GeneratedTimesheet.pdf
+*/GeneratedTimesheet.pdf
+/public/GeneratedTimesheet.pdf
