@@ -103,12 +103,12 @@ function EmployeeTimesheet() {
       week1: weeks[0].dates.map((row) => ({
         day: row.day.toLowerCase(), // Convert the day to lowercase
         hours: parseFloat(hoursWorked[row.date] || 0), // Ensure hours are numbers
-        info: "", // Include additional info if needed
+        info: row.info || "", // Include the info field from row or default to an empty string
       })),
       week2: weeks[1].dates.map((row) => ({
         day: row.day.toLowerCase(), // Convert the day to lowercase
         hours: parseFloat(hoursWorked[row.date] || 0), // Ensure hours are numbers
-        info: "",
+        info: row.info || "", // Include the info field from row or default to an empty string
       })),
     };
     try {
