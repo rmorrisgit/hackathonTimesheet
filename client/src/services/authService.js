@@ -27,25 +27,34 @@ class AuthService {
         { withCredentials: true }
       );
 
+      // Mark as logged in
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
 
-      const supervisorEmails = [
-        'research1@nscc.ca',
-        'research2@nscc.ca',
-        'research3@nscc.ca',
-        'research4@nscc.ca',
-      ];
+      // The backend might already return a user.group:
+      let userGroup = response.data.user?.group;
 
-      let userGroup = response.data.user?.group; // Fetch group from backend
+      // Mapping table for certain research emails
+      const groupMapping = {
+        'research1@nscc.ca': 'HR',
+        'research2@nscc.ca': 'Finance',
+        'research3@nscc.ca': 'Engineering',
+        // Add more if needed
+      };
 
-      // If email matches supervisor emails and no group is set, assign HR group
-      if (supervisorEmails.includes(loginData.email)) {
-        userGroup = 'HR'; // Assign HR group
+      // If the user’s email matches our mapping but the group is undefined or empty,
+      // we override with the mapped group:
+      if (!userGroup || userGroup === 'N/A') {
+        const mappedGroup = groupMapping[loginData.email];
+        if (mappedGroup) {
+          userGroup = mappedGroup;
+        }
       }
 
-      // Store group in session
-      sessionStorage.setItem('type', userGroup === 'HR' ? 'supervisor' : 'employee');
+      // Now set the session "type" based on the final userGroup
+      // For simplicity, we’ll treat "HR", "Finance", "Engineering" as "supervisor"
+      // You can do any logic here that you want
+      sessionStorage.setItem('type', userGroup === 'employee' ? 'employee' : 'supervisor');
       sessionStorage.setItem('group', userGroup);
 
       return true;

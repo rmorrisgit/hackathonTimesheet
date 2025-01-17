@@ -64,25 +64,25 @@ router.get('/me', checkthetoken, async (req, res) => {
  */
 router.get('/employees', checkthetoken, async (req, res) => {
   try {
+    console.log('Authenticated User:', req.user); // Add this line
+
     const { _id, role, group } = req.user;
     let filter = {};
 
     if (role === 'admin') {
       filter = {};
     } else if (role === 'supervisor') {
-      // Supervisors see all users in their group
       if (!group) {
         return res.status(400).json({ error: 'No group assigned to supervisor.' });
       }
       filter.group = group.trim();
     } else {
-      // Employees only see their own record
       filter._id = _id;
     }
 
     const employees = await User.find(filter)
-      .select('-password')  // Exclude password
-      .populate('group');   // If group is a reference, populate details
+      .select('-password')
+      .populate('group');
 
     if (!employees.length) {
       return res.status(404).json({ error: 'No employees found for this user/role.' });
@@ -94,6 +94,7 @@ router.get('/employees', checkthetoken, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch employees' });
   }
 });
+
 
 /**
  * POST /register
