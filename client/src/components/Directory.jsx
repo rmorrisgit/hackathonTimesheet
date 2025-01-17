@@ -36,8 +36,10 @@ export default function EmployeeList() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
+        // Fetch employees from the API
         const employees = await userService.getEmployees();
-
+  
+        // Map the employee data to include week1 and week2 data
         const mappedRows = employees.map((employee, index) => ({
           id: employee.wNum || index, // Ensure each row has a unique id
           wNum: employee.wNum || 'N/A',
@@ -45,8 +47,10 @@ export default function EmployeeList() {
           email: employee.email || 'N/A',
           role: employee.role || 'N/A',
           group: employee.group || 'N/A',
+          week1: employee.week1 || [], // Add week1 data
+          week2: employee.week2 || [], // Add week2 data
         }));
-
+  
         setRows(mappedRows);
       } catch (err) {
         console.error('Error fetching employees:', err);
@@ -55,9 +59,10 @@ export default function EmployeeList() {
         setLoading(false);
       }
     };
-
+  
     fetchEmployees();
   }, []);
+  
 
   if (loading) {
     return (

@@ -100,19 +100,16 @@ function EmployeeTimesheet() {
       hourlyRate: userData.hourlyRate,
       isCasual: userData.assignmentType === "Casual",
       contractEndDate: userData.contractEndDate,
-      week1: Object.fromEntries(
-        weeks[0].dates.map((row) => [
-          row.day.toLowerCase(),
-          { hours: parseFloat(hoursWorked[row.date] || 0), info: "" }, // Include additional info if needed
-        ])
-      ),
-      week2: Object.fromEntries(
-        weeks[1].dates.map((row) => [
-          row.day.toLowerCase(),
-          { hours: parseFloat(hoursWorked[row.date] || 0), info: "" },
-        ])
-      ),
-      notes: "", // Add notes if necessary
+      week1: weeks[0].dates.map((row) => ({
+        day: row.day.toLowerCase(), // Convert the day to lowercase
+        hours: parseFloat(hoursWorked[row.date] || 0), // Ensure hours are numbers
+        info: "", // Include additional info if needed
+      })),
+      week2: weeks[1].dates.map((row) => ({
+        day: row.day.toLowerCase(), // Convert the day to lowercase
+        hours: parseFloat(hoursWorked[row.date] || 0), // Ensure hours are numbers
+        info: "",
+      })),
     };
   
     try {
