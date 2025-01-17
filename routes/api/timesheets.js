@@ -200,7 +200,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.sun.info}`, {
       //   x: 295,
       //   y: 298-10,
@@ -220,7 +220,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.mon.info}`, {
       //   x: 295,
       //   y: 275-10,
@@ -240,7 +240,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.tue.info}`, {
       //   x: 295,
       //   y: 255-10,
@@ -260,7 +260,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.wed.info}`, {
       //   x: 295,
       //   y: 235-10,
@@ -280,7 +280,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.thu.info}`, {
       //   x: 295,
       //   y: 215-10,
@@ -300,7 +300,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.fri.info}`, {
       //   x: 295,
       //   y: 195-10,
@@ -320,7 +320,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // firstPage.drawText(`${payload.week1.sat.info}`, {
       //   x: 295,
       //   y: 175-10,
@@ -352,7 +352,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.sun.info}`, {
       //   x: 295,
       //   y: 298+357-10,
@@ -372,7 +372,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.mon.info}`, {
       //   x: 295,
       //   y: 275+357-10,
@@ -392,7 +392,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.tue.info}`, {
       //   x: 295,
       //   y: 255+357-10,
@@ -412,7 +412,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.wed.info}`, {
       //   x: 295,
       //   y: 235+357-10,
@@ -432,7 +432,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.thu.info}`, {
       //   x: 295,
       //   y: 215+357-10,
@@ -452,7 +452,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.fri.info}`, {
       //   x: 295,
       //   y: 195+357-10,
@@ -472,7 +472,7 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // // notes
+      // // info
       // secondPage.drawText(`${payload.week2.sat.info}`, {
       //   x: 295,
       //   y: 175+357-10,
@@ -501,8 +501,8 @@ router.post('/generate-pdf', async (req, res) => {
         color: rgb(0, 0, 0)
       });
 
-      // notes comments
-      secondPage.drawText(`${payload.notes}`, {
+      // info comments
+      secondPage.drawText(``, {
         x: 232,
         y: 438-10,
         size: 9,
