@@ -7,3 +7,9 @@
 .title{
     padding-bottom: 10px;
 }
+
+/* Hide the Rows per page selector in DataGrid */
+.employee_grid .MuiDataGrid-footerContainer .MuiDataGrid-pagination__rowsPerPage {
+    display: none;
+  }
+  

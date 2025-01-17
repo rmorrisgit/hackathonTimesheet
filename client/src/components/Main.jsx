@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import timesheetService from "../services/apiService"; // Make sure apiService calls GET /timesheets
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
+import "../css/directory.css";
+import timesheetService from "../services/apiService";
 
 const Main = () => {
   const [timesheets, setTimesheets] = useState([]);
+  const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTimesheets = async () => {
@@ -29,7 +36,7 @@ const Main = () => {
             id: timesheet._id || index,
             employeeName: `${timesheet.firstName} ${timesheet.lastName}`,
             wNum: timesheet.wNum || "N/A",
-            group: timesheet.group || "N/A",            // <--- Add group field
+            group: timesheet.group || "N/A",
             contractEndDate: timesheet.contractEndDate || "N/A",
             week1Total,
             week2Total,
@@ -41,17 +48,21 @@ const Main = () => {
         setTimesheets(mappedTimesheets);
       } catch (error) {
         console.error("Error fetching timesheets:", error);
+        setError(
+          error.response?.data?.message || "Failed to fetch timesheets."
+        );
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTimesheets();
   }, []);
 
-  // Add 'group' to the columns
   const columns = [
     { field: "employeeName", headerName: "Employee Name", flex: 1 },
     { field: "wNum", headerName: "W#", flex: 1 },
-    { field: "group", headerName: "Group", flex: 1 }, // <--- New column
+    { field: "group", headerName: "Group", flex: 1 },
     {
       field: "week1Total",
       headerName: "Week 1 Total Hours",
@@ -69,20 +80,94 @@ const Main = () => {
     { field: "contractEndDate", headerName: "Contract End", flex: 1 },
   ];
 
-  return (
-    <div style={{ height: 500, width: "100%", marginTop: "180px" }}>
-      <DataGrid
-        rows={timesheets}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 20,
-            },
-          },
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
-        pageSizeOptions={[5, 10, 20]}
-      />
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ textAlign: "center", marginTop: 5 }}>
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <div className="employee_grid" style={{ padding: "20px" }}>
+      {/* <h1 className="title">Timesheet Overview</h1> */}
+      <Box sx={{ width: "100%", mt: 20 }}>
+        <DataGrid
+          rows={timesheets}
+          columns={columns}
+          getRowId={(row) => row.id}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          pageSizeOptions={[10, 20, 50]}
+          checkboxSelection
+          rowSelectionModel={rowSelectionModel}
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            // Ensure only one row is selected at a time
+            if (newRowSelectionModel.length > 1) {
+              setRowSelectionModel([
+                newRowSelectionModel[newRowSelectionModel.length - 1],
+              ]);
+            } else {
+              setRowSelectionModel(newRowSelectionModel);
+            }
+          }}
+          disableSelectionOnClick={true}
+          sx={{
+            // Remove default cell focus outline
+            "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
+              outline: "none",
+            },
+            // Highlight the selected row with a custom color
+            "& .MuiDataGrid-row.Mui-selected": {
+              backgroundColor: "rgba(25, 118, 210, 0.2) !important",
+            },
+            "& .MuiDataGrid-row.Mui-selected:hover": {
+              backgroundColor: "rgba(25, 118, 210, 0.3) !important",
+            },
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)", // Subtle hover effect
+              cursor: "pointer", // Change cursor to pointer on hover
+            },
+            // Customize checkbox styles if needed
+            "& .MuiCheckbox-root": {
+              color: "inherit",
+            },
+            // Remove default cursor style
+            "& .MuiDataGrid-row": {
+              cursor: "default",
+            },
+          }}
+          // Disable unnecessary grid features to simplify UI
+          disableColumnMenu
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+          // Remove focus on grid
+          tabIndex={-1}
+        />
+      </Box>
     </div>
   );
 };
