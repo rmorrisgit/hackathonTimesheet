@@ -28,14 +28,18 @@ const App = () => {
       />
       <div id="main-content">
         <Routes>
-          <Route
+        <Route
             path="/"
             element={
-              <Main
-                filteredData={filteredData}
-                setFilteredData={setFilteredData}
-                isAuthenticated={isAuthenticated}
-              />
+              isAuthenticated ? (
+                <Main
+                  filteredData={filteredData}
+                  setFilteredData={setFilteredData}
+                  isAuthenticated={isAuthenticated}
+                />
+              ) : (
+                <Navigate to="/signin" />
+              )
             }
           />
           <Route path="/timesheet" element={<EmployeeTimesheet />} />
