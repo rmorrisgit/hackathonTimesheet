@@ -15,6 +15,9 @@ import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
 import timesheetService from "../services/apiService"; // Import the service
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
 function EmployeeTimesheet() {
@@ -115,7 +118,10 @@ function EmployeeTimesheet() {
         ])
       ),
       notes: "", // Add notes if necessary
+
     };
+
+    
   
     try {
       // Submit the payload using the service
@@ -126,7 +132,124 @@ function EmployeeTimesheet() {
       console.error("Error submitting timesheet:", error);
       alert("Failed to submit timesheet. Please try again.");
     }
+
+    handlePdf(payload);
   };
+
+  const handlePdf = async (payload) => {
+    // defining important variables
+    const pdfPath = path.resolve(__dirname, "/pdfTemplate/timesheetTemplate.pdf");
+    const existingPdfBytes = fs.readFileSync(pdfPath);
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const secondPage = pages[1];
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    
+    // first name
+    firstPage.drawText(`${payload.firstName} ${payload.lastName}`, {
+      x: 230,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+    // w number
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+    // fund
+
+
+    // dept
+
+
+    // programme
+
+
+    // acct
+
+
+    //project
+
+
+    // period start
+
+
+    // period end
+
+
+    // hourly rate
+
+
+    // casAux
+
+
+    // sun  1
+
+
+    // mon  1
+
+
+    // tues 1
+
+
+    // wed  1
+
+
+    // thur 1
+
+
+    // fri  1
+
+
+    // sat  1
+
+
+    // tot 1
+
+    //////// page 2 ////////
+  
+    // sun  2
+
+
+    // mon  2
+
+
+    // tues 2
+
+
+    // wed  2
+
+
+    // thur 2
+
+
+    // fri  2
+
+
+    // sat  2
+
+
+    // tot 2
+
+
+    // 'entered' grand tot
+
+
+    // notes comments
+
+
+    // employee signature
+
+    
+  }
   
   return (
     <Box sx={{ padding: "20px", marginTop: "250px" }}>
