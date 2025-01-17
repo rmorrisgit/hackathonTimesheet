@@ -66,6 +66,13 @@ const NavBar = () => {
       {/* Navigation Links */}
       <div className="nav-links-container">
         <ul className="nav-links">
+        {isAuthenticated && userRole != "employee" && (
+          <li className="nav-link-item">
+            <Typography variant="body1" component={Link} to="/">
+              Main
+            </Typography>
+          </li>
+          )}
           {isAuthenticated && userRole != "employee" && (
           <li className="nav-link-item">
             <Typography variant="body1" component={Link} to="/directory">
@@ -80,7 +87,6 @@ const NavBar = () => {
             </Typography>
           </li>
           )}
-          
           {/* {isAuthenticated && (
             <li className="nav-link-item">
               <Typography variant="body1" component={Link} to="/employeeList">
