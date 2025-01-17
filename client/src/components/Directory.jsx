@@ -9,15 +9,15 @@ import userService from '../services/userService';
 import '../css/directory.css';
 
 const columns = [
-  { field: 'wNum', headerName: 'W#', width: 140 },
-  { field: 'employeeName', headerName: 'Employee Name', width: 350 },
-  { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'group', headerName: 'Group', width: 150 },
-  { field: 'role', headerName: 'Role', width: 150 },
+  { field: 'wNum', headerName: 'W#', flex: 0.5 },
+  { field: 'employeeName', headerName: 'Employee Name', flex: 1 },
+  { field: 'email', headerName: 'Email', flex: 1 },
+  { field: 'group', headerName: 'Group', flex: 0.7 },
+  { field: 'role', headerName: 'Role', flex: 0.7 },
   {
     field: 'view',
     headerName: 'View',
-    width: 100,
+    flex: 0.3,
     sortable: false,
     filterable: false,
     renderCell: (params) => (
@@ -30,7 +30,6 @@ const columns = [
 
 export default function EmployeeList() {
   const [rows, setRows] = useState([]);
-  const [rowSelectionModel, setRowSelectionModel] = useState([]); // State for selected rows
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,7 +44,7 @@ export default function EmployeeList() {
           employeeName: `${employee.firstName} ${employee.lastName}`,
           email: employee.email || 'N/A',
           role: employee.role || 'N/A',
-          group: employee.group?.name || 'N/A', // Assuming group has a 'name' property
+          group: employee.group || 'N/A',
         }));
 
         setRows(mappedRows);
@@ -86,26 +85,23 @@ export default function EmployeeList() {
   }
 
   return (
-    <div className="employee_grid" style={{ padding: '20px' }}>
-      <h1 className="title">Employee Directory</h1>
-      <Box sx={{ width: '100%', mt: 22 }}>
+    <div className="employee_grid" style={{ padding: "20px" }}>
+      {/* <h1 className="title">Employee Directory</h1> */}
+      <Box sx={{  width: '100%', mt: 20 }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          getRowId={(row) => row.id} // Use the 'id' field for unique identification
-          pageSize={10} // Fixed page size
-          pageSizeOptions={[5, 10, 25, { value: -1, label: 'All' }]}
-          checkboxSelection
-          rowSelectionModel={rowSelectionModel}
-          onRowSelectionModelChange={(newRowSelectionModel) => {
-            // Ensure only one row is selected at a time
-            if (newRowSelectionModel.length > 1) {
-              setRowSelectionModel([newRowSelectionModel[newRowSelectionModel.length - 1]]);
-            } else {
-              setRowSelectionModel(newRowSelectionModel);
-            }
+          getRowId={(row) => row.wNum || row.id} // Ensure unique row IDs
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
           }}
-          disableSelectionOnClick={true} // Prevent row selection via cell clicks
+          pageSizeOptions={[10, 20, 50]}
+          // checkboxSelection
+          
           sx={{
             // Remove default cell focus outline
             "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
@@ -113,25 +109,31 @@ export default function EmployeeList() {
             },
             // Highlight the selected row with a custom color
             "& .MuiDataGrid-row.Mui-selected": {
-              backgroundColor: "rgba(25, 118, 210, 0.2) !important", // MUI primary color with opacity
+              backgroundColor: "rgba(25, 118, 210, 0.2) !important",
             },
-            // Adjust the selected row's hover background
             "& .MuiDataGrid-row.Mui-selected:hover": {
               backgroundColor: "rgba(25, 118, 210, 0.3) !important",
             },
-            // Maintain hover background for non-selected rows
             "& .MuiDataGrid-row:hover": {
               backgroundColor: "rgba(0, 0, 0, 0.04)", // Subtle hover effect
+              cursor: "pointer", // Change cursor to pointer on hover
             },
             // Customize checkbox styles if needed
             "& .MuiCheckbox-root": {
               color: "inherit",
             },
-            // Change cursor back to default if not wanting pointer
+            // Remove default cursor style
             "& .MuiDataGrid-row": {
-              cursor: "default", // Remove pointer cursor
+              cursor: "default",
             },
           }}
+            // Optional: Navigate to employee detail page on row click
+
+          // onRowClick={(params) => {
+          //   window.location.href = `/employee/${params.row.wNum}`;
+          // }}
+
+
           // Disable unnecessary grid features to simplify UI
           disableColumnMenu
           disableColumnFilter
@@ -139,6 +141,10 @@ export default function EmployeeList() {
           disableDensitySelector
           // Remove focus on grid
           tabIndex={-1}
+
+
+
+
         />
       </Box>
     </div>

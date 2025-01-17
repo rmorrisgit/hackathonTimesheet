@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import Box from "@mui/material/Box"; // Import Box for consistent styling
-import CircularProgress from "@mui/material/CircularProgress"; // Optional: Loading indicator
-import Typography from "@mui/material/Typography"; // Optional: Error message display
-import "../css/directory.css"; // Ensure consistent CSS if needed
-import timesheetService from "../services/apiService"; // Ensure this service is correctly set up
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
+import "../css/directory.css";
+import timesheetService from "../services/apiService";
 
 const Main = () => {
   const [timesheets, setTimesheets] = useState([]);
-  const [rowSelectionModel, setRowSelectionModel] = useState([]); // State for selected rows
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTimesheets = async () => {
@@ -33,10 +33,10 @@ const Main = () => {
             : 0;
 
           return {
-            id: timesheet._id || index, // Ensure each row has a unique id
+            id: timesheet._id || index,
             employeeName: `${timesheet.firstName} ${timesheet.lastName}`,
             wNum: timesheet.wNum || "N/A",
-            group: timesheet.group || "N/A", // Added group field
+            group: timesheet.group || "N/A",
             contractEndDate: timesheet.contractEndDate || "N/A",
             week1Total,
             week2Total,
@@ -59,11 +59,10 @@ const Main = () => {
     fetchTimesheets();
   }, []);
 
-  // Define columns with consistent styling
   const columns = [
     { field: "employeeName", headerName: "Employee Name", flex: 1 },
     { field: "wNum", headerName: "W#", flex: 1 },
-    { field: "group", headerName: "Group", flex: 1 }, // New column
+    { field: "group", headerName: "Group", flex: 1 },
     {
       field: "week1Total",
       headerName: "Week 1 Total Hours",
@@ -108,14 +107,20 @@ const Main = () => {
 
   return (
     <div className="employee_grid" style={{ padding: "20px" }}>
-      <h1 className="title">Timesheet Overview</h1> {/* Updated title */}
-      <Box sx={{ height: 600, width: "100%", mt: 22 }}>
+      {/* <h1 className="title">Timesheet Overview</h1> */}
+      <Box sx={{ width: "100%", mt: 20 }}>
         <DataGrid
           rows={timesheets}
           columns={columns}
-          getRowId={(row) => row.id} // Use the 'id' field for unique identification
-          pageSize={10} // Fixed page size
-          pageSizeOptions={[5, 10, 25, { value: -1, label: 'All' }]}
+          getRowId={(row) => row.id}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          pageSizeOptions={[10, 20, 50]}
           checkboxSelection
           rowSelectionModel={rowSelectionModel}
           onRowSelectionModelChange={(newRowSelectionModel) => {
@@ -128,7 +133,7 @@ const Main = () => {
               setRowSelectionModel(newRowSelectionModel);
             }
           }}
-          disableSelectionOnClick={true} // Prevent row selection via cell clicks
+          disableSelectionOnClick={true}
           sx={{
             // Remove default cell focus outline
             "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
@@ -136,23 +141,22 @@ const Main = () => {
             },
             // Highlight the selected row with a custom color
             "& .MuiDataGrid-row.Mui-selected": {
-              backgroundColor: "rgba(25, 118, 210, 0.2) !important", // MUI primary color with opacity
+              backgroundColor: "rgba(25, 118, 210, 0.2) !important",
             },
-            // Adjust the selected row's hover background
             "& .MuiDataGrid-row.Mui-selected:hover": {
               backgroundColor: "rgba(25, 118, 210, 0.3) !important",
             },
-            // Maintain hover background for non-selected rows
             "& .MuiDataGrid-row:hover": {
               backgroundColor: "rgba(0, 0, 0, 0.04)", // Subtle hover effect
+              cursor: "pointer", // Change cursor to pointer on hover
             },
             // Customize checkbox styles if needed
             "& .MuiCheckbox-root": {
               color: "inherit",
             },
-            // Change cursor back to default if not wanting pointer
+            // Remove default cursor style
             "& .MuiDataGrid-row": {
-              cursor: "default", // Remove pointer cursor
+              cursor: "default",
             },
           }}
           // Disable unnecessary grid features to simplify UI
