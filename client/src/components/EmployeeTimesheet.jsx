@@ -212,45 +212,57 @@ function EmployeeTimesheet() {
     });
 
 
-
+    // chunk 2
     // period start
-    firstPage.drawText(`${wNum}`, {
-      x: 420,
-      y: 590,
+    firstPage.drawText(`${payload.payPeriodStartDate}`, {
+      x: 315,
+      y: 500,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
 
     // period end
-    firstPage.drawText(`${wNum}`, {
-      x: 420,
-      y: 590,
+    firstPage.drawText(`${payload.payPeriodEndDate}`, {
+      x: 440,
+      y: 500,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
 
     // hourly rate
-    firstPage.drawText(`${wNum}`, {
-      x: 420,
-      y: 590,
+    firstPage.drawText(`${payload.hourlyRate}}`, {
+      x: 230,
+      y: 430,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
 
     // casAux
-    firstPage.drawText(`${wNum}`, {
-      x: 420,
-      y: 590,
-      size: 12,
-      font,
-      color: rgb(0, 0, 0)
-    });
+    if(payload.isCasual === true){
+      firstPage.drawText(`X`, {
+        x: 469,
+        y: 445,
+        size: 12,
+        font,
+        color: rgb(0, 0, 0)
+      });
+    }else{
+      firstPage.drawText(`X`, {
+        x: 469,
+        y: 425,
+        size: 12,
+        font,
+        color: rgb(0, 0, 0)
+      });
+    };
+    
 
+    // week chunk 1
     // sun  1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -259,7 +271,7 @@ function EmployeeTimesheet() {
     });
 
     // mon  1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -268,7 +280,7 @@ function EmployeeTimesheet() {
     });
 
     // tues 1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -277,7 +289,7 @@ function EmployeeTimesheet() {
     });
 
     // wed  1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -286,7 +298,7 @@ function EmployeeTimesheet() {
     });
 
     // thur 1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -295,7 +307,7 @@ function EmployeeTimesheet() {
     });
 
     // fri  1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -304,7 +316,7 @@ function EmployeeTimesheet() {
     });
 
     // sat  1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -313,7 +325,7 @@ function EmployeeTimesheet() {
     });
 
     // tot 1
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -324,7 +336,7 @@ function EmployeeTimesheet() {
     //////// page 2 ////////
   
     // sun  2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -333,7 +345,7 @@ function EmployeeTimesheet() {
     });
 
     // mon  2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -342,7 +354,7 @@ function EmployeeTimesheet() {
     });
 
     // tues 2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -351,7 +363,7 @@ function EmployeeTimesheet() {
     });
 
     // wed  2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -360,7 +372,7 @@ function EmployeeTimesheet() {
     });
 
     // thur 2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -369,7 +381,7 @@ function EmployeeTimesheet() {
     });
 
     // fri  2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -378,7 +390,7 @@ function EmployeeTimesheet() {
     });
 
     // sat  2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -387,7 +399,7 @@ function EmployeeTimesheet() {
     });
 
     // tot 2
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -396,7 +408,7 @@ function EmployeeTimesheet() {
     });
 
     // 'entered' grand tot
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -405,7 +417,7 @@ function EmployeeTimesheet() {
     });
 
     // notes comments
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
@@ -414,7 +426,7 @@ function EmployeeTimesheet() {
     });
 
     // employee signature
-    firstPage.drawText(`${wNum}`, {
+    firstPage.drawText(`${payload.}}`, {
       x: 420,
       y: 590,
       size: 12,
