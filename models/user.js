@@ -28,7 +28,16 @@ const userSchema = new Schema(
         message: 'Password too weak. Must be at least 8 characters and contain uppercase, lowercase, numbers, and symbols.',
       },
     },
-    group: { type: Schema.Types.ObjectId, ref: 'Group' }, // Reference to Group
+    group: { 
+      type: String, 
+      enum: ['HR', 'Finance', 'Engineering', null], 
+      default: null 
+    }, // Assign predefined groups
+    role: {
+      type: String,
+      enum: ['employee', 'supervisor', 'admin'],
+      default: 'employee',
+    },
     wNum: { type: String, required: false },
     fund: { type: String, required: false },
     dept: { type: String, required: false },
@@ -43,7 +52,7 @@ const userSchema = new Schema(
     contractStartDate: { type: Date, required: false },
     contractEndDate: { type: Date, required: false },
     assignmentType: { type: String, required: false, enum: ['Casual', 'Auxiliary'] },
-    timesheets: [{ type: Schema.Types.ObjectId, ref: 'Timesheet' }],
+    timesheets: [{ type: Schema.Types.ObjectId, ref: 'Timesheet' }], // Reference to Timesheets
   },
   { collection: 'users', timestamps: true }
 );

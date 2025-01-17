@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "67893c05c2e6ce98c3d9abc6",
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice@hrcompany.com",
+    "group": "HR",
+    "password": "$2b$10$abc123def456ghi789jklmnoPQrsTuvWXyz",
+    "contractStartDate": null,
+    "contractEndDate": null,
+    "timesheets": [],
+    "createdAt": "2025-01-16T17:04:05.499+00:00",
+    "updatedAt": "2025-01-16T17:04:05.499+00:00",
+    "__v": 0
+  },
+  {
+    "_id": "67893c05c2e6ce98c3d9abc7",
+    "firstName": "Robert",
+    "lastName": "Henderson",
+    "email": "robert@hrcompany.com",
+    "group": "HR",
+    "password": "$2b$10$qwe123rty456uio789asdfghjklZXCVBNM",
+    "contractStartDate": null,
+    "contractEndDate": null,
+    "timesheets": [],
+    "createdAt": "2025-01-16T17:04:05.499+00:00",
+    "updatedAt": "2025-01-16T17:04:05.499+00:00",
+    "__v": 0
+  },
+  {
+    "_id": "67893c05c2e6ce98c3d9abc8",
+    "firstName": "Samantha",
+    "lastName": "Lopez",
+    "email": "samantha@hrcompany.com",
+    "group": "HR",
+    "password": "$2b$10$zzz999xxx888yyy777XyxXyxXyxXyxXyxXy",
+    "contractStartDate": null,
+    "contractEndDate": null,
+    "timesheets": [],
+    "createdAt": "2025-01-16T17:04:05.499+00:00",
+    "updatedAt": "2025-01-16T17:04:05.499+00:00",
+    "__v": 0
+  }
+]

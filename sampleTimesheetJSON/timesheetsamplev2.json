@@ -1,0 +1,45 @@
+{
+  "_id": "64b1e0d6f5b2f61b2d123456",
+  "firstName": "John",
+  "lastName": "Doe",
+  "wNum": "W123456",
+  "group": "HR",
+  "role": "employee",
+  "block1": {
+      "fund": "12345",
+      "dept": "IT",
+      "program": "CS101",
+      "acct": "98765",
+      "project": "WebApp"
+  },
+  "block2": {
+      "payPeriodStartDate": "2025-01-01",
+      "payPeriodEndDate": "2025-01-14"
+  },
+  "block3": {
+      "hourlyRate": 25,
+      "isCasual": true
+  },
+  "week1": {
+      "sun": { "hours": 8, "info": "Worked on feature X" },
+      "mon": { "hours": 8, "info": "Team meeting" },
+      "tue": { "hours": 8, "info": "Code reviews" },
+      "wed": { "hours": 8, "info": "Bug fixes" },
+      "thu": { "hours": 8, "info": "Sprint planning" },
+      "fri": { "hours": 6, "info": "Documentation" },
+      "sat": { "hours": 0, "info": "" }
+  },
+  "week2": {
+      "sun": { "hours": 0, "info": "" },
+      "mon": { "hours": 8, "info": "Feature Y" },
+      "tue": { "hours": 8, "info": "Testing" },
+      "wed": { "hours": 8, "info": "Client meeting" },
+      "thu": { "hours": 8, "info": "Retrospective" },
+      "fri": { "hours": 4, "info": "Half-day" },
+      "sat": { "hours": 0, "info": "" }
+  },
+  "notes": "Overall, productive work.",
+  "submissionDate": "2025-01-15T10:00:00Z",
+  "createdAt": "2025-01-01T10:00:00Z",
+  "updatedAt": "2025-01-15T10:00:00Z"
+}

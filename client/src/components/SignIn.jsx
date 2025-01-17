@@ -1,39 +1,63 @@
-import { useState } from 'react';
+// SignIn.jsx
+
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext'; // Import useAuth for auth state management
-import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+  Alert,
+} from '@mui/material';
+import '../css/form_control.css'; // Optional: Custom CSS for additional styling
 
 const SignIn = () => {
   const { login } = useAuth(); // Destructure login from AuthContext
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
   const [loginMessage, setLoginMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // For loading state
 
-  async function receiveFormData(formData) {
-    const success = await login(formData); // Use the updated login function
+  // Function to handle form submission
+  const receiveFormData = async (formData) => {
+    setIsSubmitting(true); // Start loading
+    const success = await login(formData); // Attempt to log in
+    setIsSubmitting(false); // End loading
+
     if (success) {
-      // navigate("/"); 
-
-      window.location.href = "/"; // Redirect to the main page with a hard refresh
+      navigate('/'); // Redirect to the main page
     } else {
       console.log('Unsuccessful login');
       setLoginMessage('Incorrect Login');
     }
-  }
-  
-  const emailValidationRules = {
-    required: "Email is required",
-    pattern: {
-      value: /\S+@\S+\.\S+/,
-      message: "Entered value does not match email format",
-    },
-    onChange: () => setLoginMessage(''),
   };
+
+  // Validation rules for email
+  const emailValidationRules = {
+    required: 'Email is required.',
+    pattern: {
+      value: /^\S+@\S+\.\S+$/,
+      message: 'Please enter a valid email address.',
+    },
+    onChange: () => setLoginMessage(''), // Reset login message on change
+  };
+
+  // Validation rules for password
   const passwordValidationRules = {
-    required: "Password is required",
-    onChange: () => setLoginMessage(''),
+    required: 'Password is required.',
+    minLength: {
+      value: 6,
+      message: 'Password must be at least 6 characters long.',
+    },
+    onChange: () => setLoginMessage(''), // Reset login message on change
   };
 
   return (
@@ -43,99 +67,97 @@ const SignIn = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          backgroundColor: '#2D2D2C',
+          // backgroundColor: '#2D2D2C',
           paddingTop: '50px',
           paddingBottom: '50px',
           borderRadius: 2,
           boxShadow: 3,
           padding: 3,
-          marginTop: '200px'
+          marginTop: '210px', // Adjusted for better responsiveness
         }}
       >
-        <Typography variant="h4" gutterBottom align="center" color="white">
-          Sign in
+        <Typography variant="h4" gutterBottom align="center" color="black">
+          Sign In
         </Typography>
-        <form onSubmit={handleSubmit(receiveFormData)} style={{ width: '100%' }}>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Email address"
-            {...register('email', emailValidationRules)}
-            error={Boolean(errors.email)}
-            helperText={errors.email?.message}
-            onChange={() => setLoginMessage('')}
-            variant="outlined"
-            InputLabelProps={{
-              style: { color: 'white' }
-            }}
-            InputProps={{
-              style: { color: 'white' }
-            }}
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.12)',
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.5)', // Light border color
-                },
-                '&:hover fieldset': {
-                  borderColor: '#1a73e8', // Highlight border color on hover
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#1a73e8', // Border color when focused
-                },
-              },
-            }}
+        <form
+          onSubmit={handleSubmit(receiveFormData)}
+          style={{ width: '100%' }}
+          autoComplete="off" // Disable autofill for the entire form
+        >
+          {/* Hidden Dummy Inputs to Trick Browsers for Autofill Prevention */}
+          {/* Some browsers ignore autoComplete="off", so adding dummy fields can help */}
+          <input
+            type="text"
+            name="fakeUsername"
+            style={{ display: 'none' }}
+            autoComplete="username"
           />
-          
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Password"
-            {...register('password', passwordValidationRules)}
+          <input
             type="password"
-            error={Boolean(errors.password)}
-            helperText={errors.password?.message}
-            onChange={() => setLoginMessage('')}
-            variant="outlined"
-            InputLabelProps={{
-              style: { color: 'white' }
-            }}
-            InputProps={{
-              style: { color: 'white' }
-            }}
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.12)',
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.5)', // Light border color
-                },
-                '&:hover fieldset': {
-                  borderColor: '#1a73e8', // Highlight border color on hover
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#1a73e8', // Border color when focused
-                },
-              },
-            }}
+            name="fakePassword"
+            style={{ display: 'none' }}
+            autoComplete="new-password"
           />
 
+          {/* Email Field */}
+          <TextField
+            {...register('email', emailValidationRules)}
+            id="inputEmail"
+            label="Email Address"
+            variant="outlined"
+            fullWidth
+            autoFocus
+            autoComplete="off" // Further prevent autofill
+            sx={{
+              marginBottom: 2,
+              background: 'white',
+              borderRadius: 1,
+            }}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+
+          {/* Password Field */}
+          <TextField
+            {...register('password', passwordValidationRules)}
+            type="password"
+            id="inputPassword"
+            label="Password"
+            variant="outlined"
+            fullWidth
+            autoComplete="new-password" // Prevent autofill
+            sx={{
+              marginBottom: 2,
+              background: 'white',
+              borderRadius: 1,
+            }}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
+
+          {/* Submit Button */}
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
+            disabled={isSubmitting} // Disable button while submitting
             sx={{
-              mt: 3,
+              mt: 1,
               mb: 2,
               backgroundColor: '#1a73e8',
+              color: 'black', // **Added to make text black**
               '&:hover': {
                 backgroundColor: '#0f59b5',
+                color: 'black', // **Ensure text remains black on hover**
               },
+              height: '45px',
             }}
           >
-            Sign in
+            {isSubmitting ? 'Signing In...' : 'Sign In'}
           </Button>
 
+          {/* Error Alert */}
           {loginMessage && (
             <Alert severity="error" sx={{ marginTop: 2 }}>
               {loginMessage}

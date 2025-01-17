@@ -1,12 +1,36 @@
 // Routes: routes/timesheets.js
 import express from 'express';
 import Timesheet from '../../models/timesheet.js'
+import checkthetoken from '../../middleware/checkToken.js'
+
 const router = express.Router();
 
-// GET all timesheets (Supervisors/Admins)
-router.get('/', async (req, res) => {
-  const timesheets = await Timesheet.find({});
-  res.json(timesheets);
+// GET /timesheets -> Filter by role/group
+router.get('/', checkthetoken, async (req, res) => {
+  try {
+    const { _id, role, group, wNum } = req.user; // from JWT payload
+    let filter = {};
+
+    if (role === 'admin') {
+      // Admin sees all timesheets
+      filter = {};
+    } else if (role === 'supervisor') {
+      // Supervisor sees timesheets for employees in their group
+      if (!group) {
+        return res.status(400).json({ error: 'No group assigned to this supervisor.' });
+      }
+      filter.group = group; // e.g. "HR"
+    } else {
+      // Regular employees see only their own timesheets
+      filter.wNum = wNum; 
+    }
+
+    const timesheets = await Timesheet.find(filter);
+    return res.status(200).json(timesheets);
+  } catch (err) {
+    console.error('Error fetching timesheets:', err);
+    res.status(500).json({ error: 'Failed to fetch timesheets' });
+  }
 });
 
 // GET a single employee's timesheets

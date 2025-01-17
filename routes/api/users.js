@@ -2,16 +2,52 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+
 import User from '../../models/user.js';
-import checkthetoken from '../../middleware/checkToken.js'
+import Timesheet from '../../models/timesheet.js';
+import checkthetoken from '../../middleware/checkToken.js';
 
 const router = express.Router();
 
-// GET endpoint to fetch user data
-router.get('/me',checkthetoken, async (req, res) => {
+/**
+ * GET /timesheets
+ * Return timesheets filtered by role/group/wNum
+ */
+router.get('/timesheets', checkthetoken, async (req, res) => {
   try {
-    const userId = req.user._id; // User ID from the JWT payload
-    const user = await User.findById(userId).select('-password'); // Fetch user and exclude password field
+    const { _id, role, group, wNum } = req.user; // from JWT payload
+    let filter = {};
+
+    if (role === 'admin') {
+      // Admin sees all timesheets
+      filter = {};
+    } else if (role === 'supervisor') {
+      // Supervisor sees timesheets for employees in their group
+      if (!group) {
+        return res.status(400).json({ error: 'No group assigned to this supervisor.' });
+      }
+      filter.group = group.trim(); // must match the Timesheet schema's group field
+    } else {
+      // Regular employees only see their own timesheets (by wNum, e.g.)
+      filter.wNum = wNum;
+    }
+
+    const timesheets = await Timesheet.find(filter);
+    res.status(200).json(timesheets);
+  } catch (err) {
+    console.error('Error fetching timesheets:', err);
+    res.status(500).json({ error: 'Failed to fetch timesheets' });
+  }
+});
+
+/**
+ * GET /me
+ * Fetch the currently logged-in user's data (excluding password)
+ */
+router.get('/me', checkthetoken, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId).select('-password');
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -22,10 +58,48 @@ router.get('/me',checkthetoken, async (req, res) => {
   }
 });
 
+/**
+ * GET /employees
+ * Fetch employees filtered by role/group
+ */
+router.get('/employees', checkthetoken, async (req, res) => {
+  try {
+    console.log('Authenticated User:', req.user); // Add this line
+
+    const { _id, role, group } = req.user;
+    let filter = {};
+
+    if (role === 'admin') {
+      filter = {};
+    } else if (role === 'supervisor') {
+      if (!group) {
+        return res.status(400).json({ error: 'No group assigned to supervisor.' });
+      }
+      filter.group = group.trim();
+    } else {
+      filter._id = _id;
+    }
+
+    const employees = await User.find(filter)
+      .select('-password')
+      .populate('group');
+
+    if (!employees.length) {
+      return res.status(404).json({ error: 'No employees found for this user/role.' });
+    }
+
+    res.status(200).json(employees);
+  } catch (err) {
+    console.error('Error fetching employees:', err);
+    res.status(500).json({ error: 'Failed to fetch employees' });
+  }
+});
 
 
-// Register endpoint
-// Register endpoint
+/**
+ * POST /register
+ * Register a new user
+ */
 router.post('/register', async (req, res) => {
   try {
     const {
@@ -40,14 +114,14 @@ router.post('/register', async (req, res) => {
       acct,
       project,
       hourlyRate,
-      contractStartDate, // New field
-      contractEndDate,   // New field
-      assignmentType,     // New field
+      contractStartDate,
+      contractEndDate,
+      assignmentType,
+      group,
+      role
     } = req.body;
 
-    console.log('Request Body:', req.body);
-
-    // Validate the request body using Mongoose schema validation
+    // Validate request body via Mongoose schema
     await User.validate(req.body);
 
     const normalizedEmail = email.trim().toLowerCase();
@@ -61,7 +135,7 @@ router.post('/register', async (req, res) => {
     const newUser = new User({
       firstName,
       lastName,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       wNum,
       fund,
@@ -73,13 +147,14 @@ router.post('/register', async (req, res) => {
       contractStartDate: contractStartDate ? new Date(contractStartDate) : null,
       contractEndDate: contractEndDate ? new Date(contractEndDate) : null,
       assignmentType,
+      group,
+      role: role || 'employee',
     });
 
     console.log('New User:', newUser);
 
     const savedUser = await newUser.save();
 
-    // Include all fields in the response
     res.status(201).json({
       message: 'User registered successfully!',
       user: {
@@ -97,6 +172,8 @@ router.post('/register', async (req, res) => {
         contractStartDate: savedUser.contractStartDate,
         contractEndDate: savedUser.contractEndDate,
         assignmentType: savedUser.assignmentType,
+        group: savedUser.group,
+        role: savedUser.role
       },
     });
   } catch (err) {
@@ -110,31 +187,38 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login endpoint
+/**
+ * POST /login
+ * Log in the user, issue JWT as httpOnly cookie
+ */
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
     }
 
-    // Compare the provided password with the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
-    // Generate a JSON Web Token (JWT) on successful login
+    // Include wNum in the JWT if you want to filter timesheets by wNum
     const token = jwt.sign(
-      { _id: user._id, email: user.email },
+      {
+        _id: user._id,
+        wNum: user.wNum,
+        email: user.email,
+        group: user.group,
+        role: user.role
+      },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    // Send the token in a httpOnly cookie for secure storage
+    // Send token in httpOnly cookie
     res.cookie('jwt', token, { httpOnly: true, path: '/' });
     res.status(200).json({
       message: 'Login successful',
@@ -146,6 +230,8 @@ router.post('/login', async (req, res) => {
         dept: user.dept,
         program: user.program,
         acct: user.acct,
+        role: user.role,
+        group: user.group,
         project: user.project,
         hourlyRate: user.hourlyRate,
         contractStartDate: user.contractStartDate,
@@ -159,7 +245,10 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Logout endpoint
+/**
+ * POST /logout
+ * Clears the JWT cookie
+ */
 router.post('/logout', (req, res) => {
   res.clearCookie('jwt', { path: '/' });
   res.status(204).send();

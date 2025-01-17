@@ -11,6 +11,10 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 
 const SupervisorRegister = () => {
@@ -26,7 +30,10 @@ const SupervisorRegister = () => {
   const navigate = useNavigate();
   const [registerMessage, setRegisterMessage] = useState("");
 
-  // -Autofill form fields for testing
+  // Predefined groups for selection
+  const predefinedGroups = ["HR", "Finance", "Engineering"];
+
+  // Autofill form fields for testing
   useEffect(() => {
     const autofillValues = {
       firstName: "TestFirstName",
@@ -44,6 +51,7 @@ const SupervisorRegister = () => {
       contractStartDate: "2025-01-01",
       contractEndDate: "2025-01-14",
       assignmentType: "Casual",
+      group: "HR", // Default group
     };
 
     for (const key in autofillValues) {
@@ -67,20 +75,21 @@ const SupervisorRegister = () => {
       contractStartDate: data.contractStartDate || null,
       contractEndDate: data.contractEndDate || null,
       assignmentType: data.assignmentType || null,
+      group: data.group, // Group selection
     };
 
     const success = await registerUser(payload);
 
-      if (success) {
-        setRegisterMessage("Registration successful. You can now log in.");
-        navigate("/about"); // Redirect to /about 
-      } else {
-        setRegisterMessage("Failed to register employee. Please try again.");
-      }
+    if (success) {
+      setRegisterMessage("Registration successful. You can now log in.");
+      navigate("/"); // Redirect to /about
+    } else {
+      setRegisterMessage("Failed to register employee. Please try again.");
+    }
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 20 , mb: 5}}>
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 20, mb: 5 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Register Employee
       </Typography>
@@ -205,11 +214,31 @@ const SupervisorRegister = () => {
           />
           <TextField
             {...register("contractEndDate")}
-        label="Contract End Date"
+            label="Contract End Date"
             type="date"
             fullWidth
             InputLabelProps={{ shrink: true }}
           />
+   <FormControl fullWidth error={!!errors.group}>
+  <InputLabel id="group-label">Group</InputLabel>
+  <Controller
+    name="group"
+    control={control}
+    defaultValue="" // Ensure this is empty to trigger validation if not selected
+    rules={{ required: "Group is required" }}
+    render={({ field }) => (
+      <Select {...field} labelId="group-label" label="Group">
+        {predefinedGroups.map((group) => (
+          <MenuItem key={group} value={group}>
+            {group}
+          </MenuItem>
+        ))}
+      </Select>
+    )}
+  />
+  {errors.group && <Typography color="error">{errors.group.message}</Typography>}
+</FormControl>
+
           <Controller
             name="assignmentType"
             control={control}
@@ -221,12 +250,7 @@ const SupervisorRegister = () => {
               </RadioGroup>
             )}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-          >
+          <Button type="submit" variant="contained" color="primary" fullWidth>
             Register Employee
           </Button>
         </Box>
