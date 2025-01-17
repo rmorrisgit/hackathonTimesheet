@@ -40,6 +40,18 @@ router.get('/:wNum', async (req, res) => {
   res.json(timesheets);
 });
 
+router.post('/api/timesheets', async (req, res) => {
+  try {
+    const timesheetData = req.body; // Capture the payload from the frontend
+    const newTimesheet = new Timesheet(timesheetData); // Create a new timesheet document
+    await newTimesheet.save(); // Save it to the database
+    res.status(201).json(newTimesheet); // Respond with the created timesheet
+  } catch (error) {
+    console.error("Error creating timesheet:", error);
+    res.status(500).json({ error: "Failed to create timesheet" });
+  }
+});
+
 // POST a new timesheet
 router.post('/', async (req, res) => {
   const timesheet = new Timesheet(req.body);

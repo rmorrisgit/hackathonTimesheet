@@ -78,7 +78,7 @@ const timesheetSchema = new Schema(
         info: { type: String, default: '' }
       }
     },
-    notes: { type: String, default: '' },
+    // notes: { type: String, default: '' },
     submissionDate: { type: Date, required: false }, // Added submissionDate field
   },
   { collection: 'timesheets', timestamps: true }

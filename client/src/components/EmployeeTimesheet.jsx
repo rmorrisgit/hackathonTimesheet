@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
+import timesheetService from "../services/apiService"; // Import the service
 
 function EmployeeTimesheet() {
   const [page, setPage] = useState(0);
@@ -80,7 +81,51 @@ function EmployeeTimesheet() {
   if (!userData || weeks.length === 0) {
     return <Typography>Loading...</Typography>; // Show loading state
   }
-
+  const handleSubmit = async () => {
+    // Prepare the timesheet payload
+    const payload = {
+      userId: userData._id, // Assuming your backend uses the user's ID
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      wNum: userData.wNum,
+      group: userData.group,
+      role: userData.role,
+      fund: userData.fund,
+      dept: userData.dept,
+      program: userData.program,
+      acct: userData.acct,
+      project: userData.project,
+      payPeriodStartDate,
+      payPeriodEndDate,
+      hourlyRate: userData.hourlyRate,
+      isCasual: userData.assignmentType === "Casual",
+      contractEndDate: userData.contractEndDate,
+      week1: Object.fromEntries(
+        weeks[0].dates.map((row) => [
+          row.day.toLowerCase(),
+          { hours: parseFloat(hoursWorked[row.date] || 0), info: "" }, // Include additional info if needed
+        ])
+      ),
+      week2: Object.fromEntries(
+        weeks[1].dates.map((row) => [
+          row.day.toLowerCase(),
+          { hours: parseFloat(hoursWorked[row.date] || 0), info: "" },
+        ])
+      ),
+      notes: "", // Add notes if necessary
+    };
+  
+    try {
+      // Submit the payload using the service
+      const response = await timesheetService.createTimesheet(payload);
+      console.log("Timesheet created successfully:", response);
+      alert("Timesheet submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting timesheet:", error);
+      alert("Failed to submit timesheet. Please try again.");
+    }
+  };
+  
   return (
     <Box sx={{ padding: "20px", marginTop: "250px" }}>
       {/* User Data Section */}
@@ -201,6 +246,21 @@ function EmployeeTimesheet() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box sx={{ textAlign: "center", marginTop: 4 }}>
+        <button
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#1976d2",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+          onClick={handleSubmit}
+        >
+          Submit Timesheet
+        </button>
+      </Box>
 
       {/* Pagination */}
       <TablePagination
@@ -219,6 +279,7 @@ function EmployeeTimesheet() {
         </Typography>
       </Box>
     </Box>
+    
   );
 }
 
