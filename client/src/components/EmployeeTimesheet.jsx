@@ -7,13 +7,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
 import TablePagination from "@mui/material/TablePagination";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
 import timesheetService from "../services/apiService"; // Import the service
+import InputAdornment from "@mui/material/InputAdornment";
 
 function EmployeeTimesheet() {
   const [page, setPage] = useState(0);
@@ -111,6 +111,24 @@ function EmployeeTimesheet() {
         info: "",
       })),
     };
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log('PDF generated:', data.pdfUrl);
+        window.location.href = data.pdfUrl; // Trigger download
+      } else {
+        console.error('Error generating PDF:', data.error);
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+    }
   
     try {
       // Submit the payload using the service
@@ -120,8 +138,8 @@ function EmployeeTimesheet() {
     } catch (error) {
       console.error("Error submitting timesheet:", error);
       alert("Failed to submit timesheet. Please try again.");
-    }
-  };
+    };
+  }
   
   return (
     <Box sx={{ padding: "20px", marginTop: "250px" }}>
