@@ -26,27 +26,25 @@ class AuthService {
         loginData,
         { withCredentials: true }
       );
-  
+
       // Mark as logged in
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
-  
+
       // Extract role and group from the backend response
       const userRole = response.data.user?.role || 'employee'; // Default to 'employee' if undefined
       const userGroup = response.data.user?.group || 'unknown'; // Default to 'unknown' if undefined
-  
+
       // Save role and group in session storage
       sessionStorage.setItem('type', userRole);
       sessionStorage.setItem('group', userGroup);
-  
+
       return true;
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
       return false;
     }
   }
-  
-  
 
   async signOut() {
     try {
@@ -58,6 +56,8 @@ class AuthService {
       return { success: false, error: err.response ? err.response.data : err.message };
     }
   }
+
+
 
   isEmployee() {
     return sessionStorage.getItem('type') === 'employee';

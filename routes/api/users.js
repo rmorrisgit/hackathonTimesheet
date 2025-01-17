@@ -9,6 +9,9 @@ import checkthetoken from '../../middleware/checkToken.js';
 
 const router = express.Router();
 
+
+
+
 /**
  * GET /timesheets
  * Return timesheets filtered by role/group/wNum
@@ -44,10 +47,12 @@ router.get('/timesheets', checkthetoken, async (req, res) => {
  * GET /me
  * Fetch the currently logged-in user's data (excluding password)
  */
-router.get('/me', checkthetoken, async (req, res) => {
+router.get('/me',checkthetoken, async (req, res) => {
   try {
-    const userId = req.user._id;
-    const user = await User.findById(userId).select('-password');
+    // console.log('Authenticated User:', req.user); 
+
+    const userId = req.user._id; // User ID from the JWT payload
+    const user = await User.findById(userId).select('-password'); // Fetch user and exclude password field
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }

@@ -33,6 +33,20 @@ const userService = {
    * Fetch logged-in user's data
    * @returns {Promise<Object>} User data
    */
+  getUserData: async () => {
+    console.log('Fetching logged-in user data...');
+    try {
+      const response = await apiClient.get('/users/me'); // Use the appropriate backend endpoint
+      return handleResponse(response);
+    } catch (err) {
+      handleError(err);
+    }
+  },
+
+  /**
+   * Fetch a list of employees
+   * @returns {Promise<Object>} Employee data
+   */
   getEmployees: async () => {
     console.log('Fetching employees...');
     try {
@@ -42,6 +56,8 @@ const userService = {
       handleError(err);
     }
   },
+
+
 };
 
 export default userService;

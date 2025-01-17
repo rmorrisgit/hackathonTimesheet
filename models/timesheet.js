@@ -6,7 +6,8 @@ const timesheetSchema = new Schema(
     firstName: { type: String, required: true, maxlength: 100 }, // Store employee first name
     lastName: { type: String, required: true, maxlength: 100 },  // Store employee last name
     wNum: { type: String, required: false },
-    group: { type: String, required: false  }, // Optional reference to a group
+    group: { type: String, required: false }, // Optional reference to a group
+    role: { type: String, default: "employee" },
     fund: { type: String, required: false },
     dept: { type: String, required: false },
     program: { type: String, required: false },
@@ -18,22 +19,64 @@ const timesheetSchema = new Schema(
     isCasual: { type: Boolean, required: true },
     contractEndDate: { type: Date, required: false }, // <--- Added contractEndDate
     week1: {
-      sun: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      mon: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      tue: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      wed: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      thu: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      fri: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      sat: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
+      sun: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      mon: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      tue: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      wed: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      thu: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      fri: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      sat: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      }
     },
     week2: {
-      sun: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      mon: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      tue: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      wed: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      thu: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      fri: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
-      sat: { hours: { type: Number, default: 0 }, info: { type: String, default: '' } },
+      sun: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      mon: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      tue: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      wed: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      thu: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      fri: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      },
+      sat: {
+        hours: { type: Number, default: 0 },
+        info: { type: String, default: '' }
+      }
     },
     notes: { type: String, default: '' },
     submissionDate: { type: Date, required: false }, // Added submissionDate field
