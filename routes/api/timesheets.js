@@ -190,9 +190,9 @@ router.post('/generate-pdf', async (req, res) => {
       
 
       // week chunk 1
-      // sunday  1
+      //[6]  1
       // hours
-      firstPage.drawText(`${payload.week1.sunday.hours}`, {
+      firstPage.drawText(`${payload.week1[6].hours}`, {
         x: 225,
         y: 298-10,
         size: 9,
@@ -201,7 +201,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.sunday.info}`, {
+      firstPage.drawText(`${payload.week1[6].info}`, {
         x: 295,
         y: 298-10,
         size: 9,
@@ -210,9 +210,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // monday  1
+      //[0]  1
       // hours
-      firstPage.drawText(`${payload.week1.monday.hours}`, {
+      firstPage.drawText(`${payload.week1[0].hours}`, {
         x: 225,
         y: 275-10,
         size: 9,
@@ -221,7 +221,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.monday.info}`, {
+      firstPage.drawText(`${payload.week1[0].info}`, {
         x: 295,
         y: 275-10,
         size: 9,
@@ -232,7 +232,7 @@ router.post('/generate-pdf', async (req, res) => {
 
       // tues 1
       // hours
-      firstPage.drawText(`${payload.week1.tuesday.hours}`, {
+      firstPage.drawText(`${payload.week1[1].hours}`, {
         x: 225,
         y: 255-10,
         size: 9,
@@ -241,7 +241,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.tuesday.info}`, {
+      firstPage.drawText(`${payload.week1[1].info}`, {
         x: 295,
         y: 255-10,
         size: 9,
@@ -250,9 +250,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // wednesday  1
+      //[2]  1
       // hours
-      firstPage.drawText(`${payload.week1.wednesday.hours}`, {
+      firstPage.drawText(`${payload.week1[2].hours}`, {
         x: 225,
         y: 235-10,
         size: 9,
@@ -261,7 +261,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.wednesday.info}`, {
+      firstPage.drawText(`${payload.week1[2].info}`, {
         x: 295,
         y: 235-10,
         size: 9,
@@ -272,7 +272,7 @@ router.post('/generate-pdf', async (req, res) => {
 
       // thur 1
       // hours
-      firstPage.drawText(`${payload.week1.thursday.hours}`, {
+      firstPage.drawText(`${payload.week1[3].hours}`, {
         x: 225,
         y: 215-10,
         size: 9,
@@ -281,7 +281,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.thursday.info}`, {
+      firstPage.drawText(`${payload.week1[3].info}`, {
         x: 295,
         y: 215-10,
         size: 9,
@@ -290,9 +290,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // friday  1
+      //[4]  1
       // hours
-      firstPage.drawText(`${payload.week1.friday.hours}`, {
+      firstPage.drawText(`${payload.week1[4].hours}`, {
         x: 225,
         y: 195-10,
         size: 9,
@@ -301,7 +301,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.friday.info}`, {
+      firstPage.drawText(`${payload.week1[4].info}`, {
         x: 295,
         y: 195-10,
         size: 9,
@@ -310,9 +310,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // saturday  1
+      //[5]  1
       // hours
-      firstPage.drawText(`${payload.week1.saturday.hours}`, {
+      firstPage.drawText(`${payload.week1[5].hours}`, {
         x: 225,
         y: 175-10,
         size: 9,
@@ -321,7 +321,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      firstPage.drawText(`${payload.week1.saturday.info}`, {
+      firstPage.drawText(`${payload.week1[5].info}`, {
         x: 295,
         y: 175-10,
         size: 9,
@@ -331,7 +331,7 @@ router.post('/generate-pdf', async (req, res) => {
 
 
       // tot 1
-      firstPage.drawText(`${payload.week1.sunday.hours + payload.week1.monday.hours + payload.week1.tuesday.hours + payload.week1.wednesday.hours + payload.week1.thursday.hours + payload.week1.friday.hours + payload.week1.saturday.hours}`, {
+      firstPage.drawText(`${payload.week1[6].hours + payload.week1[0].hours + payload.week1[1].hours + payload.week1[2].hours + payload.week1[3].hours + payload.week1[4].hours + payload.week1[5].hours}`, {
         x: 240,
         y: 155-10,
         size: 9,
@@ -342,9 +342,9 @@ router.post('/generate-pdf', async (req, res) => {
       //////// page 2 ////////
     
       // week chunk 2
-      // sunday  2
+      //[6]  2
       // hours
-      secondPage.drawText(`${payload.week2.sunday.hours}`, {
+      secondPage.drawText(`${payload.week2[6].hours}`, {
         x: 225,
         y: 298+357-10,
         size: 9,
@@ -353,7 +353,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.sunday.info}`, {
+      secondPage.drawText(`${payload.week2[6].info}`, {
         x: 295,
         y: 298+357-10,
         size: 9,
@@ -362,9 +362,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // monday  2
+      //[0]  2
       // hours
-      secondPage.drawText(`${payload.week2.monday.hours}`, {
+      secondPage.drawText(`${payload.week2[0].hours}`, {
         x: 225,
         y: 275+357-10,
         size: 9,
@@ -373,7 +373,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.monday.info}`, {
+      secondPage.drawText(`${payload.week2[0].info}`, {
         x: 295,
         y: 275+357-10,
         size: 9,
@@ -384,7 +384,7 @@ router.post('/generate-pdf', async (req, res) => {
 
       // tues 2
       // hours
-      secondPage.drawText(`${payload.week2.tuesday.hours}`, {
+      secondPage.drawText(`${payload.week2[1].hours}`, {
         x: 225,
         y: 255+357-10,
         size: 9,
@@ -393,7 +393,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.tuesday.info}`, {
+      secondPage.drawText(`${payload.week2[1].info}`, {
         x: 295,
         y: 255+357-10,
         size: 9,
@@ -402,9 +402,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // wednesday  2
+      //[2]  2
       // hours
-      secondPage.drawText(`${payload.week2.wednesday.hours}`, {
+      secondPage.drawText(`${payload.week2[2].hours}`, {
         x: 225,
         y: 235+357-10,
         size: 9,
@@ -413,7 +413,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.wednesday.info}`, {
+      secondPage.drawText(`${payload.week2[2].info}`, {
         x: 295,
         y: 235+357-10,
         size: 9,
@@ -424,7 +424,7 @@ router.post('/generate-pdf', async (req, res) => {
 
       // thur 2
       // hours
-      secondPage.drawText(`${payload.week2.thursday.hours}`, {
+      secondPage.drawText(`${payload.week2[3].hours}`, {
         x: 225,
         y: 215+357-10,
         size: 9,
@@ -433,7 +433,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.thursday.info}`, {
+      secondPage.drawText(`${payload.week2[3].info}`, {
         x: 295,
         y: 215+357-10,
         size: 9,
@@ -442,9 +442,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // friday  2
+      //[4]  2
       // hours
-      secondPage.drawText(`${payload.week2.friday.hours}`, {
+      secondPage.drawText(`${payload.week2[4].hours}`, {
         x: 225,
         y: 195+357-10,
         size: 9,
@@ -453,7 +453,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.friday.info}`, {
+      secondPage.drawText(`${payload.week2[4].info}`, {
         x: 295,
         y: 195+357-10,
         size: 9,
@@ -462,9 +462,9 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
 
-      // saturday  2
+      //[5]  2
       // hours
-      secondPage.drawText(`${payload.week2.saturday.hours}`, {
+      secondPage.drawText(`${payload.week2[5].hours}`, {
         x: 225,
         y: 175+357-10,
         size: 9,
@@ -473,7 +473,7 @@ router.post('/generate-pdf', async (req, res) => {
       });
 
       // info
-      secondPage.drawText(`${payload.week2.saturday.info}`, {
+      secondPage.drawText(`${payload.week2[5].info}`, {
         x: 295,
         y: 175+357-10,
         size: 9,
@@ -483,7 +483,7 @@ router.post('/generate-pdf', async (req, res) => {
 
 
       // tot 2
-      secondPage.drawText(`${payload.week2.sunday.hours + payload.week2.monday.hours + payload.week2.tuesday.hours + payload.week2.wednesday.hours + payload.week2.thursday.hours + payload.week2.friday.hours + payload.week2.saturday.hours}`, {
+      secondPage.drawText(`${payload.week2[6].hours + payload.week2[0].hours + payload.week2[1].hours + payload.week2[2].hours + payload.week2[3].hours + payload.week2[4].hours + payload.week2[5].hours}`, {
         x: 240,
         y: 155+357-10,
         size: 9,
@@ -493,7 +493,7 @@ router.post('/generate-pdf', async (req, res) => {
 
 
       // 'entered' grand tot
-      secondPage.drawText(`${payload.week1.sunday.hours + payload.week1.monday.hours + payload.week1.tuesday.hours + payload.week1.wednesday.hours + payload.week1.thursday.hours + payload.week1.friday.hours + payload.week1.saturday.hours+payload.week2.sunday.hours + payload.week2.monday.hours + payload.week2.tuesday.hours + payload.week2.wednesday.hours + payload.week2.thursday.hours + payload.week2.friday.hours + payload.week2.saturday.hours}`, {
+      secondPage.drawText(`${payload.week1[6].hours + payload.week1[0].hours + payload.week1[1].hours + payload.week1[2].hours + payload.week1[3].hours + payload.week1[4].hours + payload.week1[5].hours+payload.week2[6].hours + payload.week2[0].hours + payload.week2[1].hours + payload.week2[2].hours + payload.week2[3].hours + payload.week2[4].hours + payload.week2[5].hours}`, {
         x: 548,
         y: 478-10,
         size: 9,
