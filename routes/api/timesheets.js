@@ -513,7 +513,7 @@ router.post('/generate-pdf', async (req, res) => {
     const pdfBytes = await pdfDoc.save();
 
     // Write the PDF to the server's disk (you can also serve it directly as a response)
-    const outputPdfPath = path.resolve(__dirname, '../../public/GeneratedTimesheet.pdf');
+    const outputPdfPath = path.resolve(__dirname, '../../client/public/GeneratedTimesheet.pdf');
     fs.writeFileSync(outputPdfPath, pdfBytes);
 
     // Respond with the URL of the generated PDF
