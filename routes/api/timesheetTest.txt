@@ -1,0 +1,311 @@
+// week chunk 1
+      // sun  1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 298-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 298-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // mon  1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 275-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 275-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tues 1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 255-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 255-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // wed  1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 235-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 235-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // thur 1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 215-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 215-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // fri  1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 195-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 195-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // sat  1
+      // hours
+      firstPage.drawtext ("1", {
+        x: 225,
+        y: 175-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      firstPage.drawtext ("1", {
+        x: 295,
+        y: 175-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tot 1
+      firstPage.drawtext ("1", {
+        x: 240,
+        y: 155-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+      
+      //////// page 2 ////////
+    
+      // week chunk 2
+      // sun  2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 298+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 298+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // mon  2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 275+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 275+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tues 2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 255+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 255+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // wed  2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 235+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 235+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // thur 2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 215+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 215+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // fri  2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 195+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 195+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // sat  2
+      // hours
+      secondPage.drawtext ("1", {
+        x: 225,
+        y: 175+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // notes
+      secondPage.drawtext ("1", {
+        x: 295,
+        y: 175+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tot 2
+      secondPage.drawtext ("1", {
+        x: 240,
+        y: 155+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // 'entered' grand tot
+      secondPage.drawtext ("1", {
+        x: 548,
+        y: 478-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
