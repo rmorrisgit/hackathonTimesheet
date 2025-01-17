@@ -26,43 +26,27 @@ class AuthService {
         loginData,
         { withCredentials: true }
       );
-
+  
       // Mark as logged in
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('user', loginData.email);
-
-      // The backend might already return a user.group:
-      let userGroup = response.data.user?.group;
-
-      // Mapping table for certain research emails
-      const groupMapping = {
-        'research1@nscc.ca': 'HR',
-        'research2@nscc.ca': 'Finance',
-        'research3@nscc.ca': 'Engineering',
-        // Add more if needed
-      };
-
-      // If the user’s email matches our mapping but the group is undefined or empty,
-      // we override with the mapped group:
-      if (!userGroup || userGroup === 'N/A') {
-        const mappedGroup = groupMapping[loginData.email];
-        if (mappedGroup) {
-          userGroup = mappedGroup;
-        }
-      }
-
-      // Now set the session "type" based on the final userGroup
-      // For simplicity, we’ll treat "HR", "Finance", "Engineering" as "supervisor"
-      // You can do any logic here that you want
-      sessionStorage.setItem('type', userGroup === 'employee' ? 'employee' : 'supervisor');
+  
+      // Extract role and group from the backend response
+      const userRole = response.data.user?.role || 'employee'; // Default to 'employee' if undefined
+      const userGroup = response.data.user?.group || 'unknown'; // Default to 'unknown' if undefined
+  
+      // Save role and group in session storage
+      sessionStorage.setItem('type', userRole);
       sessionStorage.setItem('group', userGroup);
-
+  
       return true;
     } catch (err) {
       console.error('Login failed:', err.response ? err.response.data : err.message);
       return false;
     }
   }
+  
+  
 
   async signOut() {
     try {
