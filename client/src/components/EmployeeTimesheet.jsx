@@ -156,6 +156,64 @@ function EmployeeTimesheet() {
     });
 
     // w number
+    firstPage.drawText(`${payload.wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+
+    // chunk one
+    // fund
+    firstPage.drawText(`${payload.fund}`, {
+      x: 85,
+      y: 500,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+    // dept
+    firstPage.drawText(`${payload.dept}`, {
+      x: 117,
+      y: 500,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+    // programme
+    firstPage.drawText(`${payload.program}`, {
+      x: 150,
+      y: 500,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+    // acct
+    firstPage.drawText(`${payload.acct}`, {
+      x: 200,
+      y: 500,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+    //project
+    firstPage.drawText(`${payload.project}`, {
+      x: 235,
+      y: 500,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+
+
+    // period start
     firstPage.drawText(`${wNum}`, {
       x: 420,
       y: 590,
@@ -164,91 +222,206 @@ function EmployeeTimesheet() {
       color: rgb(0, 0, 0)
     });
 
-    // fund
-
-
-    // dept
-
-
-    // programme
-
-
-    // acct
-
-
-    //project
-
-
-    // period start
-
-
     // period end
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // hourly rate
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // casAux
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // sun  1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // mon  1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // tues 1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // wed  1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // thur 1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // fri  1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // sat  1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // tot 1
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+    
     //////// page 2 ////////
   
     // sun  2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // mon  2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // tues 2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // wed  2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // thur 2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // fri  2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // sat  2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // tot 2
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // 'entered' grand tot
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // notes comments
-
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
     // employee signature
+    firstPage.drawText(`${wNum}`, {
+      x: 420,
+      y: 590,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
 
-    
   }
   
   return (
