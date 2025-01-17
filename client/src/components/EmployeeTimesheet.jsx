@@ -241,7 +241,7 @@ function EmployeeTimesheet() {
     });
 
     // casAux
-    if(payload.isCasual === true){
+    if(payload.isCasual === true){ // casual
       firstPage.drawText(`X`, {
         x: 469,
         y: 445,
@@ -249,7 +249,7 @@ function EmployeeTimesheet() {
         font,
         color: rgb(0, 0, 0)
       });
-    }else{
+    }else{ // aux cable. lol
       firstPage.drawText(`X`, {
         x: 469,
         y: 425,
@@ -262,72 +262,149 @@ function EmployeeTimesheet() {
 
     // week chunk 1
     // sun  1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.sun.hours}}`, {
+      x: 225,
+      y: 298,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
+
+    // notes
+    firstPage.drawText(`${payload.week1.sun.info}}`, {
+      x: 295,
+      y: 298,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
 
     // mon  1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.mon.hours}}`, {
+      x: 225,
+      y: 275,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
+
+    // notes
+    firstPage.drawText(`${payload.week1.mon.info}}`, {
+      x: 295,
+      y: 275,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
 
     // tues 1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.tue.hours}}`, {
+      x: 225,
+      y: 255,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
+
+    // notes
+    firstPage.drawText(`${payload.week1.tue.info}}`, {
+      x: 295,
+      y: 255,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
 
     // wed  1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.wed.hours}}`, {
+      x: 225,
+      y: 235,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
+
+    // notes
+    firstPage.drawText(`${payload.week1.wed.info}}`, {
+      x: 295,
+      y: 235,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
 
     // thur 1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.thu.hours}}`, {
+      x: 225,
+      y: 215,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
+
+    // notes
+    firstPage.drawText(`${payload.week1.thu.info}}`, {
+      x: 295,
+      y: 215,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
 
     // fri  1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.fri.hours}}`, {
+      x: 225,
+      y: 195,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
+
+    // notes
+    firstPage.drawText(`${payload.week1.fri.info}}`, {
+      x: 295,
+      y: 195,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
 
     // sat  1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    // hours
+    firstPage.drawText(`${payload.week1.sat.hours}}`, {
+      x: 225,
+      y: 175,
       size: 12,
       font,
       color: rgb(0, 0, 0)
     });
 
+    // notes
+    firstPage.drawText(`${payload.week1.sat.info}}`, {
+      x: 295,
+      y: 175,
+      size: 12,
+      font,
+      color: rgb(0, 0, 0)
+    });
+
+
     // tot 1
-    firstPage.drawText(`${payload.}}`, {
-      x: 420,
-      y: 590,
+    firstPage.drawText(`${payload.week1.sun.hours + payload.week1.mon.hours + payload.week1.tue.hours + payload.week1.wed.hours + payload.week1.thu.hours + payload.week1.fri.hours + payload.week1.sat.hours}}`, {
+      x: 240,
+      y: 155,
       size: 12,
       font,
       color: rgb(0, 0, 0)
