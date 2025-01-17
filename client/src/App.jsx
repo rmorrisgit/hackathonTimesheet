@@ -48,11 +48,11 @@ const App = () => {
           <Route
               path="/supervisor-register"
               element={
-                authService.isSupervisor() ? (
+                authService.isSupervisor()
+                ?
                   <SupervisorRegister />
-                ) : (
+                : 
                   <Navigate to="/" />
-                )
               }
             />
             

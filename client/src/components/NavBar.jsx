@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
 import UserService from "../services/userService"; // Import UserService
 import Typography from "@mui/material/Typography";
+
 import Chip from "@mui/material/Chip";
 import "../css/navbar.css";
 import "../css/main.css";
