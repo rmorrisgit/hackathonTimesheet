@@ -1,40 +1,63 @@
-import { useState } from 'react';
+// SignIn.jsx
+
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext'; // Import useAuth for auth state management
-import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
-import '../css/form_control.css';
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+  Alert,
+} from '@mui/material';
+import '../css/form_control.css'; // Optional: Custom CSS for additional styling
 
 const SignIn = () => {
   const { login } = useAuth(); // Destructure login from AuthContext
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
   const [loginMessage, setLoginMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // For loading state
 
-  async function receiveFormData(formData) {
-    const success = await login(formData); // Use the updated login function
+  // Function to handle form submission
+  const receiveFormData = async (formData) => {
+    setIsSubmitting(true); // Start loading
+    const success = await login(formData); // Attempt to log in
+    setIsSubmitting(false); // End loading
+
     if (success) {
-      // navigate("/"); 
-
-      window.location.href = "/"; // Redirect to the main page with a hard refresh
+      navigate('/'); // Redirect to the main page
     } else {
       console.log('Unsuccessful login');
       setLoginMessage('Incorrect Login');
     }
-  }
-  
-  const emailValidationRules = {
-    required: "Email is required",
-    pattern: {
-      value: /\S+@\S+\.\S+/,
-      message: "Entered value does not match email format",
-    },
-    onChange: () => setLoginMessage(''),
   };
+
+  // Validation rules for email
+  const emailValidationRules = {
+    required: 'Email is required.',
+    pattern: {
+      value: /^\S+@\S+\.\S+$/,
+      message: 'Please enter a valid email address.',
+    },
+    onChange: () => setLoginMessage(''), // Reset login message on change
+  };
+
+  // Validation rules for password
   const passwordValidationRules = {
-    required: "Password is required",
-    onChange: () => setLoginMessage(''),
+    required: 'Password is required.',
+    minLength: {
+      value: 6,
+      message: 'Password must be at least 6 characters long.',
+    },
+    onChange: () => setLoginMessage(''), // Reset login message on change
   };
 
   return (
@@ -44,49 +67,97 @@ const SignIn = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          backgroundColor: '#2D2D2C',
+          // backgroundColor: '#2D2D2C',
           paddingTop: '50px',
           paddingBottom: '50px',
           borderRadius: 2,
           boxShadow: 3,
           padding: 3,
-          marginTop: '200px'
+          marginTop: '210px', // Adjusted for better responsiveness
         }}
       >
-        <Typography variant="h4" gutterBottom align="center" color="white">
-          Sign in
+        <Typography variant="h4" gutterBottom align="center" color="black">
+          Sign In
         </Typography>
-        <form onSubmit={handleSubmit(receiveFormData)} style={{ width: '100%' }}>
-        <label htmlFor="inputEmail" className="sr-only">Email address</label>
+        <form
+          onSubmit={handleSubmit(receiveFormData)}
+          style={{ width: '100%' }}
+          autoComplete="off" // Disable autofill for the entire form
+        >
+          {/* Hidden Dummy Inputs to Trick Browsers for Autofill Prevention */}
+          {/* Some browsers ignore autoComplete="off", so adding dummy fields can help */}
+          <input
+            type="text"
+            name="fakeUsername"
+            style={{ display: 'none' }}
+            autoComplete="username"
+          />
+          <input
+            type="password"
+            name="fakePassword"
+            style={{ display: 'none' }}
+            autoComplete="new-password"
+          />
 
-        {/* <TextField id="outlined-basic" label="Email" variant="outlined" sx={{ marginBottom: 2 , width: '100%', background: 'white'}}> */}
-            <input {...register('email', {required: "Email is required."})} id="inputEmail" className="form-control" placeholder="Email address" autoFocus />
-        {/* </TextField> */}
-            {errors.email?.type === 'required' && <p role="alert" style={{color:'red'}}>Email is required</p>}
+          {/* Email Field */}
+          <TextField
+            {...register('email', emailValidationRules)}
+            id="inputEmail"
+            label="Email Address"
+            variant="outlined"
+            fullWidth
+            autoFocus
+            autoComplete="off" // Further prevent autofill
+            sx={{
+              marginBottom: 2,
+              background: 'white',
+              borderRadius: 1,
+            }}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
 
-        {/* <TextField id="outlined-basic" label="Password" variant="outlined" sx={{width: '100%', background: 'white'}}> */}
-            <label htmlFor="inputPassword" className="sr-only">Password</label>
-            <input {...register('password', {required: "Password is required"})} type="password" id="inputPassword" className="form-control" placeholder="Password" />
-        {/* </TextField> */}
-            {errors.password?.type === 'required' && <p role="alert" style={{color:'red'}}>Password is required</p>}
+          {/* Password Field */}
+          <TextField
+            {...register('password', passwordValidationRules)}
+            type="password"
+            id="inputPassword"
+            label="Password"
+            variant="outlined"
+            fullWidth
+            autoComplete="new-password" // Prevent autofill
+            sx={{
+              marginBottom: 2,
+              background: 'white',
+              borderRadius: 1,
+            }}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
 
+          {/* Submit Button */}
           <Button
             type="submit"
             variant="contained"
             color="primary"
             fullWidth
+            disabled={isSubmitting} // Disable button while submitting
             sx={{
-              mt: 3,
+              mt: 1,
               mb: 2,
               backgroundColor: '#1a73e8',
+              color: 'black', // **Added to make text black**
               '&:hover': {
                 backgroundColor: '#0f59b5',
+                color: 'black', // **Ensure text remains black on hover**
               },
+              height: '45px',
             }}
           >
-            Sign in
+            {isSubmitting ? 'Signing In...' : 'Sign In'}
           </Button>
 
+          {/* Error Alert */}
           {loginMessage && (
             <Alert severity="error" sx={{ marginTop: 2 }}>
               {loginMessage}
