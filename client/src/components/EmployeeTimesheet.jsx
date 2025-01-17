@@ -14,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
 import timesheetService from "../services/apiService"; // Import the service
+import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+
 
 function EmployeeTimesheet() {
   const [page, setPage] = useState(0);
