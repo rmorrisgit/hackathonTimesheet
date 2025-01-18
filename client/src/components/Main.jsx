@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import "../css/directory.css";
 import timesheetService from "../services/apiService";
+import { format, add, set } from "date-fns";
 
 const Main = () => {
   const [timesheets, setTimesheets] = useState([]);
@@ -79,9 +80,33 @@ const Main = () => {
       type: "number",
       flex: 1,
     },
-    { field: "payPeriodStart", headerName: "Pay Period Start", flex: 1 },
-    { field: "payPeriodEnd", headerName: "Pay Period End", flex: 1 },
-    { field: "contractEndDate", headerName: "Contract End", flex: 1 },
+    { field: "payPeriodStart",
+       headerName: "Pay Period Start",
+        flex: 1,
+        valueFormatter: () => {
+          const specificDate = set(new Date(), { year: 2025, month: 0, date: 12 });
+          const formattedDate = format(specificDate, "MM/dd/yyyy");
+          return formattedDate;
+    }
+  },
+    { field: "payPeriodEnd",
+       headerName: "Pay Period End",
+        flex: 1,
+          valueFormatter: () => {
+            const specificDate = set(new Date(), { year: 2025, month: 0, date: 25 });
+            const formattedDate = format(specificDate, "MM/dd/yyyy");
+            return formattedDate;
+          }
+      },
+    { field: "contractEndDate",
+       headerName: "Contract End",
+        flex: 1,
+      valueFormatter: () => {
+        const futureDate = add(new Date, { months: 12 });
+        const formattedDate = format(futureDate, "MM/dd/yyyy");
+        return formattedDate;
+      },
+    }
   ];
 
   if (loading) {
