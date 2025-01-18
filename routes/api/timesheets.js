@@ -42,12 +42,24 @@ router.get('/', checkthetoken, async (req, res) => {
 });
 
 // GET a single employee's timesheets
-router.get('/:wNum', async (req, res) => {
-  const { wNum } = req.params;
-  const timesheets = await Timesheet.find({ 'employeeInfo.wNum': wNum });
-  res.json(timesheets);
-});
+// router.get('/:wNum', async (req, res) => {
+//   const { wNum } = req.params;
+//   const timesheets = await Timesheet.find({ 'employeeInfo.wNum': wNum });
+//   res.json(timesheets);
+// });
 
+
+router.get('/:id', async (req, res) => {
+  try {
+    const timesheet = await Timesheet.findById(req.params.id);
+    if (!timesheet) {
+      return res.status(404).json({ message: 'Timesheet not found' });
+    }
+    res.status(200).json(timesheet);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
 router.post('/api/timesheets', async (req, res) => {
   try {
     const timesheetData = req.body; // Capture the payload from the frontend

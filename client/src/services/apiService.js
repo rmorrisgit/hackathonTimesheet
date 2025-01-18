@@ -56,7 +56,7 @@ const timesheetService = {
       const response = await apiClient.get(`/timesheets/${id}`);
       return handleResponse(response);
     } catch (err) {
-      handleError(err);
+      return handleError(err);
     }
   },
 

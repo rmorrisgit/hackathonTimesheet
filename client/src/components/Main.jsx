@@ -19,33 +19,27 @@ const Main = () => {
     const fetchTimesheets = async () => {
       try {
         const response = await timesheetService.getTimesheets();
-        const mappedTimesheets = response.map((timesheet, index) => {
-          const week1Total = timesheet.week1
+        const mappedTimesheets = response.map((timesheet, index) => ({
+          id: timesheet._id || index,
+          employeeName: `${timesheet.firstName} ${timesheet.lastName}`,
+          wNum: timesheet.wNum || "N/A",
+          group: timesheet.group || "N/A",
+          contractEndDate: timesheet.contractEndDate || "N/A",
+          week1Total: timesheet.week1
             ? Object.values(timesheet.week1).reduce(
                 (sum, day) => sum + (day.hours || 0),
                 0
               )
-            : 0;
-          const week2Total = timesheet.week2
+            : 0,
+          week2Total: timesheet.week2
             ? Object.values(timesheet.week2).reduce(
                 (sum, day) => sum + (day.hours || 0),
                 0
               )
-            : 0;
-
-          return {
-            id: timesheet._id || index,
-            employeeName: `${timesheet.firstName} ${timesheet.lastName}`,
-            wNum: timesheet.wNum || "N/A",
-            group: timesheet.group || "N/A",
-            contractEndDate: timesheet.contractEndDate || "N/A",
-            week1Total,
-            week2Total,
-            payPeriodStart: timesheet.payPeriodStartDate || "N/A",
-            payPeriodEnd: timesheet.payPeriodEndDate || "N/A",
-          };
-        });
-
+            : 0,
+          payPeriodStart: timesheet.payPeriodStartDate || "N/A",
+          payPeriodEnd: timesheet.payPeriodEndDate || "N/A",
+        }));
         setTimesheets(mappedTimesheets);
       } catch (error) {
         console.error("Error fetching timesheets:", error);
@@ -65,7 +59,7 @@ const Main = () => {
       (row) => row.id === rowSelectionModel[0]
     );
     if (selectedRow) {
-      navigate(`/timesheet/${selectedRow.id}`, { state: { ...selectedRow } });
+      navigate(`/timesheet/${selectedRow.id}`);
     }
   };
 
@@ -107,7 +101,7 @@ const Main = () => {
 
   if (error) {
     return (
-      <Box sx={{ textAlign: "center"}}>
+      <Box sx={{ textAlign: "center" }}>
         <Typography variant="h6" color="error">
           {error}
         </Typography>
@@ -128,7 +122,7 @@ const Main = () => {
           </Button>
         </Box>
       )}
-      <Box sx={{ width: "100%"}}>
+      <Box sx={{ width: "100%" }}>
         <DataGrid
           rows={timesheets}
           columns={columns}

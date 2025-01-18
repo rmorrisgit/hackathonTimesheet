@@ -15,6 +15,7 @@ import CoffeeDetails from './components/coffees/CoffeeDetails';
 import authService from './services/authService';
 import EmployeeTimesheet from './components/EmployeeTimesheet';
 import Dashboard from './components/Directory';
+import TimesheetDetails from "./components/TimesheetDetails";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
@@ -39,6 +40,7 @@ const App = () => {
               />
             }
           />
+          <Route path="/timesheet/:id" element={<TimesheetDetails />} />
           <Route path="/timesheet" element={<EmployeeTimesheet />} />
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/register" element={<Register setIsAuthenticated={setIsAuthenticated} />} />
