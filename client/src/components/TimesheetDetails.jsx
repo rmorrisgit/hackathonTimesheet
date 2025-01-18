@@ -52,7 +52,7 @@ const TimesheetDetails = () => {
   }
 
   return (
-    <Box sx={{ padding: "20px", marginTop: 150 }}>
+    <Box sx={{ padding: "20px", marginTop: 25 }}>
       <Typography variant="h4" gutterBottom>
         Timesheet Details
       </Typography>
