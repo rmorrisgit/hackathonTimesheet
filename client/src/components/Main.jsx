@@ -9,12 +9,18 @@ import "../css/directory.css";
 import timesheetService from "../services/apiService";
 import { format, add, set } from "date-fns";
 
-const Main = () => {
+const Main = ({isAuthenticated}) => {
   const [timesheets, setTimesheets] = useState([]);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/signin');
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchTimesheets = async () => {
@@ -53,7 +59,7 @@ const Main = () => {
     };
 
     fetchTimesheets();
-  }, []);
+  }, [])
 
   const handleNavigateToTimesheet = () => {
     const selectedRow = timesheets.find(
