@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'; 
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import Main from './components/Main';
 import SignIn from './components/SignIn';
@@ -20,6 +20,14 @@ import TimesheetDetails from "./components/TimesheetDetails";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
   const [filteredData, setFilteredData] = useState([]);
+
+  const ProtectedRoutes = ({ isAuthenticated }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/signin" replace />;
+    }
+    
+    return <Outlet />;
+  };
 
   return (
     <BrowserRouter>
