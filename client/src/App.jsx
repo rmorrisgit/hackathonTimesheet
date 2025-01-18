@@ -29,17 +29,24 @@ const App = () => {
         setFilteredData={setFilteredData}
       />
       <div id="main-content">
-        <Routes>
-          <Route
-            path="/"
-            element={
+      <Routes>
+        <Route
+          path="/"
+          element={
+            authService.isSupervisor() ? (
               <Main
                 filteredData={filteredData}
                 setFilteredData={setFilteredData}
                 isAuthenticated={isAuthenticated}
               />
-            }
-          />
+            ) : (
+              <div style={{ textAlign: "center", marginTop: "50px" }}>
+                <h2>Access Denied</h2>
+                <p>You do not have permission to view this data.</p>
+              </div>
+            )
+          }
+        />
           <Route path="/timesheet/:id" element={<TimesheetDetails />} />
           <Route path="/timesheet" element={<EmployeeTimesheet />} />
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
