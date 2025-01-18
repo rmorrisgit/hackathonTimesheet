@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import timesheetService from "../services/apiService";
+import { format } from "date-fns";
 
 const TimesheetDetails = () => {
   const { id } = useParams();
@@ -51,6 +52,21 @@ const TimesheetDetails = () => {
     );
   }
 
+  //formatted dates
+  const formattedPayStartDate = timesheet.payPeriodStartDate
+  ? format(new Date(timesheet.payPeriodStartDate), "MM/dd/yyyy")
+  : "N/A";
+
+  const formattedPayEndDate = timesheet.payPeriodEndDate
+  ? format(new Date(timesheet.payPeriodEndDate), "MM/dd/yyyy")
+  : "N/A";
+
+  const formattedContractEndDate = timesheet.contractEndDate
+  ? format(new Date(timesheet.contractEndDate), "MM/dd/yyyy")
+  : "N/A";
+
+ 
+
   return (
     <Box sx={{ padding: "20px", marginTop: 25 }}>
       <Typography variant="h4" gutterBottom>
@@ -65,7 +81,7 @@ const TimesheetDetails = () => {
             <strong>Employee W#:</strong> {timesheet.wNum || "N/A"}
           </Typography>
           <Typography variant="h6">
-            <strong>Pay Period:</strong> {timesheet.payPeriodStartDate} - {timesheet.payPeriodEndDate}
+            <strong>Pay Period:</strong> {formattedPayStartDate} - {formattedPayEndDate}
           </Typography>
           <Typography variant="h6">
             <strong>Total Hours (Week 1):</strong>{" "}
@@ -89,7 +105,7 @@ const TimesheetDetails = () => {
             <strong>Group:</strong> {timesheet.group || "N/A"}
           </Typography>
           <Typography variant="h6">
-            <strong>Contract End Date:</strong> {timesheet.contractEndDate || "N/A"}
+            <strong>Contract End Date:</strong> {formattedContractEndDate}
           </Typography>
         </Box>
       )}
