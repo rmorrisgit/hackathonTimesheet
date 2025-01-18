@@ -11,6 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import timesheetService from "../services/apiService";
+import { format } from "date-fns";
 
 
 const TimesheetDetails = () => {
@@ -59,6 +60,21 @@ const TimesheetDetails = () => {
     );
   }
 
+  //formatted dates
+  const formattedPayStartDate = timesheet.payPeriodStartDate
+  ? format(new Date(timesheet.payPeriodStartDate), "MM/dd/yyyy")
+  : "N/A";
+
+  const formattedPayEndDate = timesheet.payPeriodEndDate
+  ? format(new Date(timesheet.payPeriodEndDate), "MM/dd/yyyy")
+  : "N/A";
+
+  const formattedContractEndDate = timesheet.contractEndDate
+  ? format(new Date(timesheet.contractEndDate), "MM/dd/yyyy")
+  : "N/A";
+
+ 
+
   return (
     <Box sx={{ padding: "20px", marginTop: 25 }}>
       <Typography variant="h4" gutterBottom>
@@ -73,7 +89,7 @@ const TimesheetDetails = () => {
             <strong>Employee W#:</strong> {timesheet.wNum || "N/A"}
           </Typography>
           <Typography variant="h6">
-            <strong>Pay Period:</strong> {timesheet.payPeriodStartDate} - {timesheet.payPeriodEndDate}
+            <strong>Pay Period:</strong> {formattedPayStartDate} - {formattedPayEndDate}
           </Typography>
           
           {/* Insert Table Here */}
@@ -129,7 +145,7 @@ const TimesheetDetails = () => {
             <strong>Group:</strong> {timesheet.group || "N/A"}
           </Typography>
           <Typography variant="h6">
-            <strong>Contract End Date:</strong> {timesheet.contractEndDate || "N/A"}
+            <strong>Contract End Date:</strong> {formattedContractEndDate}
           </Typography>
         </Box>
       )}
