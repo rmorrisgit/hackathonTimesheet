@@ -82,7 +82,7 @@ const SupervisorRegister = () => {
 
     if (success) {
       setRegisterMessage("Registration successful. You can now log in.");
-      navigate("/"); // Redirect to /about
+      navigate("/"); // 
     } else {
       setRegisterMessage("Failed to register employee. Please try again.");
     }

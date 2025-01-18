@@ -17,6 +17,7 @@ import EmployeeTimesheet from './components/EmployeeTimesheet';
 import Dashboard from './components/Directory';
 import TimesheetDetails from "./components/TimesheetDetails";
 
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
   const [filteredData, setFilteredData] = useState([]);
@@ -77,6 +78,7 @@ const App = () => {
               />
             {/* <Route path="/coffees/create" element={<CreateForm />} /> */}
             <Route path="/directory" element={<Dashboard />} />
+            
             {/* <Route path="/coffees/edit/:coffeeId" element={<EditCoffeeForm />} /> */}
             {/* <Route path="/coffees/delete-confirmation/:coffeeId" element={<DeleteConfirmation />} /> */}
             {/* <Route path="/dummy" element={<Dummy />} /> */}
