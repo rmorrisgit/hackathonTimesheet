@@ -1,11 +1,17 @@
+/* layout.css */
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-    bottom:0;
-  }
-  
-  main {
-    flex: 1; /* Expands to fill available space */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the layout covers the full viewport height */
+}
+
+.main-content {
+  flex: 1; /* Allows the main content to grow and take up available space */
+}

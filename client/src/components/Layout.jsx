@@ -1,13 +1,20 @@
+// Layout.js
 import React from 'react';
-import Footer from './Footer'; // Import Footer component
-import '../css/layout.css'; // Add optional CSS for layout
+import { Box } from '@mui/material';
+import Footer from './Footer';
 
 const Layout = ({ children }) => {
   return (
-    <div className="layout">
-      <main>{children}</main>
+    <Box
+      display="flex"
+      flexDirection="column"
+      minHeight="100vh" // Full viewport height
+    >
+      <Box component="main" flexGrow={1}>
+        {children}
+      </Box>
       <Footer />
-    </div>
+    </Box>
   );
 };
 
