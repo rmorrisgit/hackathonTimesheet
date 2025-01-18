@@ -3,7 +3,15 @@ import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import timesheetService from "../services/apiService";
+
 
 const TimesheetDetails = () => {
   const { id } = useParams();
@@ -67,24 +75,56 @@ const TimesheetDetails = () => {
           <Typography variant="h6">
             <strong>Pay Period:</strong> {timesheet.payPeriodStartDate} - {timesheet.payPeriodEndDate}
           </Typography>
-          <Typography variant="h6">
-            <strong>Total Hours (Week 1):</strong>{" "}
-            {timesheet.week1
-              ? Object.values(timesheet.week1).reduce(
-                  (sum, day) => sum + (day.hours || 0),
-                  0
-                )
-              : 0}
+          
+          {/* Insert Table Here */}
+          <Typography variant="h5" gutterBottom>
+            Week 1
           </Typography>
-          <Typography variant="h6">
-            <strong>Total Hours (Week 2):</strong>{" "}
-            {timesheet.week2
-              ? Object.values(timesheet.week2).reduce(
-                  (sum, day) => sum + (day.hours || 0),
-                  0
-                )
-              : 0}
+          <TableContainer component={Paper} sx={{ marginTop: 3 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell><strong>Day</strong></TableCell>
+                  <TableCell><strong>Hours Worked</strong></TableCell>
+                  <TableCell><strong>Additional Info</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {timesheet.week1.map((day, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{day.day[0].toUpperCase() + day.day.slice(1,day.day.length)}</TableCell>
+                    <TableCell>{day.hours || 0}</TableCell>
+                    <TableCell>{day.info || "N/A"}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <Typography variant="h5" gutterBottom sx={{ marginTop: 5 }}>
+            Week 2
           </Typography>
+          <TableContainer component={Paper} sx={{ marginTop: 3 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>{day.day[0].toUpperCase() + day.day.slice(1,day.day.length)}</TableCell>
+                  <TableCell><strong>Hours Worked</strong></TableCell>
+                  <TableCell><strong>Additional Info</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {timesheet.week2.map((day, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{day.day}</TableCell>
+                    <TableCell>{day.hours || 0}</TableCell>
+                    <TableCell>{day.info || "N/A"}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
           <Typography variant="h6">
             <strong>Group:</strong> {timesheet.group || "N/A"}
           </Typography>
