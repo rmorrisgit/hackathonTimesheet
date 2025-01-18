@@ -11,7 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import timesheetService from "../services/apiService";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 
 const TimesheetDetails = () => {
@@ -61,17 +61,23 @@ const TimesheetDetails = () => {
   }
 
   //formatted dates
+  const changeYear = (date, newYear) => {
+    if (!date) return "N/A"; // If no date, return N/A
+    const updatedDate = set(new Date(date), { year: newYear });
+    return format(updatedDate, "MM/dd/yyyy");
+  };
+  
   const formattedPayStartDate = timesheet.payPeriodStartDate
-  ? format(new Date(timesheet.payPeriodStartDate), "MM/dd/yyyy")
-  : "N/A";
-
+    ? changeYear(timesheet.payPeriodStartDate, 2025)
+    : "N/A";
+  
   const formattedPayEndDate = timesheet.payPeriodEndDate
-  ? format(new Date(timesheet.payPeriodEndDate), "MM/dd/yyyy")
-  : "N/A";
-
+    ? changeYear(timesheet.payPeriodEndDate, 2025)
+    : "N/A";
+  
   const formattedContractEndDate = timesheet.contractEndDate
-  ? format(new Date(timesheet.contractEndDate), "MM/dd/yyyy")
-  : "N/A";
+    ? changeYear(timesheet.contractEndDate, 2025)
+    : "N/A";
 
  
 
