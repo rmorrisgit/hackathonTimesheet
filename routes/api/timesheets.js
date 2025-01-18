@@ -33,13 +33,16 @@ router.get('/', checkthetoken, async (req, res) => {
       filter.wNum = wNum; 
     }
 
-    const timesheets = await Timesheet.find(filter);
+    // Fetch timesheets and sort them by createdAt in descending order
+    const timesheets = await Timesheet.find(filter).sort({ createdAt: -1 });
+
     return res.status(200).json(timesheets);
   } catch (err) {
     console.error('Error fetching timesheets:', err);
     res.status(500).json({ error: 'Failed to fetch timesheets' });
   }
 });
+
 
 // GET a single employee's timesheets
 // router.get('/:wNum', async (req, res) => {

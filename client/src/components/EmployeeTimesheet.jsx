@@ -22,6 +22,7 @@ function EmployeeTimesheet() {
   const [userData, setUserData] = useState(null);
   const [infoDetails, setInfoDetails] = useState({});
 
+  
   // Calculate the most recent Sunday as the pay period start
   const getMostRecentSunday = () => {
     const today = new Date(); // Current date
