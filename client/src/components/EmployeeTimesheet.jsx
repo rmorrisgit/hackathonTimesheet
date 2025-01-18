@@ -20,6 +20,7 @@ function EmployeeTimesheet() {
   const [weeks, setWeeks] = useState([]);
   const [hoursWorked, setHoursWorked] = useState({});
   const [userData, setUserData] = useState(null);
+  const [infoDetails, setInfoDetails] = useState({});
 
   // Calculate the most recent Sunday as the pay period start
   const getMostRecentSunday = () => {
@@ -28,6 +29,13 @@ function EmployeeTimesheet() {
     const mostRecentSunday = new Date(today);
     mostRecentSunday.setDate(today.getDate() - offset); // Move back to the correct Sunday
     return mostRecentSunday;
+  };
+
+  const handleInfoChange = (date, value) => {
+    setInfoDetails((prev) => ({
+      ...prev,
+      [date]: value,
+    }));
   };
 
   useEffect(() => {
@@ -82,9 +90,8 @@ function EmployeeTimesheet() {
     return <Typography>Loading...</Typography>; // Show loading state
   }
   const handleSubmit = async () => {
-    // Prepare the timesheet payload
     const payload = {
-      userId: userData._id, // Assuming your backend uses the user's ID
+      userId: userData._id,
       firstName: userData.firstName,
       lastName: userData.lastName,
       wNum: userData.wNum,
@@ -101,45 +108,42 @@ function EmployeeTimesheet() {
       isCasual: userData.assignmentType === "Casual",
       contractEndDate: userData.contractEndDate,
       week1: weeks[0].dates.map((row) => ({
-        day: row.day.toLowerCase(), // Convert the day to lowercase
-        hours: parseFloat(hoursWorked[row.date] || 0), // Ensure hours are numbers
-        info: row.info || "", // Include the info field from row or default to an empty string
+        day: row.day.toLowerCase(),
+        hours: parseFloat(hoursWorked[row.date] || 0),
+        info: infoDetails[row.date] || "", // Include the info field
       })),
       week2: weeks[1].dates.map((row) => ({
-        day: row.day.toLowerCase(), // Convert the day to lowercase
-        hours: parseFloat(hoursWorked[row.date] || 0), // Ensure hours are numbers
-        info: row.info || "", // Include the info field from row or default to an empty string
+        day: row.day.toLowerCase(),
+        hours: parseFloat(hoursWorked[row.date] || 0),
+        info: infoDetails[row.date] || "", // Include the info field
       })),
     };
+  
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      console.log(payload);
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
   
       const data = await response.json();
   
       if (response.ok) {
-        console.log('PDF generated:', data.pdfUrl);
-        window.location.href = data.pdfUrl; // Trigger download
+        console.log("PDF generated:", data.pdfUrl);
+        window.open(data.pdfUrl, "_blank");
       } else {
-        console.error('Error generating PDF:', data.error);
+        console.error("Error generating PDF:", data.error);
       }
     } catch (error) {
-      console.error('Error during submission:', error);
+      console.error("Error during submission:", error);
     }
+  };
   
-    try {
-      // Submit the payload using the service
-      const response = await timesheetService.createTimesheet(payload);
-      console.log("Timesheet created successfully:", response);
-      alert("Timesheet submitted successfully!");
-    } catch (error) {
-      console.error("Error submitting timesheet:", error);
-      alert("Failed to submit timesheet. Please try again.");
-    };
-  }
+  
   
   return (
     <Box sx={{ padding: "20px", marginTop: "250px" }}>
@@ -236,7 +240,14 @@ function EmployeeTimesheet() {
                   />
                 </TableCell>
                 <TableCell>
-                  <TextField id={`info-${row.date}`} variant="outlined" size="small" placeholder="Enter details" />
+                  <TextField
+                    id={`info-${row.date}`}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Enter details"
+                    value={infoDetails[row.date] || ""}
+                    onChange={(e) => handleInfoChange(row.date, e.target.value)}
+                  />
                 </TableCell>
               </TableRow>
             ))}
