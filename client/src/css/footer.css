@@ -1,15 +1,7 @@
-  
-  footer {
-    /* padding-top: 1rem;
-    padding-bottom: 1rem;
-    width: 100%;
-    white-space: nowrap;
-    position: fixed;
-
-    bottom: 0;
-
-    justify-items: center; 
-    height: 50px;
-    background-color: #1d1d1d28;
-    z-index: -22; */
-  }
+.footer {
+  width: 100%;
+  text-align: center;
+  background-color: #2D2D2C;
+  color: rgb(186, 186, 186);
+  padding: 10px 0;
+}
