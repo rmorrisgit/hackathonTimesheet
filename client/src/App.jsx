@@ -40,15 +40,24 @@ const App = () => {
       <div id="main-content">
       <Routes>
       <Route
-            path="/"
-            element={
-              <Main
-                filteredData={filteredData}
-                setFilteredData={setFilteredData}
-                isAuthenticated={isAuthenticated}
-              />
-            }
-          />
+  path="/"
+  element={
+    isAuthenticated ? (
+      authService.isSupervisor() ? (
+        <Main
+          filteredData={filteredData}
+          setFilteredData={setFilteredData}
+          isAuthenticated={isAuthenticated}
+        />
+      ) : (
+        <Navigate to="/employee-dashboard" replace />
+      )
+    ) : (
+      <Navigate to="/signin" replace />
+    )
+  }
+/>
+
           <Route path="/timesheet/:id" element={<TimesheetDetails />} />
           <Route path="/timesheet" element={<EmployeeTimesheet />} />
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />

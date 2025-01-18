@@ -143,7 +143,7 @@ const Main = ({isAuthenticated}) => {
   return (
     <div className="employee_grid" style={{ padding: "20px", marginTop: 133 }}>
       {rowSelectionModel.length > 0 && (
-        <Box sx={{ textAlign: "right", mb: 2 }}>
+        <Box sx={{ textAlign: "right", mb: 2, mt: 2 }}>
           <Button
             variant="contained"
             color="primary"
