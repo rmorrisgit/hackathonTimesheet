@@ -14,8 +14,11 @@ import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils"; // Import your utility function
 import timesheetService from "../services/apiService"; // Import the service
 import InputAdornment from "@mui/material/InputAdornment";
+import { Link, useNavigate } from "react-router-dom";
+
 
 function EmployeeTimesheet() {
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [weeks, setWeeks] = useState([]);
   const [hoursWorked, setHoursWorked] = useState({});
@@ -137,6 +140,9 @@ function EmployeeTimesheet() {
         return; // Exit if the first request fails
       }
       console.log("Timesheet submitted successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);      
   
       // Send the payload to the second endpoint
       const response = await fetch(
