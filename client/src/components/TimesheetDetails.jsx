@@ -108,7 +108,7 @@ const TimesheetDetails = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{day.day[0].toUpperCase() + day.day.slice(1,day.day.length)}</TableCell>
+                  <TableCell><strong>Day</strong></TableCell>
                   <TableCell><strong>Hours Worked</strong></TableCell>
                   <TableCell><strong>Additional Info</strong></TableCell>
                 </TableRow>
@@ -116,7 +116,7 @@ const TimesheetDetails = () => {
               <TableBody>
                 {timesheet.week2.map((day, index) => (
                   <TableRow key={index}>
-                    <TableCell>{day.day}</TableCell>
+                    <TableCell>{day.day[0].toUpperCase() + day.day.slice(1,day.day.length)}</TableCell>
                     <TableCell>{day.hours || 0}</TableCell>
                     <TableCell>{day.info || "N/A"}</TableCell>
                   </TableRow>
