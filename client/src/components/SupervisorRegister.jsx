@@ -34,30 +34,30 @@ const SupervisorRegister = () => {
   const predefinedGroups = ["HR", "Finance", "Engineering"];
 
   // Autofill form fields for testing
-  useEffect(() => {
-    const autofillValues = {
-      firstName: "TestFirstName",
-      lastName: "TestLastName",
-      email: "testuser@example.com",
-      password: "Password123!",
-      confirmPassword: "Password123!",
-      wNum: `W${Math.floor(100000 + Math.random() * 900000)}`,
-      fund: "12345",
-      dept: "IT",
-      program: "CS101",
-      acct: "98765",
-      project: "TestProject",
-      hourlyRate: 25,
-      contractStartDate: "2025-01-01",
-      contractEndDate: "2025-01-14",
-      assignmentType: "Casual",
-      group: "HR", // Default group
-    };
+  // useEffect(() => {
+  //   const autofillValues = {
+  //     firstName: "TestFirstName",
+  //     lastName: "TestLastName",
+  //     email: "testuser@example.com",
+  //     password: "Password123!",
+  //     confirmPassword: "Password123!",
+  //     wNum: `W${Math.floor(100000 + Math.random() * 900000)}`,
+  //     fund: "12345",
+  //     dept: "IT",
+  //     program: "CS101",
+  //     acct: "98765",
+  //     project: "TestProject",
+  //     hourlyRate: 25,
+  //     contractStartDate: "2025-01-01",
+  //     contractEndDate: "2025-01-14",
+  //     assignmentType: "Casual",
+  //     group: "HR", // Default group
+  //   };
 
-    for (const key in autofillValues) {
-      setValue(key, autofillValues[key]);
-    }
-  }, [setValue]);
+  //   for (const key in autofillValues) {
+  //     setValue(key, autofillValues[key]);
+  //   }
+  // }, [setValue]);
 
   const onSubmit = async (data) => {
     const payload = {

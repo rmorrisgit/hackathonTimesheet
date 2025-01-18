@@ -33,7 +33,9 @@ const SignIn = () => {
     setIsSubmitting(false); // End loading
 
     if (success) {
-      navigate('/'); // Redirect to the main page
+      // navigate('/'); 
+      window.location.href = "/"; // Redirect to the main page with a hard refresh
+
     } else {
       console.log('Unsuccessful login');
       setLoginMessage('Incorrect Login');

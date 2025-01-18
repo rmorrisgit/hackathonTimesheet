@@ -2,8 +2,16 @@
 import express from 'express';
 import Timesheet from '../../models/timesheet.js'
 import checkthetoken from '../../middleware/checkToken.js'
+import fs from 'fs';
+import path from 'path';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';  // Ensure pdf-lib is installed
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename)
 
 // GET /timesheets -> Filter by role/group
 router.get('/', checkthetoken, async (req, res) => {
@@ -25,7 +33,9 @@ router.get('/', checkthetoken, async (req, res) => {
       filter.wNum = wNum; 
     }
 
-    const timesheets = await Timesheet.find(filter);
+    // Fetch timesheets and sort them by createdAt in descending order
+    const timesheets = await Timesheet.find(filter).sort({ createdAt: -1 });
+
     return res.status(200).json(timesheets);
   } catch (err) {
     console.error('Error fetching timesheets:', err);
@@ -33,24 +43,516 @@ router.get('/', checkthetoken, async (req, res) => {
   }
 });
 
-// GET a single employee's timesheets
-router.get('/:wNum', async (req, res) => {
-  const { wNum } = req.params;
-  const timesheets = await Timesheet.find({ 'employeeInfo.wNum': wNum });
-  res.json(timesheets);
-});
 
-router.post('/api/timesheets', async (req, res) => {
-  console.log('Received Timesheet Data:', req.body);
+// GET a single employee's timesheets
+// router.get('/:wNum', async (req, res) => {
+//   const { wNum } = req.params;
+//   const timesheets = await Timesheet.find({ 'employeeInfo.wNum': wNum });
+//   res.json(timesheets);
+// });
+
+
+router.get('/:id', async (req, res) => {
   try {
-    const newTimesheet = new Timesheet(req.body);
-    await newTimesheet.save();
-    res.status(201).json(newTimesheet);
+    const timesheet = await Timesheet.findById(req.params.id);
+    if (!timesheet) {
+      return res.status(404).json({ message: 'Timesheet not found' });
+    }
+    res.status(200).json(timesheet);
   } catch (error) {
-    console.error('Error creating timesheet:', error);
-    res.status(500).json({ error: 'Failed to create timesheet' });
+    res.status(500).json({ message: 'Server error', error });
   }
 });
+router.post('/api/timesheets', async (req, res) => {
+  try {
+    const timesheetData = req.body; // Capture the payload from the frontend
+    const newTimesheet = new Timesheet(timesheetData); // Create a new timesheet document
+    await newTimesheet.save(); // Save it to the database
+    res.status(201).json(newTimesheet); // Respond with the created timesheet
+  } catch (error) {
+    console.error("Error creating timesheet:", error);
+    res.status(500).json({ error: "Failed to create timesheet" });
+  }
+});
+
+router.post('/generate-pdf', async (req, res) => {
+  const payload = req.body; // Assuming you send the payload with the necessary data like firstName, lastName, etc.
+  try {
+    console.log("endpoint hit try");
+    const pdfPath = path.resolve(__dirname, '../../client/public/pdfTemplate/timesheetTemplate.pdf');  // Adjust path to your template
+    const existingPdfBytes = fs.readFileSync(pdfPath);
+
+    // Load the existing PDF
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const secondPage = pages[1];
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+      
+      // first name
+      firstPage.drawText(`${payload.firstName} ${payload.lastName}`, {
+        x: 230,
+        y: 590-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // w number
+      firstPage.drawText(`${payload.wNum}`, {
+        x: 420,
+        y: 590-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // chunk one
+      // fund
+      firstPage.drawText(`${payload.fund}`, {
+        x: 85,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // dept
+      firstPage.drawText(`${payload.dept}`, {
+        x: 117,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // programme
+      firstPage.drawText(`${payload.program}`, {
+        x: 150,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // acct
+      firstPage.drawText(`${payload.acct}`, {
+        x: 200,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      //project
+      firstPage.drawText(`${payload.project}`, {
+        x: 235,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // chunk 2
+      // period start
+      firstPage.drawText(`${payload.payPeriodStartDate}`, {
+        x: 315,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // period end
+      firstPage.drawText(`${payload.payPeriodEndDate}`, {
+        x: 440,
+        y: 500-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // hourly rate
+      firstPage.drawText(`${payload.hourlyRate}`, {
+        x: 230,
+        y: 430-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // casAux
+      if(payload.isCasual === true){ // casual
+        firstPage.drawText(`X`, {
+          x: 469,
+          y: 445-10,
+          size: 9,
+          font,
+          color: rgb(0, 0, 0)
+        });
+      }else{ // aux cable. lol
+        firstPage.drawText(`X`, {
+          x: 469,
+          y: 425-10,
+          size: 9,
+          font,
+          color: rgb(0, 0, 0)
+        });
+      };
+      
+
+      // week chunk 1
+      //[6]  1
+      // hours
+      firstPage.drawText(`${payload.week1[6].hours}`, {
+        x: 225,
+        y: 298-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[6].info}`, {
+        x: 295,
+        y: 298-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[0]  1
+      // hours
+      firstPage.drawText(`${payload.week1[0].hours}`, {
+        x: 225,
+        y: 275-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[0].info}`, {
+        x: 295,
+        y: 275-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tues 1
+      // hours
+      firstPage.drawText(`${payload.week1[1].hours}`, {
+        x: 225,
+        y: 255-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[1].info}`, {
+        x: 295,
+        y: 255-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[2]  1
+      // hours
+      firstPage.drawText(`${payload.week1[2].hours}`, {
+        x: 225,
+        y: 235-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[2].info}`, {
+        x: 295,
+        y: 235-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // thur 1
+      // hours
+      firstPage.drawText(`${payload.week1[3].hours}`, {
+        x: 225,
+        y: 215-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[3].info}`, {
+        x: 295,
+        y: 215-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[4]  1
+      // hours
+      firstPage.drawText(`${payload.week1[4].hours}`, {
+        x: 225,
+        y: 195-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[4].info}`, {
+        x: 295,
+        y: 195-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[5]  1
+      // hours
+      firstPage.drawText(`${payload.week1[5].hours}`, {
+        x: 225,
+        y: 175-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      firstPage.drawText(`${payload.week1[5].info}`, {
+        x: 295,
+        y: 175-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tot 1
+      firstPage.drawText(`${payload.week1[6].hours + payload.week1[0].hours + payload.week1[1].hours + payload.week1[2].hours + payload.week1[3].hours + payload.week1[4].hours + payload.week1[5].hours}`, {
+        x: 240,
+        y: 155-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+      
+      //////// page 2 ////////
+    
+      // week chunk 2
+      //[6]  2
+      // hours
+      secondPage.drawText(`${payload.week2[6].hours}`, {
+        x: 225,
+        y: 298+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[6].info}`, {
+        x: 295,
+        y: 298+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[0]  2
+      // hours
+      secondPage.drawText(`${payload.week2[0].hours}`, {
+        x: 225,
+        y: 275+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[0].info}`, {
+        x: 295,
+        y: 275+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tues 2
+      // hours
+      secondPage.drawText(`${payload.week2[1].hours}`, {
+        x: 225,
+        y: 255+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[1].info}`, {
+        x: 295,
+        y: 255+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[2]  2
+      // hours
+      secondPage.drawText(`${payload.week2[2].hours}`, {
+        x: 225,
+        y: 235+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[2].info}`, {
+        x: 295,
+        y: 235+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // thur 2
+      // hours
+      secondPage.drawText(`${payload.week2[3].hours}`, {
+        x: 225,
+        y: 215+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[3].info}`, {
+        x: 295,
+        y: 215+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[4]  2
+      // hours
+      secondPage.drawText(`${payload.week2[4].hours}`, {
+        x: 225,
+        y: 195+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[4].info}`, {
+        x: 295,
+        y: 195+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      //[5]  2
+      // hours
+      secondPage.drawText(`${payload.week2[5].hours}`, {
+        x: 225,
+        y: 175+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info
+      secondPage.drawText(`${payload.week2[5].info}`, {
+        x: 295,
+        y: 175+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // tot 2
+      secondPage.drawText(`${payload.week2[6].hours + payload.week2[0].hours + payload.week2[1].hours + payload.week2[2].hours + payload.week2[3].hours + payload.week2[4].hours + payload.week2[5].hours}`, {
+        x: 240,
+        y: 155+357-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+
+      // 'entered' grand tot
+      secondPage.drawText(`${payload.week1[6].hours + payload.week1[0].hours + payload.week1[1].hours + payload.week1[2].hours + payload.week1[3].hours + payload.week1[4].hours + payload.week1[5].hours+payload.week2[6].hours + payload.week2[0].hours + payload.week2[1].hours + payload.week2[2].hours + payload.week2[3].hours + payload.week2[4].hours + payload.week2[5].hours}`, {
+        x: 548,
+        y: 478-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+
+      // info comments
+      secondPage.drawText(``, {
+        x: 232,
+        y: 438-10,
+        size: 9,
+        font,
+        color: rgb(0, 0, 0)
+      });
+    // Save the modified PDF
+    const pdfBytes = await pdfDoc.save();
+
+    // Write the PDF to the server's disk (you can also serve it directly as a response)
+    const outputPdfPath = path.resolve(__dirname, `../../client/public/GeneratedTimesheet-${payload.wNum}-${getCurrentFormattedDateTime()}.pdf`);
+    fs.writeFileSync(outputPdfPath, pdfBytes);
+
+    // Respond with the URL of the generated PDF
+    res.json({ message: 'PDF generated successfully', pdfUrl: `/GeneratedTimesheet-${payload.wNum}-${getCurrentFormattedDateTime()}.pdf`});
+  } catch (error) {
+    console.log("endpoint hit catch");
+    console.error('Error generating PDF:', error.stack);
+  }
+});
+
+function getCurrentFormattedDateTime() {
+  const now = new Date();
+
+  // Format date and time components
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  // Combine components into the desired format
+  return `${day}-${month}-${year}-${hours}-${minutes}-${seconds}`;
+}
 
 // POST a new timesheet
 router.post('/', async (req, res) => {

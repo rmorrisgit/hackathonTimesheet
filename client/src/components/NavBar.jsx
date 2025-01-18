@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
+import UserService from "../services/userService";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
 import "../css/navbar.css";
@@ -17,6 +18,19 @@ const NavBar = () => {
 
   // Update role from sessionStorage on login/logout
   useEffect(() => {
+    if (isAuthenticated) {
+      // Fetch user details from UserService
+      UserService.getUserData()
+        .then((data) => {
+          setUserName(data.firstName); // Use `firstName` from API response
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user data:", err);
+          setUserName("User"); // Fallback to "User" on error
+        });
+    } else {
+      setUserName(null); // Clear name when not authenticated
+    }
     const storedRole = sessionStorage.getItem("type");
     setUserRole(storedRole);
   }, [isAuthenticated]);

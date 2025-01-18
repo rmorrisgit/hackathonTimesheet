@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'; 
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'; 
 import NavBar from './components/NavBar';
 import Main from './components/Main';
 import SignIn from './components/SignIn';
@@ -15,11 +15,20 @@ import CoffeeDetails from './components/coffees/CoffeeDetails';
 import authService from './services/authService';
 import EmployeeTimesheet from './components/EmployeeTimesheet';
 import Dashboard from './components/Directory';
+import TimesheetDetails from "./components/TimesheetDetails";
 
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
   const [filteredData, setFilteredData] = useState([]);
+
+  const ProtectedRoutes = ({ isAuthenticated }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/signin" replace />;
+    }
+    
+    return <Outlet />;
+  };
 
   return (
     <BrowserRouter>
@@ -29,8 +38,8 @@ const App = () => {
         setFilteredData={setFilteredData}
       />
       <div id="main-content">
-        <Routes>
-          <Route
+      <Routes>
+      <Route
             path="/"
             element={
               <Main
@@ -40,6 +49,7 @@ const App = () => {
               />
             }
           />
+          <Route path="/timesheet/:id" element={<TimesheetDetails />} />
           <Route path="/timesheet" element={<EmployeeTimesheet />} />
           <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
           <Route path="/register" element={<Register setIsAuthenticated={setIsAuthenticated} />} />

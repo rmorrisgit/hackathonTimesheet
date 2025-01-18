@@ -1,0 +1,32 @@
+
+{
+    "firstName": "research1",
+    "lastName": "hrg",
+    "email": "research1@nscc.ca",
+    "password": "$2b$10$geJqMMx.AWtfQCn8rr4xmeiSyIi8fqUKsM0ZqqaHjBkAHWKOsWLZm", 
+    "group": "HR",
+    "role": "supervisor",
+    "wNum": "W123445"
+  
+  }
+  {
+    "firstName": "research2",
+    "lastName": "financeg",
+    "email": "research2@nscc.ca",
+    "password": "$2b$10$geJqMMx.AWtfQCn8rr4xmeiSyIi8fqUKsM0ZqqaHjBkAHWKOsWLZm", 
+    "group": "Finance",
+    "role": "supervisor",
+    "wNum": "W121345"
+  
+  }
+  {
+    "firstName": "research3",
+    "lastName": "Engineeringg",
+    "email": "research3@nscc.ca",
+    "password": "$2b$10$geJqMMx.AWtfQCn8rr4xmeiSyIi8fqUKsM0ZqqaHjBkAHWKOsWLZm", 
+    "group": "Engineering",
+    "role": "supervisor",
+    "wNum": "W123425"
+  
+  }
+  
