@@ -25,9 +25,9 @@ function EmployeeTimesheet() {
   // Calculate the most recent Sunday as the pay period start
   const getMostRecentSunday = () => {
     const today = new Date(); // Current date
-    const offset = (today.getDay() + 6) % 7; // Days since last Sunday (Sunday = 0)
+    const offset = today.getDay(); // Offset: Sunday = 0
     const mostRecentSunday = new Date(today);
-    mostRecentSunday.setDate(today.getDate() - offset); // Move back to the correct Sunday
+    mostRecentSunday.setDate(today.getDate() - offset); // Move back to Sunday
     return mostRecentSunday;
   };
 
@@ -43,13 +43,13 @@ function EmployeeTimesheet() {
       try {
         const user = await userService.getUserData();
         setUserData(user);
-
-        // Dynamically calculate start date
+  
+        // Calculate start date as the most recent Sunday
         const startDate = getMostRecentSunday().toISOString().split("T")[0]; // YYYY-MM-DD format
-        const generatedWeeks = getPayPeriodDates(startDate);
+        const generatedWeeks = getPayPeriodDates(startDate); // Use your utility
         setWeeks(generatedWeeks);
-
-        // Initialize hoursWorked state based on generated weeks
+  
+        // Initialize hoursWorked state
         const initialHoursWorked = generatedWeeks
           .flatMap((week) => week.dates)
           .reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {});
@@ -58,9 +58,10 @@ function EmployeeTimesheet() {
         console.error("Error fetching user data:", error);
       }
     };
-
+  
     fetchUserData();
   }, []);
+  
 
   const handleHoursChange = (date, value) => {
     setHoursWorked((prev) => ({
@@ -120,7 +121,23 @@ function EmployeeTimesheet() {
     };
   
     try {
-      console.log(payload);
+      console.log("Submitting payload:", payload);
+  
+      // Send the payload to the first endpoint
+      const response0 = await fetch(`${import.meta.env.VITE_API_URL}/timesheets/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!response0.ok) {
+        const errorData = await response0.json();
+        console.error("Error submitting timesheet:", errorData.error);
+        return; // Exit if the first request fails
+      }
+      console.log("Timesheet submitted successfully");
+  
+      // Send the payload to the second endpoint
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`,
         {
@@ -131,9 +148,8 @@ function EmployeeTimesheet() {
       );
   
       const data = await response.json();
-  
       if (response.ok) {
-        console.log("PDF generated:", data.pdfUrl);
+        console.log("PDF generated successfully:", data.pdfUrl);
         window.open(data.pdfUrl, "_blank");
       } else {
         console.error("Error generating PDF:", data.error);
@@ -142,6 +158,7 @@ function EmployeeTimesheet() {
       console.error("Error during submission:", error);
     }
   };
+  
   
   
   
