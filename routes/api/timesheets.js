@@ -513,16 +513,31 @@ router.post('/generate-pdf', async (req, res) => {
     const pdfBytes = await pdfDoc.save();
 
     // Write the PDF to the server's disk (you can also serve it directly as a response)
-    const outputPdfPath = path.resolve(__dirname, '../../client/public/GeneratedTimesheet.pdf');
+    const outputPdfPath = path.resolve(__dirname, `../../client/public/GeneratedTimesheet-${payload.wNum}-${getCurrentFormattedDateTime()}.pdf`);
     fs.writeFileSync(outputPdfPath, pdfBytes);
 
     // Respond with the URL of the generated PDF
-    res.json({ message: 'PDF generated successfully', pdfUrl: '/GeneratedTimesheet.pdf' });
+    res.json({ message: 'PDF generated successfully', pdfUrl: `/GeneratedTimesheet-${payload.wNum}-${getCurrentFormattedDateTime()}.pdf`});
   } catch (error) {
     console.log("endpoint hit catch");
     console.error('Error generating PDF:', error.stack);
   }
 });
+
+function getCurrentFormattedDateTime() {
+  const now = new Date();
+
+  // Format date and time components
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const year = now.getFullYear();
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  // Combine components into the desired format
+  return `${day}-${month}-${year}-${hours}-${minutes}-${seconds}`;
+}
 
 // POST a new timesheet
 router.post('/', async (req, res) => {
