@@ -244,17 +244,31 @@ function EmployeeTimesheet() {
                 <TableCell>{row.day}</TableCell>
                 <TableCell>{row.date}</TableCell>
                 <TableCell>
-                  <TextField
-                    id={`hours-${row.date}`}
-                    variant="outlined"
-                    size="small"
-                    type="number"
-                    value={hoursWorked[row.date]}
-                    onChange={(e) => handleHoursChange(row.date, e.target.value)}
-                    InputProps={{
-                      endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
-                    }}
-                  />
+                <TextField
+                  id={`hours-${row.date}`}
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                  value={hoursWorked[row.date]}
+                  onChange={(e) => {
+                    let value = parseFloat(e.target.value);
+
+                    // Enforce min and max constraints
+                    if (value < 0) value = 0;
+                    if (value > 24) value = 24;
+                    if(value!=value) value=0;
+
+                    handleHoursChange(row.date, value);
+                  }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
+                    inputProps: {
+                      min: 0,
+                      max: 24,
+                      step: 0.1, // Optional: Define the step for finer control
+                    },
+                  }}
+                />
                 </TableCell>
                 <TableCell>
                   <TextField
