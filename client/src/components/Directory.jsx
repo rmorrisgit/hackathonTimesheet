@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import userService from '../services/userService';
-import '../css/directory.css';
 
 const columns = [
   { field: 'wNum', headerName: 'W#', flex: 0.5 },

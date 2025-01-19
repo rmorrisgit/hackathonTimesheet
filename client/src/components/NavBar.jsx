@@ -90,7 +90,7 @@ const NavBar = () => {
           {isAuthenticated && userRole != "employee" && (
           <li className="nav-link-item">
             <Typography variant="body1" component={Link} to="/directory">
-              Team Timesheets
+              My Team
             </Typography>
           </li>
           )}

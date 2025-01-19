@@ -63,3 +63,7 @@ typings/
 .vscode/
 
 bin/
+
+
+# Ignore timesheet PDFs in client/public
+client/public/GeneratedTimesheet_*.pdf
