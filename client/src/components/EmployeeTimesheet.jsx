@@ -170,7 +170,7 @@ function EmployeeTimesheet() {
   
   
   return (
-    <Box sx={{ padding: "20px", marginTop: "250px" }}>
+    <Box sx={{ padding: "20px",}}>
       {/* User Data Section */}
       <Box
         sx={{

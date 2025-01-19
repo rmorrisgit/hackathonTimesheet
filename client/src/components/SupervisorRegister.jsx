@@ -89,7 +89,7 @@ const SupervisorRegister = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, mx: "auto", mt: 20, mb: 5 }}>
+    <Box sx={{ maxWidth: 600, mx: "auto", mt: 5, mb: 5 }}>
       <Typography variant="h4" align="center" gutterBottom>
         Register Employee
       </Typography>

@@ -75,7 +75,7 @@ const SignIn = () => {
           borderRadius: 2,
           boxShadow: 3,
           padding: 3,
-          marginTop: '210px', // Adjusted for better responsiveness
+          marginTop: '100px', // Adjusted for better responsiveness
         }}
       >
         <Typography variant="h4" gutterBottom align="center" color="black">

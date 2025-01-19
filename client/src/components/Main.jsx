@@ -140,7 +140,7 @@ const Main = ({isAuthenticated}) => {
   }
 
   return (
-    <div className="employee_grid" style={{ padding: "20px", marginTop: 133}}>
+    <div className="employee_grid" style={{ padding: "20px"}}>
       <Typography variant="h4" gutterBottom>
       Timesheets
       </Typography>

@@ -46,7 +46,6 @@ body {
   justify-content: space-between; /* Distribute logo, nav-links, and icons */
   align-items: center;
   background-color: #ffffff;
-  position: fixed;
   top: 0;
   height: 150px;
   z-index: 22;
