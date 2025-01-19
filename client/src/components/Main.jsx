@@ -151,7 +151,8 @@ const Main = ({isAuthenticated}) => {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
-      height: "50px", // Fixed height
+      height: "10px", // Fixed height
+      mb: 2
     }}
   >
     {rowSelectionModel.length > 0 && (

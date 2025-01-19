@@ -89,9 +89,13 @@ export default function EmployeeList() {
   }
 
   return (
-    <div className="employee_grid" style={{ padding: "20px" }}>
+    <div className="employee_grid" style={{ padding: "20px", marginTop: 133}}>
+      <Typography variant="h4" gutterBottom>
+      Directory
+      </Typography>
+
       {/* <h1 className="title">Employee Directory</h1> */}
-      <Box sx={{  width: '100%', mt: 20 }}>
+      <Box sx={{  width: '100%'}}>
         <DataGrid
           rows={rows}
           columns={columns}
