@@ -140,65 +140,76 @@ const Main = ({isAuthenticated}) => {
   }
 
   return (
-    <div className="employee_grid" style={{ padding: "20px", marginTop: 133 }}>
-      {rowSelectionModel.length > 0 && (
-        <Box sx={{ textAlign: "right", mb: 2, mt: 2 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleNavigateToTimesheet}
-          >
-            View Selected Timesheet
-          </Button>
-        </Box>
-      )}
-      <Box sx={{ width: "100%" }}>
-        <DataGrid
-          rows={timesheets}
-          columns={columns}
-          getRowId={(row) => row.id}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
-            },
-          }}
-          pageSizeOptions={[10, 20, 50]}
-          checkboxSelection
-          rowSelectionModel={rowSelectionModel}
-          onRowSelectionModelChange={(newRowSelectionModel) => {
-            if (newRowSelectionModel.length > 1) {
-              setRowSelectionModel([
-                newRowSelectionModel[newRowSelectionModel.length - 1],
-              ]);
-            } else {
-              setRowSelectionModel(newRowSelectionModel);
-            }
-          }}
-          disableSelectionOnClick={true}
-          sx={{
-            "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
-              outline: "none",
-            },
-            "& .MuiDataGrid-row.Mui-selected": {
-              backgroundColor: "rgba(25, 118, 210, 0.2) !important",
-            },
-            "& .MuiDataGrid-row.Mui-selected:hover": {
-              backgroundColor: "rgba(25, 118, 210, 0.3) !important",
-            },
-            "& .MuiDataGrid-row:hover": {
-              backgroundColor: "rgba(0, 0, 0, 0.04)",
-              cursor: "pointer",
-            },
-          }}
-          disableColumnMenu
-          disableColumnFilter
-          disableColumnSelector
-          disableDensitySelector
-          tabIndex={-1}
-        />
-      </Box>
+    <div className="employee_grid" style={{ padding: "20px", marginTop: 133}}>
+      <Typography variant="h4" gutterBottom>
+      Timesheets
+      </Typography>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      height: "50px", // Fixed height
+    }}
+  >
+    {rowSelectionModel.length > 0 && (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleNavigateToTimesheet}
+      >
+        View Selected Timesheet
+      </Button>
+    )}
+  </Box>
+  <DataGrid
+    rows={timesheets}
+    columns={columns}
+    getRowId={(row) => row.id}
+    initialState={{
+      pagination: {
+        paginationModel: {
+          pageSize: 10,
+        },
+      },
+    }}
+    pageSizeOptions={[10, 20, 50]}
+    checkboxSelection
+    rowSelectionModel={rowSelectionModel}
+    onRowSelectionModelChange={(newRowSelectionModel) => {
+      if (newRowSelectionModel.length > 1) {
+        setRowSelectionModel([
+          newRowSelectionModel[newRowSelectionModel.length - 1],
+        ]);
+      } else {
+        setRowSelectionModel(newRowSelectionModel);
+      }
+    }}
+    disableSelectionOnClick={true}
+    sx={{
+      "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
+        outline: "none",
+      },
+      "& .MuiDataGrid-row.Mui-selected": {
+        backgroundColor: "rgba(25, 118, 210, 0.2) !important",
+      },
+      "& .MuiDataGrid-row.Mui-selected:hover": {
+        backgroundColor: "rgba(25, 118, 210, 0.3) !important",
+      },
+      "& .MuiDataGrid-row:hover": {
+        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        cursor: "pointer",
+      },
+    }}
+    disableColumnMenu
+    disableColumnFilter
+    disableColumnSelector
+    disableDensitySelector
+    tabIndex={-1}
+  />
+</Box>
     </div>
   );
 };
