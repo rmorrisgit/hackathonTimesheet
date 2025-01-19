@@ -10,7 +10,7 @@ import authService from './services/authService';
 import EmployeeTimesheet from './components/EmployeeTimesheet';
 import Dashboard from './components/Directory';
 import TimesheetDetails from "./components/TimesheetDetails";
-// import ProtectedRoutes from './components/ProtectedRoutes';
+import ProtectedRoutes from './components/ProtectedRoutes';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authService.isSignedIn());
