@@ -12,6 +12,7 @@ import {
   Box,
   Typography,
   InputAdornment,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
@@ -282,6 +283,25 @@ function EmployeeTimesheet() {
                 </TableCell>
               </TableRow>
             ))}
+            {/* Page Total Row */}
+            <TableRow>
+              <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
+                Week {weeks[page]?.weekNumber} Total
+              </TableCell>
+              <TableCell>
+                <TextField
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                  value={totalHoursForCurrentPage?.toFixed(2)}
+                  disabled
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
+                  }}
+                />
+              </TableCell>
+              <TableCell></TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
@@ -298,15 +318,21 @@ function EmployeeTimesheet() {
 
       {/* Grand Total */}
       <Box sx={{ textAlign: "right", marginTop: 2 }}>
-        <Typography variant="h6">Grand Total: {grandTotalHours.toFixed(2)} hrs</Typography>
+        <Typography variant="h6">Entered: {grandTotalHours.toFixed(2)} hrs</Typography>
       </Box>
 
       {/* Submit Button */}
       <Box sx={{ textAlign: "center", marginTop: 4 }}>
-        <button onClick={handleSubmit} style={{ padding: "10px 20px", backgroundColor: "#1976d2", color: "#fff" }}>
-          Submit Timesheet & Generate PDF
-        </button>
-      </Box>
+  <Button 
+    variant="contained" 
+    color="primary" 
+    size="large" 
+    onClick={handleSubmit}
+    sx={{ padding: "10px 20px" }}
+  >
+    Submit Timesheet & Generate PDF
+  </Button>
+</Box>
     </Box>
   );
 }

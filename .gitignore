@@ -65,4 +65,4 @@ typings/
 bin/
 
 # Ignore timesheet PDFs 
-client/public/GeneratedTimesheet_*.pdf
+client/public/GeneratedTimesheet-*.pdf
