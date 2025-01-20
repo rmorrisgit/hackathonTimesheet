@@ -33,7 +33,7 @@ const timesheetSchema = new Schema(
         info: { type: String, default: "" },
       },
     ],
-    submissionDate: { type: Date, required: false },
+    // submissionDate: { type: Date, required: false },
   },
   { collection: 'timesheets', timestamps: true }
 );

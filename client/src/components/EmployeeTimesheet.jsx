@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils";
+import "../css/reset.css";
 
 function EmployeeTimesheet() {
   const navigate = useNavigate();
@@ -25,7 +26,6 @@ function EmployeeTimesheet() {
   const [hoursWorked, setHoursWorked] = useState({});
   const [userData, setUserData] = useState(null);
   const [infoDetails, setInfoDetails] = useState({});
-
 
   const handleInfoChange = (date, value) => {
     setInfoDetails((prev) => ({
@@ -40,10 +40,8 @@ function EmployeeTimesheet() {
         const user = await userService.getUserData();
         setUserData(user);
 
-        // Get weeks data from the utility
         const { week1, week2 } = getPayPeriodDates();
 
-        // Transform weeks into desired structure
         const transformedWeeks = [
           {
             weekNumber: 1,
@@ -63,7 +61,6 @@ function EmployeeTimesheet() {
 
         setWeeks(transformedWeeks);
 
-        // Initialize hoursWorked state
         const initialHoursWorked = [...week1, ...week2].reduce(
           (acc, date) => ({ ...acc, [date]: 0 }),
           {}
@@ -132,9 +129,6 @@ function EmployeeTimesheet() {
     };
 
     try {
-      console.log("Submitting payload:", payload);
-
-      // Submit the payload to save timesheet
       const response = await fetch(`${import.meta.env.VITE_API_URL}/timesheets/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,11 +140,11 @@ function EmployeeTimesheet() {
         console.error("Error submitting timesheet:", errorData.error);
         return;
       }
-      console.log("Timesheet submitted successfully");
+
       setTimeout(() => {
         navigate("/");
-      }, 3000);   
-      // Submit the payload to generate PDF
+      }, 3000);
+
       const responsePdf = await fetch(
         `${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`,
         {
@@ -162,7 +156,6 @@ function EmployeeTimesheet() {
 
       const pdfData = await responsePdf.json();
       if (responsePdf.ok) {
-        console.log("PDF generated successfully:", pdfData.pdfUrl);
         window.open(pdfData.pdfUrl, "_blank");
       } else {
         console.error("Error generating PDF:", pdfData.error);
@@ -179,72 +172,93 @@ function EmployeeTimesheet() {
   return (
     <Box sx={{ padding: "20px" }}>
       {/* User Data Section */}
-      <Typography variant="h4" gutterBottom>Employee Timesheet</Typography>
-      <Box sx={{ marginBottom: 4, padding: 2, border: "1px solid #d9d9d9", borderRadius: "8px",
+      <Typography variant="h4" gutterBottom>
+        Employee Timesheet
+      </Typography>
+      <Box
+        sx={{
+          marginBottom: 4,
+          padding: 2,
+          border: "1px solid #d9d9d9",
+          borderRadius: "8px",
           display: "grid",
-          gridTemplateColumns: "repeat(12, 1fr)",
+          gridTemplateColumns: {
+            xs: "1fr", // Stack elements on small screens
+            sm: "repeat(2, 1fr)", // Two columns on medium screens
+            md: "repeat(12, 1fr)", // Full layout on larger screens
+          },
           gap: 2,
         }}
       >
-        <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Employee Name: </Typography>
-          <Typography>{userData.firstName} {userData.lastName}</Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 6" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Employee Name:
+          </Typography>
+          <Typography>
+            {userData.firstName} {userData.lastName}
+          </Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>W#: </Typography> 
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 6" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            W#:
+          </Typography>
           <Typography>{userData.wNum}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Fund: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 1" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Fund:
+          </Typography>
           <Typography>{userData.fund}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Dept: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 1" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Dept:
+          </Typography>
           <Typography>{userData.dept}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Program: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 1" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Program:
+          </Typography>
           <Typography>{userData.program}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 1" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Acct: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 1" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Acct:
+          </Typography>
           <Typography>{userData.acct}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 2" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Project: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 2" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Project:
+          </Typography>
           <Typography>{userData.project}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 2" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}> Pay Period Start Date: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 2" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Pay Period Start Date:
+          </Typography>
           <Typography>{payPeriodStartDate}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 4" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Pay Period End Date: </Typography>
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 2" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Pay Period End Date:
+          </Typography>
           <Typography>{payPeriodEndDate}</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6"  sx={{ fontWeight: "700" }}>Hourly Rate: </Typography>
-          <Typography>{userData.hourlyRate}/hr</Typography> 
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 6" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Hourly Rate:
+          </Typography>
+          <Typography>{userData.hourlyRate}/hr</Typography>
         </Box>
-
-        <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6" sx={{ fontWeight: "700" }}>Assignment Type: </Typography>  
+        <Box sx={{ gridColumn: { xs: "span 12", md: "span 6" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>
+            Assignment Type:
+          </Typography>
           <Typography>{userData.assignmentType}</Typography>
         </Box>
-
       </Box>
-      {/* Week Header */}
-      <Typography variant="h6" sx={{ fontWeight: "700", marginBottom: 2 }}>
-        Week {weeks[page]?.weekNumber}</Typography>
 
       {/* Timesheet Table */}
       <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
@@ -267,7 +281,10 @@ function EmployeeTimesheet() {
                     type="number"
                     value={hoursWorked[row.date]}
                     onChange={(e) =>
-                      handleHoursChange(row.date, Math.max(0, Math.min(24, parseFloat(e.target.value) || 0)))
+                      handleHoursChange(
+                        row.date,
+                        Math.max(0, Math.min(24, parseFloat(e.target.value) || 0))
+                      )
                     }
                     InputProps={{
                       endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
@@ -282,7 +299,6 @@ function EmployeeTimesheet() {
                 </TableCell>
               </TableRow>
             ))}
-            {/* Page Total Row */}
             <TableRow>
               <TableCell colSpan={2} sx={{ fontWeight: "700" }}>
                 Week {weeks[page]?.weekNumber} Total
@@ -304,7 +320,6 @@ function EmployeeTimesheet() {
         </Table>
       </TableContainer>
 
-      {/* Pagination */}
       <TablePagination
         rowsPerPageOptions={[7]}
         component="div"
@@ -314,23 +329,21 @@ function EmployeeTimesheet() {
         onPageChange={handleChangePage}
       />
 
-      {/* Grand Total */}
       <Box sx={{ textAlign: "right", marginTop: 2 }}>
         <Typography variant="h6">Entered: {grandTotalHours.toFixed(2)} hrs</Typography>
       </Box>
 
-      {/* Submit Button */}
       <Box sx={{ textAlign: "center", marginTop: 4 }}>
-  <Button 
-    variant="contained" 
-    color="primary" 
-    size="large" 
-    onClick={handleSubmit}
-    sx={{ padding: "10px 20px" }}
-  >
-    Submit Timesheet & Generate PDF
-  </Button>
-</Box>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={handleSubmit}
+          sx={{ padding: "10px 20px" }}
+        >
+          Submit Timesheet & Generate PDF
+        </Button>
+      </Box>
     </Box>
   );
 }
