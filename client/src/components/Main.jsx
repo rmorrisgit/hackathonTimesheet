@@ -6,31 +6,48 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import timesheetService from "../services/apiService";
-import { format, add, set } from "date-fns";
+import { getPayPeriodDates } from "../utils/dateUtils";
 
-const Main = ({isAuthenticated}) => {
+const Main = ({ isAuthenticated }) => {
   const [timesheets, setTimesheets] = useState([]);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [payPeriodDates, setPayPeriodDates] = useState({ start: "N/A", end: "N/A" });
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/signin');
+      navigate("/signin");
     }
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
+    const fetchPayPeriodDates = () => {
+      const { week1, week2 } = getPayPeriodDates();
+      setPayPeriodDates({
+        start: week1[0] || "N/A",
+        end: week2[6] || "N/A",
+      });
+    };
+
+  
     const fetchTimesheets = async () => {
       try {
         const response = await timesheetService.getTimesheets();
         const mappedTimesheets = response.map((timesheet, index) => ({
           id: timesheet._id || index,
-          employeeName: `${timesheet.firstName} ${timesheet.lastName}`,
+          employeeName: `${timesheet.firstName || "N/A"} ${timesheet.lastName || "N/A"}`,
           wNum: timesheet.wNum || "N/A",
           group: timesheet.group || "N/A",
-          contractEndDate: timesheet.contractEndDate || "N/A",
+          // Format contractEndDate here
+          contractEndDate: timesheet.contractEndDate
+            ? new Date(timesheet.contractEndDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : "N/A",
           week1Total: timesheet.week1
             ? Object.values(timesheet.week1).reduce(
                 (sum, day) => sum + (day.hours || 0),
@@ -43,10 +60,9 @@ const Main = ({isAuthenticated}) => {
                 0
               )
             : 0,
-          payPeriodStart: timesheet.payPeriodStartDate || "N/A",
-          payPeriodEnd: timesheet.payPeriodEndDate || "N/A",
         }));
         setTimesheets(mappedTimesheets);
+        fetchPayPeriodDates();
       } catch (error) {
         console.error("Error fetching timesheets:", error);
         setError(
@@ -56,9 +72,9 @@ const Main = ({isAuthenticated}) => {
         setLoading(false);
       }
     };
-
+  
     fetchTimesheets();
-  }, [])
+  }, []);
 
   const handleNavigateToTimesheet = () => {
     const selectedRow = timesheets.find(
@@ -85,33 +101,19 @@ const Main = ({isAuthenticated}) => {
       type: "number",
       flex: 1,
     },
-    { field: "payPeriodStart",
-       headerName: "Pay Period Start",
-        flex: 1,
-        valueFormatter: () => {
-          const specificDate = set(new Date(), { year: 2025, month: 0, date: 12 });
-          const formattedDate = format(specificDate, "MM/dd/yyyy");
-          return formattedDate;
-    }
-  },
-    { field: "payPeriodEnd",
-       headerName: "Pay Period End",
-        flex: 1,
-          valueFormatter: () => {
-            const specificDate = set(new Date(), { year: 2025, month: 0, date: 25 });
-            const formattedDate = format(specificDate, "MM/dd/yyyy");
-            return formattedDate;
-          }
-      },
-    { field: "contractEndDate",
-       headerName: "Contract End",
-        flex: 1,
-      valueFormatter: () => {
-        const futureDate = add(new Date, { months: 12 });
-        const formattedDate = format(futureDate, "MM/dd/yyyy");
-        return formattedDate;
-      },
-    }
+    {
+      field: "payPeriodStart",
+      headerName: "Pay Period Start",
+      flex: 1,
+      valueGetter: () => payPeriodDates.start,
+    },
+    {
+      field: "payPeriodEnd",
+      headerName: "Pay Period End",
+      flex: 1,
+      valueGetter: () => payPeriodDates.end,
+    },
+    { field: "contractEndDate", headerName: "Contract End", flex: 1 },
   ];
 
   if (loading) {
@@ -140,77 +142,79 @@ const Main = ({isAuthenticated}) => {
   }
 
   return (
-    <div className="employee_grid" style={{ padding: "20px"}}>
+    <div className="employee_grid" style={{ padding: "20px" }}>
       <Typography variant="h4" gutterBottom>
-      Timesheets
+        Timesheets
       </Typography>
 
-      <Box sx={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "flex-end",
-      alignItems: "center",
-      height: "10px", // Fixed height
-      mb: 2
-    }}
-  >
-    {rowSelectionModel.length > 0 && (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleNavigateToTimesheet}
+      <Box
+        sx={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}
       >
-        View Selected Timesheet
-      </Button>
-    )}
-  </Box>
-  <DataGrid
-    rows={timesheets}
-    columns={columns}
-    getRowId={(row) => row.id}
-    initialState={{
-      pagination: {
-        paginationModel: {
-          pageSize: 10,
-        },
-      },
-    }}
-    pageSizeOptions={[10, 20, 50]}
-    checkboxSelection
-    rowSelectionModel={rowSelectionModel}
-    onRowSelectionModelChange={(newRowSelectionModel) => {
-      if (newRowSelectionModel.length > 1) {
-        setRowSelectionModel([
-          newRowSelectionModel[newRowSelectionModel.length - 1],
-        ]);
-      } else {
-        setRowSelectionModel(newRowSelectionModel);
-      }
-    }}
-    disableSelectionOnClick={true}
-    sx={{
-      "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
-        outline: "none",
-      },
-      "& .MuiDataGrid-row.Mui-selected": {
-        backgroundColor: "rgba(25, 118, 210, 0.2) !important",
-      },
-      "& .MuiDataGrid-row.Mui-selected:hover": {
-        backgroundColor: "rgba(25, 118, 210, 0.3) !important",
-      },
-      "& .MuiDataGrid-row:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
-        cursor: "pointer",
-      },
-    }}
-    disableColumnMenu
-    disableColumnFilter
-    disableColumnSelector
-    disableDensitySelector
-    tabIndex={-1}
-  />
-</Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            height: "10px",
+            mb: 2,
+          }}
+        >
+          {rowSelectionModel.length > 0 && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNavigateToTimesheet}
+            >
+              View Selected Timesheet
+            </Button>
+          )}
+        </Box>
+        <DataGrid
+          rows={timesheets}
+          columns={columns}
+          getRowId={(row) => row.id}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 10,
+              },
+            },
+          }}
+          pageSizeOptions={[10, 20, 50]}
+          checkboxSelection
+          rowSelectionModel={rowSelectionModel}
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            if (newRowSelectionModel.length > 1) {
+              setRowSelectionModel([
+                newRowSelectionModel[newRowSelectionModel.length - 1],
+              ]);
+            } else {
+              setRowSelectionModel(newRowSelectionModel);
+            }
+          }}
+          disableSelectionOnClick={true}
+          sx={{
+            "& .MuiDataGrid-cell:focus, & .MuiDataGrid-cell:focus-within": {
+              outline: "none",
+            },
+            "& .MuiDataGrid-row.Mui-selected": {
+              backgroundColor: "rgba(25, 118, 210, 0.2) !important",
+            },
+            "& .MuiDataGrid-row.Mui-selected:hover": {
+              backgroundColor: "rgba(25, 118, 210, 0.3) !important",
+            },
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+              cursor: "pointer",
+            },
+          }}
+          disableColumnMenu
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+          tabIndex={-1}
+        />
+      </Box>
     </div>
   );
 };

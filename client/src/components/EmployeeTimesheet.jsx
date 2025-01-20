@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import TablePagination from "@mui/material/TablePagination";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+  TablePagination,
+  Box,
+  Typography,
+  InputAdornment,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
-import { getPayPeriodDates } from "../utils/dateUtils"; 
-// import timesheetService from "../services/apiService"; 
-import InputAdornment from "@mui/material/InputAdornment";
-import { Link, useNavigate } from "react-router-dom";
-
+import { getPayPeriodDates } from "../utils/dateUtils";
 
 function EmployeeTimesheet() {
   const navigate = useNavigate();
@@ -25,13 +25,12 @@ function EmployeeTimesheet() {
   const [userData, setUserData] = useState(null);
   const [infoDetails, setInfoDetails] = useState({});
 
-  
   // Calculate the most recent Sunday as the pay period start
   const getMostRecentSunday = () => {
-    const today = new Date(); // Current date
-    const offset = today.getDay(); // Offset: Sunday = 0
+    const today = new Date();
+    const offset = today.getDay();
     const mostRecentSunday = new Date(today);
-    mostRecentSunday.setDate(today.getDate() - offset); // Move back to Sunday
+    mostRecentSunday.setDate(today.getDate() - offset);
     return mostRecentSunday;
   };
 
@@ -47,25 +46,43 @@ function EmployeeTimesheet() {
       try {
         const user = await userService.getUserData();
         setUserData(user);
-  
-        // Calculate start date as the most recent Sunday
-        const startDate = getMostRecentSunday().toISOString().split("T")[0]; // YYYY-MM-DD format
-        const generatedWeeks = getPayPeriodDates(startDate); // Use your utility
-        setWeeks(generatedWeeks);
-  
+
+        // Get weeks data from the utility
+        const { week1, week2 } = getPayPeriodDates();
+
+        // Transform weeks into desired structure
+        const transformedWeeks = [
+          {
+            weekNumber: 1,
+            dates: week1.map((date) => ({
+              day: new Date(date).toLocaleDateString("en-US", { weekday: "long" }),
+              date,
+            })),
+          },
+          {
+            weekNumber: 2,
+            dates: week2.map((date) => ({
+              day: new Date(date).toLocaleDateString("en-US", { weekday: "long" }),
+              date,
+            })),
+          },
+        ];
+
+        setWeeks(transformedWeeks);
+
         // Initialize hoursWorked state
-        const initialHoursWorked = generatedWeeks
-          .flatMap((week) => week.dates)
-          .reduce((acc, row) => ({ ...acc, [row.date]: 0 }), {});
+        const initialHoursWorked = [...week1, ...week2].reduce(
+          (acc, date) => ({ ...acc, [date]: 0 }),
+          {}
+        );
         setHoursWorked(initialHoursWorked);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
-  
+
     fetchUserData();
   }, []);
-  
 
   const handleHoursChange = (date, value) => {
     setHoursWorked((prev) => ({
@@ -91,9 +108,6 @@ function EmployeeTimesheet() {
   const payPeriodStartDate = weeks[0]?.dates[0]?.date;
   const payPeriodEndDate = weeks[1]?.dates[6]?.date;
 
-  if (!userData || weeks.length === 0) {
-    return <Typography>Loading...</Typography>; // Show loading state
-  }
   const handleSubmit = async () => {
     const payload = {
       userId: userData._id,
@@ -115,37 +129,34 @@ function EmployeeTimesheet() {
       week1: weeks[0].dates.map((row) => ({
         day: row.day.toLowerCase(),
         hours: parseFloat(hoursWorked[row.date] || 0),
-        info: infoDetails[row.date] || "", // Include the info field
+        info: infoDetails[row.date] || "",
       })),
       week2: weeks[1].dates.map((row) => ({
         day: row.day.toLowerCase(),
         hours: parseFloat(hoursWorked[row.date] || 0),
-        info: infoDetails[row.date] || "", // Include the info field
+        info: infoDetails[row.date] || "",
       })),
     };
-  
+
     try {
       console.log("Submitting payload:", payload);
-  
-      // Send the payload to the first endpoint
-      const response0 = await fetch(`${import.meta.env.VITE_API_URL}/timesheets/`, {
+
+      // Submit the payload to save timesheet
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/timesheets/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-  
-      if (!response0.ok) {
-        const errorData = await response0.json();
+
+      if (!response.ok) {
+        const errorData = await response.json();
         console.error("Error submitting timesheet:", errorData.error);
-        return; // Exit if the first request fails
+        return;
       }
       console.log("Timesheet submitted successfully");
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);      
-  
-      // Send the payload to the second endpoint
-      const response = await fetch(
+
+      // Submit the payload to generate PDF
+      const responsePdf = await fetch(
         `${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`,
         {
           method: "POST",
@@ -153,24 +164,25 @@ function EmployeeTimesheet() {
           body: JSON.stringify(payload),
         }
       );
-  
-      const data = await response.json();
-      if (response.ok) {
-        console.log("PDF generated successfully:", data.pdfUrl);
-        window.open(data.pdfUrl, "_blank");
+
+      const pdfData = await responsePdf.json();
+      if (responsePdf.ok) {
+        console.log("PDF generated successfully:", pdfData.pdfUrl);
+        window.open(pdfData.pdfUrl, "_blank");
       } else {
-        console.error("Error generating PDF:", data.error);
+        console.error("Error generating PDF:", pdfData.error);
       }
     } catch (error) {
       console.error("Error during submission:", error);
     }
   };
-  
-  
-  
-  
+
+  if (!userData || weeks.length === 0) {
+    return <Typography>Loading...</Typography>;
+  }
+
   return (
-    <Box sx={{ padding: "20px",}}>
+    <Box sx={{ padding: "20px" }}>
       {/* User Data Section */}
       <Box
         sx={{
@@ -234,15 +246,15 @@ function EmployeeTimesheet() {
         Week {weeks[page]?.weekNumber}
       </Typography>
 
-      {/* Paginated Table */}
+      {/* Timesheet Table */}
       <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-        <Table aria-label={`Week ${weeks[page]?.weekNumber} Timesheet`} sx={{ minWidth: 700 }}>
+        <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: "bold", backgroundColor: "#d9e1f2" }}>Day</TableCell>
-              <TableCell sx={{ fontWeight: "bold", backgroundColor: "#d9e1f2" }}>Date</TableCell>
-              <TableCell sx={{ fontWeight: "bold", backgroundColor: "#d9e1f2" }}>Hours Worked</TableCell>
-              <TableCell sx={{ fontWeight: "bold", backgroundColor: "#d9e1f2" }}>Other Information</TableCell>
+              <TableCell>Day</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Hours Worked</TableCell>
+              <TableCell>Other Information</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -251,80 +263,28 @@ function EmployeeTimesheet() {
                 <TableCell>{row.day}</TableCell>
                 <TableCell>{row.date}</TableCell>
                 <TableCell>
-                <TextField
-                  id={`hours-${row.date}`}
-                  variant="outlined"
-                  size="small"
-                  type="number"
-                  value={hoursWorked[row.date]}
-                  onChange={(e) => {
-                    let value = parseFloat(e.target.value);
-
-                    // Enforce min and max constraints
-                    if (value < 0) value = 0;
-                    if (value > 24) value = 24;
-                    if(value!=value) value=0;
-
-                    handleHoursChange(row.date, value);
-                  }}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
-                    inputProps: {
-                      min: 0,
-                      max: 24,
-                      step: 0.1, // Optional: Define the step for finer control
-                    },
-                  }}
-                />
+                  <TextField
+                    type="number"
+                    value={hoursWorked[row.date]}
+                    onChange={(e) =>
+                      handleHoursChange(row.date, Math.max(0, Math.min(24, parseFloat(e.target.value) || 0)))
+                    }
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
+                    }}
+                  />
                 </TableCell>
                 <TableCell>
                   <TextField
-                    id={`info-${row.date}`}
-                    variant="outlined"
-                    size="small"
-                    placeholder="Enter details"
                     value={infoDetails[row.date] || ""}
                     onChange={(e) => handleInfoChange(row.date, e.target.value)}
                   />
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
-                Week {weeks[page]?.weekNumber} Total
-              </TableCell>
-              <TableCell>
-                <TextField
-                  variant="outlined"
-                  size="small"
-                  type="number"
-                  value={totalHoursForCurrentPage?.toFixed(2)}
-                  disabled
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">hrs</InputAdornment>,
-                  }}
-                />
-              </TableCell>
-              <TableCell></TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ textAlign: "center", marginTop: 4 }}>
-        <button
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#1976d2",
-            color: "#fff",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-          onClick={handleSubmit}
-        >
-          Submit Timesheet
-        </button>
-      </Box>
 
       {/* Pagination */}
       <TablePagination
@@ -336,14 +296,18 @@ function EmployeeTimesheet() {
         onPageChange={handleChangePage}
       />
 
-      {/* Grand Total Section */}
+      {/* Grand Total */}
       <Box sx={{ textAlign: "right", marginTop: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Grand Total: {grandTotalHours.toFixed(2)} hrs
-        </Typography>
+        <Typography variant="h6">Grand Total: {grandTotalHours.toFixed(2)} hrs</Typography>
+      </Box>
+
+      {/* Submit Button */}
+      <Box sx={{ textAlign: "center", marginTop: 4 }}>
+        <button onClick={handleSubmit} style={{ padding: "10px 20px", backgroundColor: "#1976d2", color: "#fff" }}>
+          Submit Timesheet & Generate PDF
+        </button>
       </Box>
     </Box>
-    
   );
 }
 

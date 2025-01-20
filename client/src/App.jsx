@@ -44,20 +44,21 @@ const App = () => {
                   isAuthenticated={isAuthenticated}
                 />
               ) : (
-                <Navigate to="/employee-dashboard" replace />
+                <Navigate to="/" replace />
               )
             ) : (
               <Navigate to="/signin" replace />
             )
           }
         />
-        <Route path="/timesheet/:id" element={<TimesheetDetails />} />
-        <Route path="/timesheet" element={<EmployeeTimesheet />} />
+ 
         <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/register" element={<Register setIsAuthenticated={setIsAuthenticated} />} />
 
           <Route element={<ProtectedRoutes isAuthenticated={isAuthenticated} />}>
           <Route path="/directory" element={<Dashboard />} />
+          <Route path="/timesheet/:id" element={<TimesheetDetails />} />
+          <Route path="/timesheet" element={<EmployeeTimesheet />} />
           <Route
               path="/supervisor-register"
               element={

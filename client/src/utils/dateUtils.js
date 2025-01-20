@@ -1,33 +1,32 @@
 export const getPayPeriodDates = () => {
-    const referenceDate = new Date("2025-01-14"); // Start of a known 2-week pay period
-    const today = new Date();
-  
-    // Calculate the number of days since the reference date
-    const daysSinceReference = Math.floor((today - referenceDate) / (1000 * 60 * 60 * 24));
-    
-    // Calculate the current pay period index (2 weeks = 14 days)
-    const periodsSinceReference = Math.floor(daysSinceReference / 14);
-  
-    // Calculate the start date of the current pay period
-    const payPeriodStartDate = new Date(referenceDate);
-    payPeriodStartDate.setDate(referenceDate.getDate() + periodsSinceReference * 14);
-  
-    // Generate the two weeks of pay period dates
-    const weeks = [];
-    for (let week = 0; week < 2; week++) {
-      const dates = [];
-      for (let day = 0; day < 7; day++) {
-        const current = new Date(payPeriodStartDate);
-        current.setDate(payPeriodStartDate.getDate() + week * 7 + day);
-        
-        dates.push({
-          day: current.toLocaleDateString("en-US", { weekday: "long", timeZone: "America/Halifax" }),
-          date: current.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "America/Halifax" }),
-        });
-      }
-      weeks.push({ weekNumber: week + 1, dates });
-    }
-  
-    return weeks;
-  };
-  
+  const referenceDate = new Date("2025-01-14"); // Known pay period start
+  const today = new Date();
+
+  // Calculate start of the current pay period
+  const daysSinceReference = Math.floor((today - referenceDate) / (1000 * 60 * 60 * 24));
+  const periodsSinceReference = Math.floor(daysSinceReference / 14);
+  const payPeriodStart = new Date(referenceDate);
+  payPeriodStart.setDate(referenceDate.getDate() + periodsSinceReference * 14);
+
+  const formatDate = (date) =>
+    date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+
+  // Generate two weeks of pay periods
+  const week1 = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(payPeriodStart);
+    date.setDate(payPeriodStart.getDate() + i);
+    return formatDate(date);
+  });
+
+  const week2 = Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(payPeriodStart);
+    date.setDate(payPeriodStart.getDate() + 7 + i);
+    return formatDate(date);
+  });
+
+  return { week1, week2 };
+};
