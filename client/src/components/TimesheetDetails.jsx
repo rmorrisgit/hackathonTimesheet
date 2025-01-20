@@ -11,8 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import timesheetService from "../services/apiService";
-import { getPayPeriodDates } from "../utils/dateUtils"; // Import
-
+import { getPayPeriodDates } from "../utils/dateUtils";
 
 const TimesheetDetails = () => {
   const { id } = useParams();
@@ -87,6 +86,13 @@ const TimesheetDetails = () => {
       })
     : "N/A";
 
+  // Calculate weekly totals
+  const calculateWeeklyTotal = (week) =>
+    week?.reduce((total, day) => total + (parseFloat(day.hours) || 0), 0) || 0;
+
+  const week1Total = calculateWeeklyTotal(timesheet?.week1);
+  const week2Total = calculateWeeklyTotal(timesheet?.week2);
+
   return (
     <Box sx={{ padding: "20px" }}>
       <Typography variant="h4" gutterBottom>
@@ -110,6 +116,8 @@ const TimesheetDetails = () => {
             <strong>Contract End Date:</strong> {formattedContractEndDate}
           </Typography>
           <br />
+
+          {/* Week 1 Table */}
           <Typography variant="h5" gutterBottom>
             Week 1
           </Typography>
@@ -130,9 +138,16 @@ const TimesheetDetails = () => {
                     <TableCell>{day.info || "N/A"}</TableCell>
                   </TableRow>
                 ))}
+                {/* Week 1 Total */}
+                <TableRow>
+                  <TableCell colSpan={1}><strong>Total</strong></TableCell>
+                  <TableCell colSpan={2}><strong>{week1Total.toFixed(2)} hrs</strong></TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
+
+          {/* Week 2 Table */}
           <Typography variant="h5" gutterBottom sx={{ marginTop: 5 }}>
             Week 2
           </Typography>
@@ -153,6 +168,11 @@ const TimesheetDetails = () => {
                     <TableCell>{day.info || "N/A"}</TableCell>
                   </TableRow>
                 ))}
+                {/* Week 2 Total */}
+                <TableRow>
+                  <TableCell colSpan={1}><strong>Total</strong></TableCell>
+                  <TableCell colSpan={2}><strong>{week2Total.toFixed(2)} hrs</strong></TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>

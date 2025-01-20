@@ -203,12 +203,20 @@ function EmployeeTimesheet() {
           <Typography variant="h6">
             <strong>Employee Name:</strong> {userData.firstName} {userData.lastName}
           </Typography>
-        </Box>
-        <Box sx={{ gridColumn: "span 6" }}>
           <Typography variant="h6">
             <strong>W#:</strong> {userData.wNum}
           </Typography>
+
+
+          <Typography variant="h6">
+  <strong>Assignment Type: </strong> {userData.assignmentType}
+  </Typography>
+  
         </Box>
+     
+
+
+
         <Box sx={{ gridColumn: "span 1" }}>
   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
     Fund:
@@ -239,24 +247,35 @@ function EmployeeTimesheet() {
   </Typography>
   <Typography>{userData.project}</Typography>
 </Box>
+
+
+{/* <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6">
+            <strong>W#:</strong> {userData.wNum}
+          </Typography>
+        </Box> */}
+
+
+
+<Box sx={{ gridColumn: "span 6" }}>
+  <Typography variant="h6">
+  <strong>Hourly Rate: </strong>${userData.hourlyRate}/hr
+  </Typography>
+</Box>
+
 <Box sx={{ gridColumn: "span 2" }}>
   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
     Pay Period Start Date:
   </Typography>
   <Typography>{payPeriodStartDate}</Typography>
 </Box>
-<Box sx={{ gridColumn: "span 4" }}>
+<Box sx={{ gridColumn: "span 2" }}>
   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
     Pay Period End Date:
   </Typography>
   <Typography>{payPeriodEndDate}</Typography>
 </Box>
-<Box sx={{ gridColumn: "span 6" }}>
-  <Typography variant="h6">
-  <strong>Hourly Rate: </strong>${userData.hourlyRate}/hr
-  </Typography>
-  <Typography></Typography>
-</Box>
+
 <Box sx={{ gridColumn: "span 6" }}>
 <Typography variant="h6">
   <strong>Assignment Type: </strong> {userData.assignmentType}

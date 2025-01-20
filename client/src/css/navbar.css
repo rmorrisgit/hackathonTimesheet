@@ -67,7 +67,8 @@ body {
 }
 
 .nav-link-item a {
-  
+  color: rgb(0, 0, 0);
+
   transition: color 0.3s ease;
 }
 
@@ -84,14 +85,6 @@ body {
   right: 10px;
   top: 15px;
 }
-.nav-icons i {
-    font-size: 24px;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-  }
-
-
 
 .search-bar-container {
   flex-grow: 1; /* Take remaining space */
@@ -109,7 +102,6 @@ body {
     position: absolute;
     top: 0; 
     z-index: 999;
-
     left: 0;
 }
 .nav-logo img {
@@ -135,16 +127,10 @@ body {
     text-decoration: none;
     display: flex;
     padding: 16px 0;
-    font-weight: 500;
     transition: .3 ease;
     align-items: center;
-
 }
-.nav-links > .nav-link-item:hover > a {
-   
 
-    
-} 
 .nav-link-item > a > .fa-chevron-down {
     display: inline-block;
     height: 16px;
