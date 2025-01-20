@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils";
 
@@ -179,88 +179,72 @@ function EmployeeTimesheet() {
   return (
     <Box sx={{ padding: "20px" }}>
       {/* User Data Section */}
-      <Typography variant="h4" gutterBottom>
-      Employee Timesheet
-      </Typography>
-      <Box
-        sx={{
-          marginBottom: 4,
-          padding: 2,
-          border: "1px solid #d9d9d9",
-          borderRadius: "8px",
+      <Typography variant="h4" gutterBottom>Employee Timesheet</Typography>
+      <Box sx={{ marginBottom: 4, padding: 2, border: "1px solid #d9d9d9", borderRadius: "8px",
           display: "grid",
           gridTemplateColumns: "repeat(12, 1fr)",
           gap: 2,
         }}
       >
         <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6">
-            <strong>Employee Name:</strong> {userData.firstName} {userData.lastName}
-          </Typography>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Employee Name: </Typography>
+          <Typography>{userData.firstName} {userData.lastName}</Typography>
         </Box>
+
         <Box sx={{ gridColumn: "span 6" }}>
-          <Typography variant="h6">
-            <strong>W#:</strong> {userData.wNum}
-          </Typography>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>W#: </Typography> 
+          <Typography>{userData.wNum}</Typography>
         </Box>
+
         <Box sx={{ gridColumn: "span 1" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Fund:
-  </Typography>
-  <Typography>{userData.fund}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 1" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Dept:
-  </Typography>
-  <Typography>{userData.dept}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 1" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Program:
-  </Typography>
-  <Typography>{userData.program}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 1" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Acct:
-  </Typography>
-  <Typography>{userData.acct}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 2" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Project:
-  </Typography>
-  <Typography>{userData.project}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 2" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Pay Period Start Date:
-  </Typography>
-  <Typography>{payPeriodStartDate}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 4" }}>
-  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-    Pay Period End Date:
-  </Typography>
-  <Typography>{payPeriodEndDate}</Typography>
-</Box>
-<Box sx={{ gridColumn: "span 6" }}>
-  <Typography variant="h6">
-  <strong>Hourly Rate: </strong>${userData.hourlyRate}/hr
-  </Typography>
-  <Typography></Typography>
-</Box>
-<Box sx={{ gridColumn: "span 6" }}>
-<Typography variant="h6">
-  <strong>Assignment Type: </strong> {userData.assignmentType}
-  </Typography>
-</Box>
-</Box>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Fund: </Typography>
+          <Typography>{userData.fund}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Dept: </Typography>
+          <Typography>{userData.dept}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Program: </Typography>
+          <Typography>{userData.program}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 1" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Acct: </Typography>
+          <Typography>{userData.acct}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 2" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Project: </Typography>
+          <Typography>{userData.project}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 2" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}> Pay Period Start Date: </Typography>
+          <Typography>{payPeriodStartDate}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 4" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Pay Period End Date: </Typography>
+          <Typography>{payPeriodEndDate}</Typography>
+        </Box>
+
+        <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6"  sx={{ fontWeight: "700" }}>Hourly Rate: </Typography>
+          <Typography>{userData.hourlyRate}/hr</Typography> 
+        </Box>
+
+        <Box sx={{ gridColumn: "span 6" }}>
+          <Typography variant="h6" sx={{ fontWeight: "700" }}>Assignment Type: </Typography>  
+          <Typography>{userData.assignmentType}</Typography>
+        </Box>
+
+      </Box>
       {/* Week Header */}
-      <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-        Week {weeks[page]?.weekNumber}
-      </Typography>
+      <Typography variant="h6" sx={{ fontWeight: "700", marginBottom: 2 }}>
+        Week {weeks[page]?.weekNumber}</Typography>
 
       {/* Timesheet Table */}
       <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
@@ -300,7 +284,7 @@ function EmployeeTimesheet() {
             ))}
             {/* Page Total Row */}
             <TableRow>
-              <TableCell colSpan={2} sx={{ fontWeight: "bold" }}>
+              <TableCell colSpan={2} sx={{ fontWeight: "700" }}>
                 Week {weeks[page]?.weekNumber} Total
               </TableCell>
               <TableCell>
