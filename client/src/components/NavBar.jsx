@@ -96,7 +96,7 @@ const NavBar = () => {
           )}
           {isAuthenticated && userRole != "supervisor" && (
           <li className="nav-link-item" >
-            <Typography variant="body1" component={Link} to="/timesheet"     style={{ fontSize: "20px" }}>
+            <Typography variant="body1" component={Link} to="/timesheet">
               Timesheet Entry
             </Typography>
           </li>
