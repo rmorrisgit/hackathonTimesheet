@@ -17,7 +17,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils";
-import "../css/reset.css";
 
 function EmployeeTimesheet() {
   const navigate = useNavigate();
@@ -259,10 +258,14 @@ function EmployeeTimesheet() {
           <Typography>{userData.assignmentType}</Typography>
         </Box>
       </Box>
-
+   {/* Week Header */}
+   <Typography variant="h6" sx={{ fontWeight: "700", marginBottom: 2 }}>
+        Week {weeks[page]?.weekNumber}</Typography>
       {/* Timesheet Table */}
       <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
+        
         <Table>
+          
           <TableHead>
             <TableRow>
               <TableCell>Day</TableCell>
