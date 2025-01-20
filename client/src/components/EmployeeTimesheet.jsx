@@ -14,7 +14,7 @@ import {
   InputAdornment,
   Button,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import userService from "../services/userService";
 import { getPayPeriodDates } from "../utils/dateUtils";
 
@@ -26,14 +26,6 @@ function EmployeeTimesheet() {
   const [userData, setUserData] = useState(null);
   const [infoDetails, setInfoDetails] = useState({});
 
-  // Calculate the most recent Sunday as the pay period start
-  const getMostRecentSunday = () => {
-    const today = new Date();
-    const offset = today.getDay();
-    const mostRecentSunday = new Date(today);
-    mostRecentSunday.setDate(today.getDate() - offset);
-    return mostRecentSunday;
-  };
 
   const handleInfoChange = (date, value) => {
     setInfoDetails((prev) => ({
@@ -155,7 +147,9 @@ function EmployeeTimesheet() {
         return;
       }
       console.log("Timesheet submitted successfully");
-
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);   
       // Submit the payload to generate PDF
       const responsePdf = await fetch(
         `${import.meta.env.VITE_API_URL}/timesheets/generate-pdf`,
