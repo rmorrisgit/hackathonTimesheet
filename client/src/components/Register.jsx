@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import '../css/register.css';
 
-const supervisorEmails = [
-  'research1@nscc.ca',
-  'research2@nscc.ca',
-  'research3@nscc.ca',
-  'research4@nscc.ca',
-];
+const predefinedGroups = ['Engineering', 'Finance', 'HR'];
+const predefinedRoles = ['supervisor', 'employee', 'admin'];
 
 const Register = () => {
   const { register: registerUser } = useAuth(); // Renamed to avoid conflict with useForm's register
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [registerMessage, setRegisterMessage] = useState('');
+  const [supervisorEmails, setSupervisorEmails] = useState([]);
+
+  // Fetch supervisor emails dynamically
+  useEffect(() => {
+    const fetchSupervisorEmails = async () => {
+      try {
+        const response = await fetch('/api/supervisor-emails'); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error('Failed to fetch supervisor emails');
+        }
+        const data = await response.json();
+        setSupervisorEmails(data.emails); // Assuming the API returns { emails: [...] }
+      } catch (error) {
+        console.error('Error fetching supervisor emails:', error);
+      }
+    };
+
+    fetchSupervisorEmails();
+  }, []);
 
   const onSubmit = async (data) => {
-    // Determine the role
+    // Determine the role if it's automatically calculated based on email
     const isSupervisor = supervisorEmails.includes(data.email);
     const payload = {
       ...data,
-      role: isSupervisor ? 'supervisor' : 'employee',
+      role: data.role || (isSupervisor ? 'supervisor' : 'employee'),
     };
 
     const success = await registerUser(payload); // Use register from AuthContext
@@ -92,6 +107,42 @@ const Register = () => {
           placeholder="Enter your password"
         />
         {errors.password && <p className="register-error">{errors.password.message}</p>}
+      </div>
+
+      {/* Group Dropdown */}
+      <div className="register-form-group">
+        <label htmlFor="group">Group</label>
+        <select
+          {...register('group', { required: 'Group is required' })}
+          id="group"
+          className={`register-form-control ${errors.group ? 'register-is-invalid' : ''}`}
+        >
+          <option value="">Select a group</option>
+          {predefinedGroups.map((group) => (
+            <option key={group} value={group}>
+              {group}
+            </option>
+          ))}
+        </select>
+        {errors.group && <p className="register-error">{errors.group.message}</p>}
+      </div>
+
+      {/* Role Dropdown */}
+      <div className="register-form-group">
+        <label htmlFor="role">Role</label>
+        <select
+          {...register('role', { required: 'Role is required' })}
+          id="role"
+          className={`register-form-control ${errors.role ? 'register-is-invalid' : ''}`}
+        >
+          <option value="">Select a role</option>
+          {predefinedRoles.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </select>
+        {errors.role && <p className="register-error">{errors.role.message}</p>}
       </div>
 
       <button className="register-btn-submit" type="submit">

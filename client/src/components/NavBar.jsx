@@ -24,7 +24,7 @@ const NavBar = () => {
         .then((data) => {
           setUserName(data.firstName); // Use `firstName` from API response
         })
-        .catch((err) => {
+        .catch((err) => { 
           console.error("Failed to fetch user data:", err);
           setUserName("User"); // Fallback to "User" on error
         });
@@ -83,7 +83,7 @@ const NavBar = () => {
         {isAuthenticated && userRole != "employee" && (
           <li className="nav-link-item">
             <Typography variant="body1" component={Link} to="/">
-              Main
+              Timesheets
             </Typography>
           </li>
           )}
@@ -97,7 +97,7 @@ const NavBar = () => {
           {isAuthenticated && userRole != "supervisor" && (
           <li className="nav-link-item" >
             <Typography variant="body1" component={Link} to="/timesheet">
-              Timesheet Entry
+              My Timesheet
             </Typography>
           </li>
           )}
